@@ -1,17 +1,14 @@
 import { Locator, Page } from '@playwright/test';
-import { HelperMethods } from '../Utilities/helperMethods';
 
 export class Verifications {
     private page: Page;
-    private helper: HelperMethods;
 
     constructor(page: Page) {
         this.page = page;
-        this.helper = new HelperMethods(page);
     }
 
     async headlineCheck(locator: Locator, expectedText: string): Promise<boolean> {
-        const actualText = await this.helper.getElementText(locator);
+        const actualText = await locator.textContent() || '';
         const isMatch = actualText.includes(expectedText);
         
         if (!isMatch) {
@@ -24,7 +21,7 @@ export class Verifications {
     }
 
     async visualElements(locator: Locator, elementName: string): Promise<boolean> {
-        const isVisible = await this.helper.isElementVisible(locator);
+        const isVisible = await locator.isVisible();
         
         if (!isVisible) {
             console.error(`❌ Visual element "${elementName}" is not visible`);
@@ -36,7 +33,7 @@ export class Verifications {
     }
 
     async elementTextEquals(locator: Locator, expectedText: string): Promise<boolean> {
-        const actualText = await this.helper.getElementText(locator);
+        const actualText = await locator.textContent() || '';
         const isMatch = actualText === expectedText;
         
         if (!isMatch) {
@@ -49,7 +46,7 @@ export class Verifications {
     }
 
     async elementContainsText(locator: Locator, expectedText: string): Promise<boolean> {
-        const actualText = await this.helper.getElementText(locator);
+        const actualText = await locator.textContent() || '';
         const isMatch = actualText.includes(expectedText);
         
         if (!isMatch) {
@@ -62,7 +59,7 @@ export class Verifications {
     }
 
     async elementIsEnabled(locator: Locator, elementName: string): Promise<boolean> {
-        const isEnabled = await this.helper.isElementEnabled(locator);
+        const isEnabled = await locator.isEnabled();
         
         if (!isEnabled) {
             console.error(`❌ Element "${elementName}" is not enabled`);
@@ -74,7 +71,7 @@ export class Verifications {
     }
 
     async elementIsVisible(locator: Locator, elementName: string): Promise<boolean> {
-        const isVisible = await this.helper.isElementVisible(locator);
+        const isVisible = await locator.isVisible();
         
         if (!isVisible) {
             console.error(`❌ Element "${elementName}" is not visible`);
