@@ -1,0 +1,40 @@
+{
+  "name": "playwright-automation-project",
+  "version": "1.0.0",
+  "description": "Automation project using Playwright with similar structure to Java project",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report",
+    "install-browsers": "playwright install",
+    "automation:run": "ts-node sapir-ob-automation/main/Utilities/playwright/index.ts",
+    "automation:smoke": "ts-node -e \"import('./sapir-ob-automation/main/Utilities/playwright/index.ts').then(m => m.runSmokeTests())\"",
+    "automation:full": "ts-node -e \"import('./sapir-ob-automation/main/Utilities/playwright/index.ts').then(m => m.runAutomation())\"",
+    "automation:file": "ts-node -e \"import('./sapir-ob-automation/main/Utilities/playwright/index.ts').then(m => m.runTestFile(process.argv[1] || 'welcomeScreenTest'))\"",
+    "automation:status": "ts-node -e \"import('./sapir-ob-automation/main/Utilities/playwright/index.ts').then(m => console.log(JSON.stringify(m.getAutomationStatus(), null, 2)))\"",
+    "automation:docker": "docker-compose -f sapir-ob-automation/main/Utilities/playwright/ci-cd/docker-setup.yml up",
+    "automation:docker:down": "docker-compose -f sapir-ob-automation/main/Utilities/playwright/ci-cd/docker-setup.yml down",
+    "automation:ci": "npm run test && npm run automation:report",
+    "automation:report": "ts-node -e \"import('./sapir-ob-automation/main/Utilities/playwright/scripts/report-generator.ts').then(m => console.log('Report generator ready'))\"",
+    "automation:validate": "ts-node -e \"import('./sapir-ob-automation/main/Utilities/playwright/index.ts').then(m => console.log('Validation:', m.getAutomationStatus().validation))\""
+  },
+  "keywords": ["playwright", "automation", "testing"],
+  "author": "Sapir Abargil",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "@types/nodemailer": "^6.4.0"
+  },
+  "dependencies": {
+    "allure-playwright": "^2.10.0",
+    "exceljs": "^4.4.0",
+    "fs-extra": "^11.0.0",
+    "nodemailer": "^6.9.0",
+    "ts-node": "^10.9.0"
+  }
+}

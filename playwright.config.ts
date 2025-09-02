@@ -1,0 +1,37 @@
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './sapir-ob-automation/test',
+  fullyParallel: false, // Single browser as requested
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: 1, // Single worker for single browser
+  reporter: [
+    ['html'],
+    ['allure-playwright']
+  ],
+  use: {
+    baseURL: 'https://lili-onboarding-integ.lili.co/', // Updated for Lili onboarding
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    viewport: { width: 1920, height: 1080 }, // 1920x1080 resolution as requested
+    launchOptions: {
+      slowMo: 1000,
+    },
+  },
+
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+  ],
+
+  // Removed webServer configuration since we're testing external URL
+  // webServer: {
+  //   command: 'npm run start',
+  //   url: 'http://localhost:3000',
+  //   reuseExistingServer: !process.env.CI,
+  // },
+});

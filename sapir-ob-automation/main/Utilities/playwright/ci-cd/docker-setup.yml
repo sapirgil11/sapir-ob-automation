@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  playwright-tests:
+    image: mcr.microsoft.com/playwright:v1.40.0
+    container_name: lili-playwright-tests
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=test
+      - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+    ports:
+      - "9323:9323"  # Playwright UI mode
+    command: >
+      sh -c "
+        npm ci &&
+        npx playwright install --with-deps &&
+        npx playwright test --ui --host 0.0.0.0 --port 9323
+      "
+    networks:
+      - test-network
+
+  test-runner:
+    image: mcr.microsoft.com/playwright:v1.40.0
+    container_name: lili-test-runner
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=test
+      - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+    depends_on:
+      - playwright-tests
+    command: >
+      sh -c "
+        npm ci &&
+        npx playwright install --with-deps &&
+        npx playwright test --project=chromium --headed
+      "
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge
+
+volumes:
+  node_modules:

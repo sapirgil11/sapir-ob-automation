@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["ES2020", "DOM"],
+      "outDir": "./dist",
+  "rootDir": "./sapir-ob-automation",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "baseUrl": "./sapir-ob-automation",
+    "paths": {
+      "@/*": ["*"],
+      "@PageObjects/*": ["main/PageObjects/*"],
+      "@WorkFlows/*": ["main/WorkFlows/*"],
+      "@Utilities/*": ["main/Utilities/*"],
+      "@Extensions/*": ["main/Extensions/*"],
+      "@Tests/*": ["test/*"],
+      "@Helpers/*": ["test/Helpers/*"],
+      "@SanityTests/*": ["test/SanityTests/*"]
+    }
+  },
+  "include": [
+    "sapir-ob-automation/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
