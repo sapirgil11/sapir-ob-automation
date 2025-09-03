@@ -1,0 +1,71 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e8]:
+        - img "Lili logo" [ref=e10]
+        - heading "Welcome to Lili," [level=2] [ref=e11]
+        - heading "Powering your business growth" [level=4] [ref=e12]
+      - generic [ref=e13]:
+        - generic [ref=e15]:
+          - textbox [ref=e17]
+          - paragraph: Email
+        - generic [ref=e21]:
+          - generic [ref=e23]:
+            - textbox [ref=e24]
+            - button [ref=e25] [cursor=pointer]:
+              - img [ref=e26] [cursor=pointer]
+            - img [ref=e31]
+          - paragraph: Password
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - paragraph [ref=e37]: By clicking GET STARTED you agree to Lili's
+            - generic [ref=e38]:
+              - link "Terms of Use" [ref=e39] [cursor=pointer]:
+                - /url: https://lili.co/legal-documents/lili-terms-of-use
+              - paragraph [ref=e40]: and
+              - link "Privacy Policy" [ref=e41] [cursor=pointer]:
+                - /url: https://lili.co/legal-documents/lili-privacy-policy
+          - button "Get Started" [disabled] [ref=e42]:
+            - generic [ref=e44]: Get Started
+        - generic [ref=e45]:
+          - heading "Already have an account?" [level=5] [ref=e46]
+          - button "Log In" [ref=e47] [cursor=pointer]:
+            - generic [ref=e49] [cursor=pointer]: Log In
+      - img "Trust Pilot" [ref=e50]
+    - generic [ref=e53]:
+      - heading "Open your business checking account today. Grow with confidence." [level=3] [ref=e54]
+      - generic [ref=e55]:
+        - heading "Banking" [level=3] [ref=e56]
+        - paragraph [ref=e57]: Savings account with 3.00% APY¹, Lili Visa® Debit Card, no hidden fees, no overdraft fees, and no deposit or minimum balance required.
+      - generic [ref=e58]:
+        - heading "Accounting & Tax Preparation" [level=3] [ref=e59]
+        - paragraph [ref=e60]: Automated bookkeeping, invoicing, and bill management tools—along with tax-saving features such as write-off tracking and pre-filled forms².
+      - generic [ref=e61]:
+        - heading "Credit Building" [level=3] [ref=e62]
+        - paragraph [ref=e63]: Build your business credit profile with a secured credit card and 24/7 credit monitoring, in collaboration with Dun & Bradstreet.
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - paragraph [ref=e66]: Lili is a financial technology company, not a bank. Banking services provided by Sunrise Banks, N.A., Member FDIC
+          - paragraph [ref=e67]: ¹The Annual Percentage Yield ("APY") for the Lili Savings Account is variable and may change at any time.
+          - paragraph [ref=e68]: The disclosed APY is effective as of January 1, 2025. Must have at least $0.01 in savings to earn interest. The APY applies to balances of up to and including $100,000. Any portions of a balance over $100,000 will not earn interest or have a yield. Available to Lili Pro, Lili Smart, and Lili Premium account holders only.
+          - paragraph [ref=e69]: ²Available to Lili Smart and Lili Premium account holders only, applicable monthly account fee applies. Please refer to our Terms and Conditions for details.
+        - generic [ref=e70]:
+          - paragraph [ref=e71]: USA PATRIOT Act notice
+          - paragraph [ref=e72]: "To help the government fight the funding of terrorism and money laundering activities, Federal law requires all financial institutions to obtain, verify, and record information that identifies each person who opens an account. What this means for you: When you open an account, we will ask for your name, address, date of birth, and other information that will allow us to identify you. We may also ask to see your driver's license or other identifying documents."
+  - iframe [ref=e73]:
+    - generic [ref=f1e2]:
+      - generic [ref=f1e5]:
+        - link "Privacy" [ref=f1e6] [cursor=pointer]:
+          - /url: https://www.google.com/intl/en/policies/privacy/
+        - generic [ref=f1e7]: "-"
+        - link "Terms" [ref=f1e8] [cursor=pointer]:
+          - /url: https://www.google.com/intl/en/policies/terms/
+      - generic [ref=f1e9]:
+        - generic [ref=f1e10]:
+          - text: protected by
+          - strong [ref=f1e11]: reCAPTCHA
+        - generic [ref=f1e13]: "-"
+```
