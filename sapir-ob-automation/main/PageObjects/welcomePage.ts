@@ -131,8 +131,6 @@ export class WelcomePage {
     // ===== CONTENT AND DISPLAY ELEMENTS =====
     // --Welcome Content--
     public trustPilotLogo!: Locator;                 // "img[alt='Trust Pilot']"
-    public termsOfUseLink!: Locator;                 // "a:has-text('Terms of Use')"
-    public privacyPolicyLink!: Locator;              // "a:has-text('Privacy Policy')"
     public logInButton!: Locator;                    // "text=Log In"
     public logInLink!: Locator;                      // "text=Log In" (old version)
 
