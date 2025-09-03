@@ -50,6 +50,7 @@ export class WelcomePage {
     // --Form Inputs--
     public emailInput!: Locator;                     // "#EMAIL"
     public passwordInput!: Locator;                  // "#PASSWORD"
+    public emailClearButton!: Locator;               // "x" button to clear email input
     public confirmPasswordInput!: Locator;           // "confirmPassword"
     public firstNameInput!: Locator;                 // "firstName"
     public lastNameInput!: Locator;                  // "lastName"
@@ -69,6 +70,10 @@ export class WelcomePage {
     public formContainer!: Locator;                  // "form"
     public emailErrorContainer!: Locator;            // "#EMAIL-error-container"
     public passwordErrorContainer!: Locator;          // "#PASSWORD-error-container"
+    
+    // --Legal Links--
+    public termsOfUseLink!: Locator;                 // Terms of Use link
+    public privacyPolicyLink!: Locator;              // Privacy Policy link
 
     // ===== TOOLTIPS AND TEXTS =====
     // --Password Requirements Tooltip--
@@ -413,6 +418,13 @@ export class WelcomePage {
         
         // Password error container - ALREADY WORKING
         this.passwordErrorContainer = this.page.locator('#PASSWORD-error-container');
+        
+        // Legal links
+        this.termsOfUseLink = this.page.locator('a[href="https://lili.co/legal-documents/lili-terms-of-use"]');
+        this.privacyPolicyLink = this.page.locator('a[href="https://lili.co/legal-documents/lili-privacy-policy"]');
+        
+        // Email clear button (appears after typing)
+        this.emailClearButton = this.page.locator('#ClearInput');
     }
 
     // ===== ELEMENT STATE METHODS =====

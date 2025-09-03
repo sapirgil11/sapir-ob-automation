@@ -311,6 +311,115 @@ test.describe('Comprehensive Welcome Screen Elements Test', () => {
             console.log(`   Password tooltip hover test: ❌ ERROR - ${error instanceof Error ? error.message : String(error)}`);
         }
         
+        // ===== NEW FUNCTIONALITY TESTS =====
+        console.log('\n🆕 ===== TESTING NEW FUNCTIONALITY =====');
+        
+        // Test Email Clear Button Functionality
+        try {
+            console.log('   Testing email clear button functionality...');
+            
+            // First, type something in email input
+            await welcomePage.emailInput.fill('test@example.com');
+            await page.waitForTimeout(500);
+            
+            // Check if clear button appears
+            const clearButtonVisible = await welcomePage.emailClearButton.isVisible();
+            console.log(`      Clear button visible after typing: ${clearButtonVisible ? '✅ YES' : '❌ NO'}`);
+            
+            if (clearButtonVisible) {
+                // Click the clear button
+                await welcomePage.emailClearButton.click();
+                await page.waitForTimeout(500);
+                
+                // Verify input is empty
+                const inputValue = await welcomePage.emailInput.inputValue();
+                const isEmpty = inputValue === '';
+                console.log(`      Input cleared successfully: ${isEmpty ? '✅ YES' : '❌ NO'} (Value: "${inputValue}")`);
+            } else {
+                console.log('      ⚠️ Clear button not found - may need different selector');
+            }
+        } catch (error) {
+            console.log(`   Email clear button test: ❌ ERROR - ${error instanceof Error ? error.message : String(error)}`);
+        }
+        
+        // Test Terms of Use Link
+        try {
+            console.log('   Testing Terms of Use link...');
+            
+            // Verify link is visible
+            const termsLinkVisible = await welcomePage.termsOfUseLink.isVisible();
+            console.log(`      Terms of Use link visible: ${termsLinkVisible ? '✅ YES' : '❌ NO'}`);
+            
+            if (termsLinkVisible) {
+                // Get link href
+                const href = await welcomePage.termsOfUseLink.getAttribute('href');
+                console.log(`      Link href: ${href}`);
+                
+                // Open link in new tab
+                const [newPage] = await Promise.all([
+                    page.context().waitForEvent('page'),
+                    welcomePage.termsOfUseLink.click()
+                ]);
+                
+                await newPage.waitForLoadState('networkidle');
+                
+                // Verify URL
+                const currentUrl = newPage.url();
+                const isCorrectUrl = currentUrl.includes('lili.co/legal-documents/lili-terms-of-use');
+                console.log(`      Correct URL opened: ${isCorrectUrl ? '✅ YES' : '❌ NO'} (${currentUrl})`);
+                
+                // Verify title exists
+                const titleElement = newPage.locator('h1#h-welcome-to-lili');
+                const titleVisible = await titleElement.isVisible();
+                const titleText = await titleElement.textContent();
+                console.log(`      Title "Welcome to Lili!" exists: ${titleVisible ? '✅ YES' : '❌ NO'} (${titleText})`);
+                
+                // Close the new tab
+                await newPage.close();
+            }
+        } catch (error) {
+            console.log(`   Terms of Use link test: ❌ ERROR - ${error instanceof Error ? error.message : String(error)}`);
+        }
+        
+        // Test Privacy Policy Link
+        try {
+            console.log('   Testing Privacy Policy link...');
+            
+            // Verify link is visible
+            const privacyLinkVisible = await welcomePage.privacyPolicyLink.isVisible();
+            console.log(`      Privacy Policy link visible: ${privacyLinkVisible ? '✅ YES' : '❌ NO'}`);
+            
+            if (privacyLinkVisible) {
+                // Get link href
+                const href = await welcomePage.privacyPolicyLink.getAttribute('href');
+                console.log(`      Link href: ${href}`);
+                
+                // Open link in new tab
+                const [newPage] = await Promise.all([
+                    page.context().waitForEvent('page'),
+                    welcomePage.privacyPolicyLink.click()
+                ]);
+                
+                await newPage.waitForLoadState('networkidle');
+                
+                // Verify URL
+                const currentUrl = newPage.url();
+                const isCorrectUrl = currentUrl.includes('lili.co/legal-documents/lili-privacy-policy');
+                console.log(`      Correct URL opened: ${isCorrectUrl ? '✅ YES' : '❌ NO'} (${currentUrl})`);
+                
+                // Verify "Lili Online Privacy Policy" text exists
+                const privacyText = newPage.locator('strong:has-text("Lili Online Privacy Policy")');
+                const privacyTextVisible = await privacyText.isVisible();
+                const privacyTextContent = await privacyText.textContent();
+                console.log(`      "Lili Online Privacy Policy" text exists: ${privacyTextVisible ? '✅ YES' : '❌ NO'} (${privacyTextContent})`);
+                
+                // Close the new tab
+                await newPage.close();
+            }
+        } catch (error) {
+            console.log(`   Privacy Policy link test: ❌ ERROR - ${error instanceof Error ? error.message : String(error)}`);
+        }
+        
         // ===== SCREENSHOT AND FINAL VERIFICATION =====
         console.log('\n📸 ===== FINAL VERIFICATION =====');
         
