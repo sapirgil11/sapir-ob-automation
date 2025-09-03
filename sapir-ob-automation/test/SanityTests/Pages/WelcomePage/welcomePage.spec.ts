@@ -314,6 +314,101 @@ test.describe('Comprehensive Welcome Screen Elements Test', () => {
         // ===== NEW FUNCTIONALITY TESTS =====
         console.log('\n🆕 ===== TESTING NEW FUNCTIONALITY =====');
         
+        // Test Valid Email Flow - Redirect to Verification Page
+        try {
+            console.log('   Testing valid email flow and redirect...');
+            
+            // FIRST: Verify Get Started button is DISABLED initially
+            console.log('      Step 1: Verifying Get Started button is initially disabled...');
+            const initialButtonState = await welcomePage.getStartedButton.isEnabled();
+            console.log(`         Initial button state: ${initialButtonState ? '❌ ENABLED (should be disabled)' : '✅ DISABLED (correct)'}`);
+            
+            if (initialButtonState) {
+                console.log('         ⚠️ Button should be disabled initially - clearing inputs first');
+                await welcomePage.emailInput.clear();
+                await welcomePage.passwordInput.clear();
+                await page.waitForTimeout(500);
+            }
+            
+            // SECOND: Fill in valid email and password (ONCE - don't change after)
+            console.log('      Step 2: Filling valid email and password...');
+            const randomDigits = Math.floor(1000 + Math.random() * 9000); // 1000-9999
+            const validEmail = `Filler${randomDigits}@mailforspam.com`;
+            console.log(`         Generated email: ${validEmail}`);
+            
+            await welcomePage.emailInput.fill(validEmail);
+            await welcomePage.passwordInput.fill('Password1');
+            await page.waitForTimeout(1000);
+            
+            // THIRD: Verify Get Started button is now ENABLED
+            console.log('      Step 3: Verifying Get Started button is now enabled...');
+            const getStartedEnabled = await welcomePage.getStartedButton.isEnabled();
+            console.log(`         Button enabled after valid input: ${getStartedEnabled ? '✅ YES' : '❌ NO'}`);
+            
+            if (getStartedEnabled) {
+                console.log('         ✅ SUCCESS: Button became clickable after valid input!');
+                
+                // FOURTH: Click Get Started button and WAIT for URL change
+                console.log('      Step 4: Clicking Get Started button and waiting for redirect...');
+                await welcomePage.getStartedButton.click();
+                
+                // Wait for URL to actually change - don't proceed until it does
+                console.log('         Waiting for URL to change...');
+                let currentUrl = page.url();
+                let attempts = 0;
+                const maxAttempts = 30; // Wait up to 30 seconds
+                
+                while (currentUrl === 'https://lili-onboarding-integ.lili.co/welcome' && attempts < maxAttempts) {
+                    await page.waitForTimeout(1000); // Wait 1 second between checks
+                    currentUrl = page.url();
+                    attempts++;
+                    console.log(`         Attempt ${attempts}: Current URL: ${currentUrl}`);
+                    
+                    if (currentUrl !== 'https://lili-onboarding-integ.lili.co/welcome') {
+                        console.log(`         🎉 SUCCESS: URL changed to: ${currentUrl}`);
+                        break;
+                    }
+                }
+                
+                // FIFTH: Final redirect check
+                console.log('      Step 5: Final redirect verification...');
+                const finalUrl = page.url();
+                const isVerificationPage = finalUrl.includes('/email-verification');
+                console.log(`         Final URL: ${finalUrl}`);
+                console.log(`         Redirected to email verification page: ${isVerificationPage ? '✅ YES' : '❌ NO'}`);
+                
+                if (isVerificationPage) {
+                    console.log('         🎉 SUCCESS: Redirected to email verification page!');
+                    
+                    // Verify the page title
+                    try {
+                        const pageTitle = await page.title();
+                        console.log(`         Page title: "${pageTitle}"`);
+                        
+                        if (pageTitle.includes('Verify Your Email Address')) {
+                            console.log('         ✅ Page title matches: "Verify Your Email Address"');
+                            console.log('         🎉 COMPLETE SUCCESS: Valid email flow working perfectly!');
+                        } else {
+                            console.log('         ⚠️ Page title different than expected');
+                            console.log('         Expected: "Verify Your Email Address"');
+                            console.log('         Actual: "' + pageTitle + '"');
+                        }
+                    } catch (titleError) {
+                        console.log('         ⚠️ Could not verify page title');
+                    }
+                } else {
+                    console.log('         ❌ FAILURE: Not redirected to email verification page');
+                    console.log('         Expected URL to contain: /email-verification');
+                    console.log('         Actual URL: ' + finalUrl);
+                }
+            } else {
+                console.log('         ❌ FAILURE: Button still not enabled after valid input');
+                console.log('         This suggests there may be additional validation requirements');
+            }
+        } catch (error) {
+            console.log(`   Valid email flow test: ❌ ERROR - ${error instanceof Error ? error.message : String(error)}`);
+        }
+        
         // Test Email Clear Button Functionality
         try {
             console.log('   Testing email clear button functionality...');
