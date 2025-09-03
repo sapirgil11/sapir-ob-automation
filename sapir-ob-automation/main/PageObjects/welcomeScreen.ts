@@ -1,7 +1,8 @@
 import { Page, Locator } from '@playwright/test';
-import { Base } from '../../Utilities/base';
 
-export class WelcomeScreen extends Base {
+export class WelcomeScreen {
+    private page: Page;
+    
     // ===== HEADER SECTION (Top of Page) =====
     public readonly headerContainer: Locator;
     public readonly headerLogo: Locator;
@@ -160,8 +161,8 @@ export class WelcomeScreen extends Base {
     public readonly emailErrorContainer: Locator;
     public readonly passwordErrorContainer: Locator;
 
-    constructor(page: Page, browser: any, context: any) {
-        super(page, browser, context);
+    constructor(page: Page) {
+        this.page = page;
         this.initializeAllLocators();
     }
 
