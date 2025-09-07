@@ -307,8 +307,8 @@ test.describe('Personal Details Page Tests', () => {
         
         // Fill both fields with test data first
         console.log('   📝 Filling both fields with test data...');
-        await personalDetailsPage.firstNameInput.fill('TestFirstName');
-        await personalDetailsPage.lastNameInput.fill('TestLastName');
+        await personalDetailsPage.firstNameInput.fill('Sapir');
+        await personalDetailsPage.lastNameInput.fill('Gil');
         
         // Verify data is filled
         const firstNameValue = await personalDetailsPage.firstNameInput.inputValue();
@@ -361,18 +361,15 @@ test.describe('Personal Details Page Tests', () => {
         // ===== TEST 7: VALID INPUT AND CONTINUE =====
         console.log('\n🎯 TEST 7: Testing valid input and continue functionality...');
         
-        // Generate random names (not "John Doe")
-        const randomFirstNames = ['Sapirrrrrr', 'Alexandra', 'Michael', 'Sarah', 'David', 'Emma', 'James', 'Olivia'];
-        const randomLastNames = ['Abargil', 'Johnson', 'Williams', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore'];
+        // Use specific test names as requested
+        const testFirstName = 'Sapir';
+        const testLastName = 'Gil';
         
-        const randomFirstName = randomFirstNames[Math.floor(Math.random() * randomFirstNames.length)];
-        const randomLastName = randomLastNames[Math.floor(Math.random() * randomLastNames.length)];
+        console.log(`   📝 Typing test names: "${testFirstName}" and "${testLastName}"...`);
         
-        console.log(`   📝 Typing random valid names: "${randomFirstName}" and "${randomLastName}"...`);
-        
-        // Fill with valid random names
-        await personalDetailsPage.firstNameInput.fill(randomFirstName);
-        await personalDetailsPage.lastNameInput.fill(randomLastName);
+        // Fill with test names
+        await personalDetailsPage.firstNameInput.fill(testFirstName);
+        await personalDetailsPage.lastNameInput.fill(testLastName);
         
         // Wait for validation to complete
         await page.waitForTimeout(1000);
