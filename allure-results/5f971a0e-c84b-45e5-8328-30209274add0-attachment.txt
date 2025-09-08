@@ -1,4 +1,0 @@
-📧 Email entered: test@example.com
-✅ Email input tested successfully
-🔒 Password entered
-✅ Password input tested successfully

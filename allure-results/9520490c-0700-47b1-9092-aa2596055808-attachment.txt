@@ -1,3 +1,0 @@
-📱 Header visible: false
-🎯 Hero section visible: false
-📄 Footer visible: false
