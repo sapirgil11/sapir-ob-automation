@@ -48,9 +48,15 @@ export class MFACodeExtractor {
             const emailInput = newPage.locator('#input_box');
             await emailInput.fill(emailPrefix);
             
-            const checkButton = newPage.getByRole('button', { name: 'Check' });
-            console.log('   🔍 Clicking "Check" button...');
-            await checkButton.click();
+            // Click the check button (we know input[type="submit"] works)
+            const checkButton = newPage.locator('input[type="submit"]');
+            if (await checkButton.count() > 0) {
+                console.log('   🔍 Clicking "Check" button...');
+                await checkButton.click();
+            } else {
+                console.log('   ❌ Check button not found, trying Enter key...');
+                await emailInput.press('Enter');
+            }
             
             // Step 4: Wait for email to appear and click the verification code link
             console.log('   ⏰ Waiting for email to appear...');
@@ -77,10 +83,6 @@ export class MFACodeExtractor {
             
             if (mfaCode) {
                 console.log(`   ✅ MFA code extracted successfully: ${mfaCode}`);
-                
-                // Save MFA code locally for debugging
-                await this.saveMFACodeLocally(emailPrefix, mfaCode);
-                
                 return mfaCode;
             } else {
                 throw new Error('MFA code not found after all attempts');
@@ -105,34 +107,40 @@ export class MFACodeExtractor {
      */
     private async extractCodeFromEmail(page: Page): Promise<string | null> {
         try {
-            // First, look for the verification code email link
-            const verificationLink = page.getByRole('link', { name: 'One-time verification code' });
+            // Try multiple approaches to find and extract the MFA code
             
+            // Approach 1: Look for verification code email link
+            const verificationLink = page.locator('a:has-text("One-time verification code")');
             if (await verificationLink.count() > 0) {
                 console.log('   🔍 Found verification code email, clicking to open...');
                 await verificationLink.click();
-                
-                // Wait for email content to load
                 await page.waitForTimeout(1000);
                 
-                // Look for the email content with the MFA code
-                const emailContent = page.getByText('Hi , You are receiving this');
+                // Try to extract code from the opened email
+                const code = await this.extractCodeFromPage(page);
+                if (code) return code;
+            }
+            
+            // Approach 2: Look for email content directly on the page
+            const emailContent = page.locator('#messagebody');
+            if (await emailContent.count() > 0) {
+                console.log('   🔍 Found email content, extracting MFA code...');
+                const emailText = await emailContent.textContent();
                 
-                if (await emailContent.count() > 0) {
-                    console.log('   🔍 Found email content, extracting MFA code...');
-                    const emailText = await emailContent.textContent();
-                    
-                    if (emailText) {
-                        // Look for 6-digit code in the email text
-                        const codeMatch = emailText.match(/(\d{6})/);
-                        if (codeMatch) {
-                            const code = codeMatch[1];
-                            console.log(`   🔍 Found MFA code in email: ${code}`);
-                            return code;
-                        }
+                if (emailText) {
+                    // Look for 6-digit code in the email text
+                    const codeMatch = emailText.match(/(\d{6})/);
+                    if (codeMatch) {
+                        const code = codeMatch[1];
+                        console.log(`   🔍 Found MFA code in email content: ${code}`);
+                        return code;
                     }
                 }
             }
+            
+            // Approach 3: Use the fallback page extraction method
+            const code = await this.extractCodeFromPage(page);
+            if (code) return code;
             
             console.log('   🔍 No verification code email found yet');
             return null;
@@ -169,26 +177,11 @@ export class MFACodeExtractor {
             
             // Fallback: Look for 6-digit patterns in the entire page
             const pageContent = await page.content();
-            
-            // Look for 6-digit patterns that could be MFA codes
-            const mfaPatterns = [
-                /(\d{6})/g,                    // Any 6 consecutive digits
-                /code[:\s]*(\d{6})/gi,         // "code: 123456" format
-                /verification[:\s]*(\d{6})/gi, // "verification: 123456" format
-                /mfa[:\s]*(\d{6})/gi,          // "MFA: 123456" format
-                /otp[:\s]*(\d{6})/gi           // "OTP: 123456" format
-            ];
-            
-            for (const pattern of mfaPatterns) {
-                const matches = pageContent.match(pattern);
-                if (matches && matches.length > 0) {
-                    // Extract the first 6-digit code found
-                    const code = matches[0].replace(/\D/g, ''); // Remove non-digits
-                    if (code.length === 6) {
-                        console.log(`   🔍 Found MFA code using fallback pattern: ${code}`);
-                        return code;
-                    }
-                }
+            const codeMatch = pageContent.match(/(\d{6})/);
+            if (codeMatch) {
+                const code = codeMatch[1];
+                console.log(`   🔍 Found MFA code using fallback pattern: ${code}`);
+                return code;
             }
             
             console.log('   🔍 No MFA code found on current page');
@@ -200,34 +193,5 @@ export class MFACodeExtractor {
         }
     }
 
-    /**
-     * 💾 Save MFA code locally for debugging purposes
-     * @param emailPrefix - The email prefix used
-     * @param mfaCode - The extracted MFA code
-     */
-    private async saveMFACodeLocally(emailPrefix: string, mfaCode: string): Promise<void> {
-        try {
-            const timestamp = new Date().toISOString();
-            const logEntry = `${timestamp} | ${emailPrefix} | MFA: ${mfaCode}\n`;
-            
-            // Save to a local file for debugging
-            const fs = require('fs');
-            const logFile = 'mfa_codes.log';
-            
-            fs.appendFileSync(logFile, logEntry);
-            console.log(`   💾 MFA code saved to local log file: ${logFile}`);
-            
-        } catch (error) {
-            console.log(`   ⚠️ Could not save MFA code locally: ${error}`);
-        }
-    }
 
-    /**
-     * 🔍 Get the current status of MFA extraction
-     * @param emailPrefix - The email prefix being processed
-     * @returns Promise<string> - Status message
-     */
-    async getExtractionStatus(emailPrefix: string): Promise<string> {
-        return `MFA extraction in progress for ${emailPrefix}...`;
-    }
 }
