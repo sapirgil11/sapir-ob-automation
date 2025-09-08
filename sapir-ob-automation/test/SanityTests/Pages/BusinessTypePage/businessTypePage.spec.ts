@@ -84,10 +84,10 @@ test.describe('🏢 Business Type Page Tests', () => {
         await page.waitForTimeout(2000);
 
         console.log('   📞 Filling phone number...');
-        // Use the same format as the working phone page test
-        const testPhone = '+1 212 4591234';
-        console.log(`   📱 Using phone number: ${testPhone}`);
-        await phonePage.phoneNumberInput.fill(testPhone);
+        // Generate random phone number to avoid conflicts between tests
+        const randomPhone = `+1 212 459${Math.floor(1000 + Math.random() * 9000)}`;
+        console.log(`   📱 Using phone number: ${randomPhone}`);
+        await phonePage.phoneNumberInput.fill(randomPhone);
         await page.waitForTimeout(1000);
         await phonePage.clickContinueButton();
 
