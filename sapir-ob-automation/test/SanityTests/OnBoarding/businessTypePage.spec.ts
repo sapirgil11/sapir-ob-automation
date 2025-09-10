@@ -1,12 +1,12 @@
 import { test, expect, Page } from '@playwright/test';
-import { WelcomePage } from '../../../../main/PageObjects/welcomePage';
-import { EmailVerificationPage } from '../../../../main/PageObjects/emailVerificationPage';
-import { PersonalDetailsPage } from '../../../../main/PageObjects/personalDetailsPage';
-import { PhonePage } from '../../../../main/PageObjects/phonePage';
-import { IdentityPage } from '../../../../main/PageObjects/identityPage';
-import { HomeAddressPage } from '../../../../main/PageObjects/homeAddressPage';
-import { BusinessTypePage } from '../../../../main/PageObjects/businessTypePage';
-import { MFACodeExtractor } from '../../../../main/Extensions/getMFA';
+import { WelcomePage } from '../../../main/PageObjects/welcomePage';
+import { EmailVerificationPage } from '../../../main/PageObjects/emailVerificationPage';
+import { PersonalDetailsPage } from '../../../main/PageObjects/personalDetailsPage';
+import { PhonePage } from '../../../main/PageObjects/phonePage';
+import { IdentityPage } from '../../../main/PageObjects/identityPage';
+import { HomeAddressPage } from '../../../main/PageObjects/homeAddressPage';
+import { BusinessTypePage } from '../../../main/PageObjects/businessTypePage';
+import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
 /**
  * 🏢 BUSINESS TYPE PAGE TEST

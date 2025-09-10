@@ -1,8 +1,8 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
-import { PersonalDetailsPage } from '../../../../main/PageObjects/personalDetailsPage';
-import { WelcomePage } from '../../../../main/PageObjects/welcomePage';
-import { EmailVerificationPage } from '../../../../main/PageObjects/emailVerificationPage';
-import { MFACodeExtractor } from '../../../../main/Extensions/getMFA';
+import { PersonalDetailsPage } from '../../../main/PageObjects/personalDetailsPage';
+import { WelcomePage } from '../../../main/PageObjects/welcomePage';
+import { EmailVerificationPage } from '../../../main/PageObjects/emailVerificationPage';
+import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
 // Enforce 1920x1080 resolution for all tests in this file
 test.use({ viewport: { width: 1880, height: 798 } });

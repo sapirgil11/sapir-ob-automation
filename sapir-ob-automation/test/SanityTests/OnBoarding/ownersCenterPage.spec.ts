@@ -1,24 +1,25 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
-import { BusinessAddressPage } from '../../../../main/PageObjects/businessAddressPage';
-import { WelcomePage } from '../../../../main/PageObjects/welcomePage';
-import { EmailVerificationPage } from '../../../../main/PageObjects/emailVerificationPage';
-import { PersonalDetailsPage } from '../../../../main/PageObjects/personalDetailsPage';
-import { PhonePage } from '../../../../main/PageObjects/phonePage';
-import { IdentityPage } from '../../../../main/PageObjects/identityPage';
-import { HomeAddressPage } from '../../../../main/PageObjects/homeAddressPage';
-import { BusinessTypePage } from '../../../../main/PageObjects/businessTypePage';
-import { IndustryPage } from '../../../../main/PageObjects/industryPage';
-import { KnowYourBusinessPage } from '../../../../main/PageObjects/knowYourBusinessPage';
-import { MFACodeExtractor } from '../../../../main/Extensions/getMFA';
+import { OwnersCenterPage } from '../../../main/PageObjects/ownersCenterPage';
+import { WelcomePage } from '../../../main/PageObjects/welcomePage';
+import { EmailVerificationPage } from '../../../main/PageObjects/emailVerificationPage';
+import { PersonalDetailsPage } from '../../../main/PageObjects/personalDetailsPage';
+import { PhonePage } from '../../../main/PageObjects/phonePage';
+import { IdentityPage } from '../../../main/PageObjects/identityPage';
+import { HomeAddressPage } from '../../../main/PageObjects/homeAddressPage';
+import { BusinessTypePage } from '../../../main/PageObjects/businessTypePage';
+import { IndustryPage } from '../../../main/PageObjects/industryPage';
+import { KnowYourBusinessPage } from '../../../main/PageObjects/knowYourBusinessPage';
+import { BusinessAddressPage } from '../../../main/PageObjects/businessAddressPage';
+import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
 // Enforce 1920x1080 resolution for all tests in this file
 test.use({ viewport: { width: 1880, height: 798 } });
 
-test.describe('🏢 Business Address Page Tests', () => {
+test.describe('👥 Owners Center Page Tests', () => {
     
-    // Helper function to do full onboarding flow up to business address page
-    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<BusinessAddressPage> {
-        console.log('🚀 Starting Full Onboarding Flow to Business Address Page...');
+    // Helper function to do full onboarding flow up to owners center page
+    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<OwnersCenterPage> {
+        console.log('🚀 Starting Full Onboarding Flow to Owners Center Page...');
 
         // ===== STEP 1: WELCOME PAGE =====
         console.log('📱 Step 1: Navigating to Welcome Page...');
@@ -37,6 +38,7 @@ test.describe('🏢 Business Address Page Tests', () => {
         const industryPage = new IndustryPage(page);
         const knowYourBusinessPage = new KnowYourBusinessPage(page);
         const businessAddressPage = new BusinessAddressPage(page);
+        const ownersCenterPage = new OwnersCenterPage(page);
 
         // Fill email and password first
         const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;
@@ -198,109 +200,62 @@ test.describe('🏢 Business Address Page Tests', () => {
 
         // ===== STEP 11: BUSINESS ADDRESS PAGE =====
         console.log('🏢 Step 11: Business Address Page...');
-        await page.waitForURL('**/business-address**');
+        await page.waitForURL('**/business-address**', { timeout: 10000 });
         await businessAddressPage.waitForPageLoad();
         console.log('   ✅ Reached Business Address page successfully!');
         
-        return businessAddressPage;
+        // Use same as primary address for simplicity
+        await businessAddressPage.useSameAsPrimaryAddress();
+        await businessAddressPage.clickContinueButton();
+        
+        // ===== STEP 12: OWNERS CENTER PAGE =====
+        console.log('👥 Step 12: Owners Center Page...');
+        console.log('⏰ Waiting for navigation to Owners Center...');
+        await page.waitForURL('**/owners-center**', { timeout: 10000 });
+        await ownersCenterPage.waitForPageLoad();
+        console.log('   ✅ Reached Owners Center page successfully!');
+        
+        return ownersCenterPage;
     }
 
-    test('🏢 Business Address Page - Same as Primary Address Flow', async ({ page, context, browser }) => {
+    test('👥 Owners Center Page - Single Owner Flow', async ({ page, context, browser }) => {
         test.setTimeout(300000); // 5 minutes timeout
 
-        console.log('🚀 Starting Business Address Page - Same as Primary Address Test...');
+        console.log('🚀 Starting Owners Center Page - Single Owner Test...');
 
-        // Do full onboarding flow to reach Business Address page
-        const businessAddressPage = await doFullOnboardingFlow(page, context, browser);
+        // Do full onboarding flow to reach Owners Center page
+        const ownersCenterPage = await doFullOnboardingFlow(page, context, browser);
 
-        // Test the Business Address page
-        console.log('\n🧪 Testing Business Address page functionality...');
+        // Test the Owners Center page
+        console.log('\n🧪 Testing Owners Center page functionality...');
 
         // Verify page elements
-        const pageElementsVisible = await businessAddressPage.verifyPageElements();
+        const pageElementsVisible = await ownersCenterPage.verifyPageElements();
         expect(pageElementsVisible).toBe(true);
         console.log('✅ Page elements verified');
 
-        // Test "Same as Primary Address" flow
-        console.log('\n🏠 Testing "Same as Primary Address" flow...');
-        await businessAddressPage.useSameAsPrimaryAddress();
+        // Test single owner flow
+        console.log('\n👤 Testing single owner flow...');
+        await ownersCenterPage.fillSingleOwnerForm(100);
 
         // Verify form is complete
-        const isFormComplete = await businessAddressPage.isFormComplete();
-        console.log(`📊 Form complete: ${isFormComplete}`);
-        expect(isFormComplete).toBe(true);
-
-        // Click Continue button
-        console.log('➡️ Clicking Continue button...');
-        await businessAddressPage.clickContinueButton();
-
-        // Verify navigation to next page
-        console.log('⏰ Waiting for navigation to next page...');
-        await page.waitForTimeout(5000);
-        
-        const navigationSuccess = await businessAddressPage.verifyNavigationToNextPage();
-        console.log(`✅ Navigation successful: ${navigationSuccess}`);
-        
-        if (navigationSuccess) {
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
-            console.log('✅ SUCCESS: Navigated to next page!');
-        } else {
-            console.log('⚠️ Navigation may have failed, checking current URL...');
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
-        }
-
-        console.log('\n✅ Business Address Page - Same as Primary Address Test Completed!');
-    });
-
-    test('🏢 Business Address Page - Custom Address Flow', async ({ page, context, browser }) => {
-        test.setTimeout(300000); // 5 minutes timeout
-
-        console.log('🚀 Starting Business Address Page - Custom Address Test...');
-
-        // Do full onboarding flow to reach Business Address page
-        const businessAddressPage = await doFullOnboardingFlow(page, context, browser);
-
-        // Test the Business Address page
-        console.log('\n🧪 Testing Business Address page functionality...');
-
-        // Verify page elements
-        const pageElementsVisible = await businessAddressPage.verifyPageElements();
-        expect(pageElementsVisible).toBe(true);
-        console.log('✅ Page elements verified');
-
-        // Test custom address flow
-        console.log('\n🏢 Testing custom business address flow...');
-        
-        const businessAddress = {
-            line1: '456 Business Ave',
-            apartment: 'Suite 200',
-            city: 'New York',
-            state: 'New York',
-            zip: '10002'
-        };
-
-        await businessAddressPage.fillCompleteAddress(businessAddress);
-
-        // Verify form is complete
-        const isFormComplete = await businessAddressPage.isFormComplete();
+        const isFormComplete = await ownersCenterPage.isFormComplete();
         console.log(`📊 Form complete: ${isFormComplete}`);
         expect(isFormComplete).toBe(true);
 
         // Get form values to verify
-        const formValues = await businessAddressPage.getFormValues();
+        const formValues = await ownersCenterPage.getFormValues();
         console.log('📋 Form values:', formValues);
 
         // Click Continue button
         console.log('➡️ Clicking Continue button...');
-        await businessAddressPage.clickContinueButton();
+        await ownersCenterPage.clickContinueButton();
 
         // Verify navigation to next page
         console.log('⏰ Waiting for navigation to next page...');
         await page.waitForTimeout(5000);
         
-        const navigationSuccess = await businessAddressPage.verifyNavigationToNextPage();
+        const navigationSuccess = await ownersCenterPage.verifyNavigationToNextPage();
         console.log(`✅ Navigation successful: ${navigationSuccess}`);
         
         if (navigationSuccess) {
@@ -313,61 +268,107 @@ test.describe('🏢 Business Address Page Tests', () => {
             console.log(`📍 Current URL: ${currentUrl}`);
         }
 
-        console.log('\n✅ Business Address Page - Custom Address Test Completed!');
+        console.log('\n✅ Owners Center Page - Single Owner Test Completed!');
     });
 
-    test('🏢 Business Address Page - Toggle Same as Primary Flow', async ({ page, context, browser }) => {
+    test('👥 Owners Center Page - Multiple Owners Flow', async ({ page, context, browser }) => {
         test.setTimeout(300000); // 5 minutes timeout
 
-        console.log('🚀 Starting Business Address Page - Toggle Same as Primary Test...');
+        console.log('🚀 Starting Owners Center Page - Multiple Owners Test...');
 
-        // Do full onboarding flow to reach Business Address page
-        const businessAddressPage = await doFullOnboardingFlow(page, context, browser);
+        // Do full onboarding flow to reach Owners Center page
+        const ownersCenterPage = await doFullOnboardingFlow(page, context, browser);
 
-        // Test the Business Address page
-        console.log('\n🧪 Testing Business Address page functionality...');
+        // Test the Owners Center page
+        console.log('\n🧪 Testing Owners Center page functionality...');
 
         // Verify page elements
-        const pageElementsVisible = await businessAddressPage.verifyPageElements();
+        const pageElementsVisible = await ownersCenterPage.verifyPageElements();
+        expect(pageElementsVisible).toBe(true);
+        console.log('✅ Page elements verified');
+
+        // Test multiple owners flow
+        console.log('\n👥 Testing multiple owners flow...');
+        await ownersCenterPage.fillMultipleOwnersForm(75);
+
+        // Verify form is complete
+        const isFormComplete = await ownersCenterPage.isFormComplete();
+        console.log(`📊 Form complete: ${isFormComplete}`);
+        expect(isFormComplete).toBe(true);
+
+        // Get form values to verify
+        const formValues = await ownersCenterPage.getFormValues();
+        console.log('📋 Form values:', formValues);
+
+        // Click Continue button
+        console.log('➡️ Clicking Continue button...');
+        await ownersCenterPage.clickContinueButton();
+
+        // Verify navigation to next page
+        console.log('⏰ Waiting for navigation to next page...');
+        await page.waitForTimeout(5000);
+        
+        const navigationSuccess = await ownersCenterPage.verifyNavigationToNextPage();
+        console.log(`✅ Navigation successful: ${navigationSuccess}`);
+        
+        if (navigationSuccess) {
+            const currentUrl = page.url();
+            console.log(`📍 Current URL: ${currentUrl}`);
+            console.log('✅ SUCCESS: Navigated to next page!');
+        } else {
+            console.log('⚠️ Navigation may have failed, checking current URL...');
+            const currentUrl = page.url();
+            console.log(`📍 Current URL: ${currentUrl}`);
+        }
+
+        console.log('\n✅ Owners Center Page - Multiple Owners Test Completed!');
+    });
+
+    test('👥 Owners Center Page - Toggle Ownership Flow', async ({ page, context, browser }) => {
+        test.setTimeout(300000); // 5 minutes timeout
+
+        console.log('🚀 Starting Owners Center Page - Toggle Ownership Test...');
+
+        // Do full onboarding flow to reach Owners Center page
+        const ownersCenterPage = await doFullOnboardingFlow(page, context, browser);
+
+        // Test the Owners Center page
+        console.log('\n🧪 Testing Owners Center page functionality...');
+
+        // Verify page elements
+        const pageElementsVisible = await ownersCenterPage.verifyPageElements();
         expect(pageElementsVisible).toBe(true);
         console.log('✅ Page elements verified');
 
         // Test toggle functionality
-        console.log('\n🔄 Testing toggle "Same as Primary" functionality...');
+        console.log('\n🔄 Testing toggle ownership functionality...');
         
-        // First, check "Same as Primary"
-        await businessAddressPage.useSameAsPrimaryAddress();
-        let isFormComplete = await businessAddressPage.isFormComplete();
-        console.log(`📊 Form complete after checking same as primary: ${isFormComplete}`);
+        // First, test single owner
+        await ownersCenterPage.fillOwnerPercentage(100);
+        await ownersCenterPage.checkOnlyUbo();
+        let isFormComplete = await ownersCenterPage.isFormComplete();
+        console.log(`📊 Form complete after single owner: ${isFormComplete}`);
         expect(isFormComplete).toBe(true);
 
-        // Then uncheck and fill custom address
-        await businessAddressPage.uncheckSameAsPrimary();
+        // Then switch to multiple owners
+        await ownersCenterPage.uncheckOnlyUbo();
+        await ownersCenterPage.fillOwnerPercentage(60);
+        await ownersCenterPage.checkMultiOwnerConsent();
         
-        const businessAddress = {
-            line1: '789 Corporate Blvd',
-            apartment: 'Floor 5',
-            city: 'New York',
-            state: 'New York',
-            zip: '10003'
-        };
-
-        await businessAddressPage.fillCompleteAddress(businessAddress);
-
         // Verify form is still complete
-        isFormComplete = await businessAddressPage.isFormComplete();
-        console.log(`📊 Form complete after custom address: ${isFormComplete}`);
+        isFormComplete = await ownersCenterPage.isFormComplete();
+        console.log(`📊 Form complete after multiple owners: ${isFormComplete}`);
         expect(isFormComplete).toBe(true);
 
         // Click Continue button
         console.log('➡️ Clicking Continue button...');
-        await businessAddressPage.clickContinueButton();
+        await ownersCenterPage.clickContinueButton();
 
         // Verify navigation to next page
         console.log('⏰ Waiting for navigation to next page...');
         await page.waitForTimeout(5000);
         
-        const navigationSuccess = await businessAddressPage.verifyNavigationToNextPage();
+        const navigationSuccess = await ownersCenterPage.verifyNavigationToNextPage();
         console.log(`✅ Navigation successful: ${navigationSuccess}`);
         
         if (navigationSuccess) {
@@ -380,6 +381,6 @@ test.describe('🏢 Business Address Page Tests', () => {
             console.log(`📍 Current URL: ${currentUrl}`);
         }
 
-        console.log('\n✅ Business Address Page - Toggle Same as Primary Test Completed!');
+        console.log('\n✅ Owners Center Page - Toggle Ownership Test Completed!');
     });
 });

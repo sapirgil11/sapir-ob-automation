@@ -1,13 +1,13 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
-import { WelcomePage } from '../../../../main/PageObjects/welcomePage';
-import { EmailVerificationPage } from '../../../../main/PageObjects/emailVerificationPage';
-import { PersonalDetailsPage } from '../../../../main/PageObjects/personalDetailsPage';
-import { PhonePage } from '../../../../main/PageObjects/phonePage';
-import { IdentityPage } from '../../../../main/PageObjects/identityPage';
-import { HomeAddressPage } from '../../../../main/PageObjects/homeAddressPage';
-import { BusinessTypePage } from '../../../../main/PageObjects/businessTypePage';
-import { IndustryPage } from '../../../../main/PageObjects/industryPage';
-import { MFACodeExtractor } from '../../../../main/Extensions/getMFA';
+import { WelcomePage } from '../../../main/PageObjects/welcomePage';
+import { EmailVerificationPage } from '../../../main/PageObjects/emailVerificationPage';
+import { PersonalDetailsPage } from '../../../main/PageObjects/personalDetailsPage';
+import { PhonePage } from '../../../main/PageObjects/phonePage';
+import { IdentityPage } from '../../../main/PageObjects/identityPage';
+import { HomeAddressPage } from '../../../main/PageObjects/homeAddressPage';
+import { BusinessTypePage } from '../../../main/PageObjects/businessTypePage';
+import { IndustryPage } from '../../../main/PageObjects/industryPage';
+import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
 test.use({ viewport: { width: 1880, height: 798 } });
 

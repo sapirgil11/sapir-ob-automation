@@ -1,5 +1,5 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
-import { WelcomePage } from '../../../../main/PageObjects/welcomePage';
+import { WelcomePage } from '../../../main/PageObjects/welcomePage';
 
 // Enforce 1920x1080 resolution for all tests in this file
 test.use({ viewport: { width: 1880, height: 798 } });

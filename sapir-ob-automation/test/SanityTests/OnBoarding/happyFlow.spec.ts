@@ -1,23 +1,25 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
-import { OwnersCenterPage } from '../../../../main/PageObjects/ownersCenterPage';
-import { WelcomePage } from '../../../../main/PageObjects/welcomePage';
-import { EmailVerificationPage } from '../../../../main/PageObjects/emailVerificationPage';
-import { PersonalDetailsPage } from '../../../../main/PageObjects/personalDetailsPage';
-import { PhonePage } from '../../../../main/PageObjects/phonePage';
-import { IdentityPage } from '../../../../main/PageObjects/identityPage';
-import { HomeAddressPage } from '../../../../main/PageObjects/homeAddressPage';
-import { BusinessTypePage } from '../../../../main/PageObjects/businessTypePage';
-import { IndustryPage } from '../../../../main/PageObjects/industryPage';
-import { KnowYourBusinessPage } from '../../../../main/PageObjects/knowYourBusinessPage';
-import { BusinessAddressPage } from '../../../../main/PageObjects/businessAddressPage';
-import { MFACodeExtractor } from '../../../../main/Extensions/getMFA';
+import { WelcomePage } from '../../../main/PageObjects/welcomePage';
+import { EmailVerificationPage } from '../../../main/PageObjects/emailVerificationPage';
+import { PersonalDetailsPage } from '../../../main/PageObjects/personalDetailsPage';
+import { PhonePage } from '../../../main/PageObjects/phonePage';
+import { IdentityPage } from '../../../main/PageObjects/identityPage';
+import { HomeAddressPage } from '../../../main/PageObjects/homeAddressPage';
+import { BusinessTypePage } from '../../../main/PageObjects/businessTypePage';
+import { IndustryPage } from '../../../main/PageObjects/industryPage';
+import { KnowYourBusinessPage } from '../../../main/PageObjects/knowYourBusinessPage';
+import { BusinessAddressPage } from '../../../main/PageObjects/businessAddressPage';
+import { OwnersCenterPage } from '../../../main/PageObjects/ownersCenterPage';
+import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
 // Enforce 1920x1080 resolution for all tests in this file
 test.use({ viewport: { width: 1880, height: 798 } });
 
-test.describe('👥 Owners Center Page Tests', () => {
+// Set longer timeout for this comprehensive test
+test.setTimeout(300000); // 5 minutes
+
+test.describe('Happy Flow Tests', () => {
     
-    // Helper function to do full onboarding flow up to owners center page
     async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<OwnersCenterPage> {
         console.log('🚀 Starting Full Onboarding Flow to Owners Center Page...');
 
@@ -26,7 +28,7 @@ test.describe('👥 Owners Center Page Tests', () => {
         await page.goto('https://lili-onboarding-integ.lili.co/welcome');
         await page.waitForLoadState('domcontentloaded');
         await page.waitForTimeout(2000);
-
+        
         // Initialize page objects
         const welcomePage = new WelcomePage(page);
         const verificationPage = new EmailVerificationPage(page);
@@ -39,7 +41,7 @@ test.describe('👥 Owners Center Page Tests', () => {
         const knowYourBusinessPage = new KnowYourBusinessPage(page);
         const businessAddressPage = new BusinessAddressPage(page);
         const ownersCenterPage = new OwnersCenterPage(page);
-
+        
         // Fill email and password first
         const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;
         console.log(`   📧 Using email: ${randomEmail}`);
@@ -103,7 +105,7 @@ test.describe('👥 Owners Center Page Tests', () => {
         await page.waitForURL('**/home-address**');
         console.log('   ✅ Identity completed, waiting for home address page...');
         await page.waitForTimeout(2000);
-
+        
         console.log('   🏠 Filling home address...');
         await homeAddressPage.fillStreetAddress('123 Main St');
         await homeAddressPage.fillCity('New York');
@@ -196,6 +198,17 @@ test.describe('👥 Owners Center Page Tests', () => {
         
         await knowYourBusinessPage.selectRegisteredState('New York');
         await knowYourBusinessPage.checkAgreement();
+        
+        // Check if form is complete before clicking continue
+        const isFormComplete = await knowYourBusinessPage.isFormComplete();
+        console.log(`📊 Know Your Business form complete: ${isFormComplete}`);
+        
+        if (!isFormComplete) {
+            console.log('⚠️ Form is not complete, checking for validation errors...');
+            const validationErrors = await knowYourBusinessPage.getValidationErrors();
+            console.log(`📋 Validation errors: ${validationErrors.join(', ')}`);
+        }
+        
         await knowYourBusinessPage.clickContinueButton();
 
         // ===== STEP 11: BUSINESS ADDRESS PAGE =====
@@ -218,169 +231,30 @@ test.describe('👥 Owners Center Page Tests', () => {
         return ownersCenterPage;
     }
 
-    test('👥 Owners Center Page - Single Owner Flow', async ({ page, context, browser }) => {
-        test.setTimeout(300000); // 5 minutes timeout
+    test('Complete Happy Flow - Full Onboarding to Owners Center', async ({ page, context, browser }) => {
+        test.info().annotations.push({
+            type: 'description',
+            description: 'Complete happy flow: Full onboarding from Welcome page to Owners Center page'
+        });
 
-        console.log('🚀 Starting Owners Center Page - Single Owner Test...');
-
-        // Do full onboarding flow to reach Owners Center page
+        console.log('🎉 ===== STARTING COMPLETE HAPPY FLOW TEST =====');
+        
+        // Run the full onboarding flow
         const ownersCenterPage = await doFullOnboardingFlow(page, context, browser);
-
-        // Test the Owners Center page
-        console.log('\n🧪 Testing Owners Center page functionality...');
-
-        // Verify page elements
-        const pageElementsVisible = await ownersCenterPage.verifyPageElements();
-        expect(pageElementsVisible).toBe(true);
-        console.log('✅ Page elements verified');
-
-        // Test single owner flow
-        console.log('\n👤 Testing single owner flow...');
-        await ownersCenterPage.fillSingleOwnerForm(100);
-
-        // Verify form is complete
-        const isFormComplete = await ownersCenterPage.isFormComplete();
-        console.log(`📊 Form complete: ${isFormComplete}`);
-        expect(isFormComplete).toBe(true);
-
-        // Get form values to verify
-        const formValues = await ownersCenterPage.getFormValues();
-        console.log('📋 Form values:', formValues);
-
-        // Click Continue button
-        console.log('➡️ Clicking Continue button...');
-        await ownersCenterPage.clickContinueButton();
-
-        // Verify navigation to next page
-        console.log('⏰ Waiting for navigation to next page...');
-        await page.waitForTimeout(5000);
+            
+            // ===== FINAL RESULTS =====
+            console.log('\n🎉 ===== HAPPY FLOW COMPLETED =====');
+        const finalUrl = page.url();
+        const finalTitle = await page.title();
+        console.log(`   🌐 Final URL: ${finalUrl}`);
+        console.log(`   📝 Final Page Title: ${finalTitle}`);
+        console.log('   ✅ Complete happy flow test completed successfully!');
         
-        const navigationSuccess = await ownersCenterPage.verifyNavigationToNextPage();
-        console.log(`✅ Navigation successful: ${navigationSuccess}`);
-        
-        if (navigationSuccess) {
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
-            console.log('✅ SUCCESS: Navigated to next page!');
-        } else {
-            console.log('⚠️ Navigation may have failed, checking current URL...');
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
-        }
-
-        console.log('\n✅ Owners Center Page - Single Owner Test Completed!');
-    });
-
-    test('👥 Owners Center Page - Multiple Owners Flow', async ({ page, context, browser }) => {
-        test.setTimeout(300000); // 5 minutes timeout
-
-        console.log('🚀 Starting Owners Center Page - Multiple Owners Test...');
-
-        // Do full onboarding flow to reach Owners Center page
-        const ownersCenterPage = await doFullOnboardingFlow(page, context, browser);
-
-        // Test the Owners Center page
-        console.log('\n🧪 Testing Owners Center page functionality...');
-
-        // Verify page elements
-        const pageElementsVisible = await ownersCenterPage.verifyPageElements();
-        expect(pageElementsVisible).toBe(true);
-        console.log('✅ Page elements verified');
-
-        // Test multiple owners flow
-        console.log('\n👥 Testing multiple owners flow...');
-        await ownersCenterPage.fillMultipleOwnersForm(75);
-
-        // Verify form is complete
-        const isFormComplete = await ownersCenterPage.isFormComplete();
-        console.log(`📊 Form complete: ${isFormComplete}`);
-        expect(isFormComplete).toBe(true);
-
-        // Get form values to verify
-        const formValues = await ownersCenterPage.getFormValues();
-        console.log('📋 Form values:', formValues);
-
-        // Click Continue button
-        console.log('➡️ Clicking Continue button...');
-        await ownersCenterPage.clickContinueButton();
-
-        // Verify navigation to next page
-        console.log('⏰ Waiting for navigation to next page...');
-        await page.waitForTimeout(5000);
-        
-        const navigationSuccess = await ownersCenterPage.verifyNavigationToNextPage();
-        console.log(`✅ Navigation successful: ${navigationSuccess}`);
-        
-        if (navigationSuccess) {
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
-            console.log('✅ SUCCESS: Navigated to next page!');
-        } else {
-            console.log('⚠️ Navigation may have failed, checking current URL...');
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
-        }
-
-        console.log('\n✅ Owners Center Page - Multiple Owners Test Completed!');
-    });
-
-    test('👥 Owners Center Page - Toggle Ownership Flow', async ({ page, context, browser }) => {
-        test.setTimeout(300000); // 5 minutes timeout
-
-        console.log('🚀 Starting Owners Center Page - Toggle Ownership Test...');
-
-        // Do full onboarding flow to reach Owners Center page
-        const ownersCenterPage = await doFullOnboardingFlow(page, context, browser);
-
-        // Test the Owners Center page
-        console.log('\n🧪 Testing Owners Center page functionality...');
-
-        // Verify page elements
-        const pageElementsVisible = await ownersCenterPage.verifyPageElements();
-        expect(pageElementsVisible).toBe(true);
-        console.log('✅ Page elements verified');
-
-        // Test toggle functionality
-        console.log('\n🔄 Testing toggle ownership functionality...');
-        
-        // First, test single owner
-        await ownersCenterPage.fillOwnerPercentage(100);
-        await ownersCenterPage.checkOnlyUbo();
-        let isFormComplete = await ownersCenterPage.isFormComplete();
-        console.log(`📊 Form complete after single owner: ${isFormComplete}`);
-        expect(isFormComplete).toBe(true);
-
-        // Then switch to multiple owners
-        await ownersCenterPage.uncheckOnlyUbo();
-        await ownersCenterPage.fillOwnerPercentage(60);
-        await ownersCenterPage.checkMultiOwnerConsent();
-        
-        // Verify form is still complete
-        isFormComplete = await ownersCenterPage.isFormComplete();
-        console.log(`📊 Form complete after multiple owners: ${isFormComplete}`);
-        expect(isFormComplete).toBe(true);
-
-        // Click Continue button
-        console.log('➡️ Clicking Continue button...');
-        await ownersCenterPage.clickContinueButton();
-
-        // Verify navigation to next page
-        console.log('⏰ Waiting for navigation to next page...');
-        await page.waitForTimeout(5000);
-        
-        const navigationSuccess = await ownersCenterPage.verifyNavigationToNextPage();
-        console.log(`✅ Navigation successful: ${navigationSuccess}`);
-        
-        if (navigationSuccess) {
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
-            console.log('✅ SUCCESS: Navigated to next page!');
-        } else {
-            console.log('⚠️ Navigation may have failed, checking current URL...');
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
-        }
-
-        console.log('\n✅ Owners Center Page - Toggle Ownership Test Completed!');
+        // Take final screenshot
+        await page.screenshot({ 
+            path: 'test-results/happy-flow-final-page.png', 
+            fullPage: true 
+        });
+        console.log('   📸 Final screenshot saved: happy-flow-final-page.png');
     });
 });
