@@ -2,26 +2,95 @@ import { Page, Locator } from '@playwright/test';
 
 export class BusinessAddress {
     private page: Page;
-    private pageHeading: Locator;
-    private pageSubTitle: Locator;
-    public continueButton: Locator;
-    private backButton: Locator;
-    
-    // Form fields
-    private sameAsPrimaryCheckbox: Locator;
-    private sameAsPrimaryLabel: Locator;
-    private line1Input: Locator;
-    private apartmentInput: Locator;
-    private cityInput: Locator;
-    private stateSelect: Locator;
-    private zipInput: Locator;
-    
-    // Error messages
-    private line1Error: Locator;
-    private apartmentError: Locator;
-    private cityError: Locator;
-    private stateError: Locator;
-    private zipError: Locator;
+    // ===== BUTTON IDs AND SELECTORS =====
+    public continueButton: Locator;                                // ID: "#formSubmitButton" | Text: "Continue"
+    private backButton: Locator;                                   // ID: "#back-button" | Text: "Back"
+    private saveButton: Locator;                                   // ID: "#save-button" | Text: "Save"
+    private cancelButton: Locator;                                 // ID: "#cancel-button" | Text: "Cancel"
+
+    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
+    private sameAsPrimaryCheckbox: Locator;                        // ID: "#same-as-primary" | Text: "Same as primary address"
+    private sameAsPrimaryLabel: Locator;                           // ID: "#same-as-primary-label" | Text: "Use the same address as my primary address"
+    private line1Input: Locator;                                   // ID: "#line1" | Placeholder: "Enter your business street address"
+    private apartmentInput: Locator;                               // ID: "#apartment" | Placeholder: "Apt, suite, unit (optional)"
+    private cityInput: Locator;                                    // ID: "#city" | Placeholder: "Enter your business city"
+    private stateSelect: Locator;                                  // ID: "#state" | Placeholder: "Select your business state"
+    private zipInput: Locator;                                     // ID: "#zip" | Placeholder: "Enter your business ZIP code"
+
+    // ===== PAGE TEXTS AND CONTENT =====
+    private pageHeading: Locator;                                  // ID: "#page-heading" | Text: "Business Address"
+    private pageSubTitle: Locator;                                 // ID: "#page-subtitle" | Text: "Where is your business located?"
+    private progressText: Locator;                                 // ID: "#progress-text" | Text: "Step 10 of 12"
+    private requiredFieldText: Locator;                            // ID: "#required-text" | Text: "* Required fields"
+    private helpText: Locator;                                     // ID: "#help-text" | Text: "This address will be used for business verification"
+
+    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
+    private line1Error: Locator;                                   // ID: "#line1-error"
+    // TRIGGER: Leave street address field empty and click "Continue"
+    // ERROR TEXT: "Street address is required"
+
+    private apartmentError: Locator;                               // ID: "#apartment-error"
+    // TRIGGER: Type invalid apartment format
+    // ERROR TEXT: "Please enter a valid apartment number"
+
+    private cityError: Locator;                                    // ID: "#city-error"
+    // TRIGGER: Leave city field empty and click "Continue"
+    // ERROR TEXT: "City is required"
+
+    private stateError: Locator;                                   // ID: "#state-error"
+    // TRIGGER: Leave state field empty and click "Continue"
+    // ERROR TEXT: "State is required"
+
+    private zipError: Locator;                                     // ID: "#zip-error"
+    // TRIGGER: Leave ZIP code field empty and click "Continue"
+    // ERROR TEXT: "ZIP code is required"
+
+    private zipInvalidError: Locator;                              // ID: "#zip-invalid-error"
+    // TRIGGER: Type invalid ZIP format like "123" and blur field
+    // ERROR TEXT: "Please enter a valid 5-digit ZIP code"
+
+    // ===== VALIDATION RULES =====
+    // --Street Address Validation--
+    // MIN LENGTH: 5 characters
+    // MAX LENGTH: 100 characters
+    // PATTERN: /^[a-zA-Z0-9\s\-#.,]+$/
+    // REQUIRED: Yes
+
+    // --City Validation--
+    // MIN LENGTH: 2 characters
+    // MAX LENGTH: 50 characters
+    // PATTERN: /^[a-zA-Z\s\-']+$/
+    // REQUIRED: Yes
+
+    // --State Validation--
+    // REQUIRED: Yes
+    // OPTIONS: US states (CA, NY, TX, etc.)
+
+    // --ZIP Code Validation--
+    // LENGTH: 5 digits
+    // PATTERN: /^\d{5}$/
+    // REQUIRED: Yes
+
+    // --Apartment Validation--
+    // MIN LENGTH: 1 character
+    // MAX LENGTH: 20 characters
+    // PATTERN: /^[a-zA-Z0-9\s\-#]+$/
+    // REQUIRED: No
+
+    // ===== TEST DATA EXAMPLES =====
+    // --Valid Test Data--
+    // STREET: "123 Business Ave" | "456 Corporate Blvd" | "789 Office Park Dr #100"
+    // CITY: "San Francisco" | "New York" | "Los Angeles"
+    // STATE: "CA" | "NY" | "TX" | "FL"
+    // ZIP: "94102" | "10001" | "33101" | "90210"
+    // APARTMENT: "Suite 200" | "Unit 5" | "Floor 3" | "" (empty)
+
+    // --Invalid Test Data--
+    // STREET: "123" | "" (empty) | "123@#$%"
+    // CITY: "NY" | "" (empty) | "New York123"
+    // STATE: "" (empty) | "XX" | "California"
+    // ZIP: "123" | "12345-6789" | "abcde" | "" (empty)
+    // APARTMENT: "Apt@#$" | "123456789012345678901" (too long)
 
     constructor(page: Page) {
         this.page = page;

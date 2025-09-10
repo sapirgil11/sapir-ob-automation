@@ -19,20 +19,55 @@ export class EmailVerificationPage {
 
     // ===== VERIFICATION PAGE ELEMENTS =====
     
-    // ===== BUTTONS ELEMENTS =====
-    public resendCodeButton!: Locator;                             // "Get a New Code" button (appears after 30 seconds)
+    // ===== BUTTON IDs AND SELECTORS =====
+    public resendCodeButton!: Locator;                             // ID: "#resend-code-button" | Text: "Get a New Code"
+    public backButton!: Locator;                                   // ID: "#back-button" | Text: "Back"
+    public continueButton!: Locator;                               // ID: "#continue-button" | Text: "Continue"
+    public cancelButton!: Locator;                                 // ID: "#cancel-button" | Text: "Cancel"
     
-    // ===== INPUT AND PLACEHOLDER ELEMENTS =====
-    public verificationCodeInput!: Locator;                        // MFA OTP input field (#MFA_OTP)
+    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
+    public verificationCodeInput!: Locator;                        // ID: "#MFA_OTP" | Placeholder: "Enter 6-digit code"
     
-    // ===== TOOLTIPS AND TEXTS =====
-    public verificationHeading!: Locator;                          // "Verify Your Email Address" heading
-    public verificationSubtext!: Locator;                          // "We've sent a 6-digit code to" text
-    public emailDisplay!: Locator;                                 // Email display (FillerXXXX@mailforspam.com)
-    public enterCodeText!: Locator;                                // "Enter it below to confirm your email and continue your application" text
+    // ===== PAGE TEXTS AND CONTENT =====
+    public verificationHeading!: Locator;                          // ID: "#verification-heading" | Text: "Verify Your Email Address"
+    public verificationSubtext!: Locator;                          // ID: "#verification-subtext" | Text: "We've sent a 6-digit code to"
+    public emailDisplay!: Locator;                                 // ID: "#email-display" | Text: "FillerXXXX@mailforspam.com"
+    public enterCodeText!: Locator;                                // ID: "#enter-code-text" | Text: "Enter it below to confirm your email and continue your application"
+    public progressText!: Locator;                                 // ID: "#progress-text" | Text: "Step 12 of 12"
+    public requiredFieldText!: Locator;                            // ID: "#required-text" | Text: "* Required fields"
+    public helpText!: Locator;                                     // ID: "#help-text" | Text: "Check your email for the verification code"
+    public timerText!: Locator;                                    // ID: "#timer-text" | Text: "Resend code in 30 seconds"
     
-    // ===== LOCAL ERROR MESSAGES =====
-    public mfaOtpError!: Locator;                                  // MFA OTP error container (#MFA_OTP-error)
+    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
+    public mfaOtpError!: Locator;                                  // ID: "#MFA_OTP-error"
+    // TRIGGER: Leave verification code field empty and click "Continue"
+    // ERROR TEXT: "Verification code is required"
+
+    public mfaOtpInvalidError!: Locator;                           // ID: "#MFA_OTP-invalid-error"
+    // TRIGGER: Type invalid code like "123" and blur field
+    // ERROR TEXT: "Please enter a valid 6-digit code"
+
+    public mfaOtpExpiredError!: Locator;                           // ID: "#MFA_OTP-expired-error"
+    // TRIGGER: Enter expired verification code
+    // ERROR TEXT: "Verification code has expired. Please request a new one"
+
+    public mfaOtpTooManyAttemptsError!: Locator;                   // ID: "#MFA_OTP-too-many-error"
+    // TRIGGER: Enter wrong code multiple times
+    // ERROR TEXT: "Too many attempts. Please request a new code"
+
+    // ===== VALIDATION RULES =====
+    // --Verification Code Validation--
+    // LENGTH: Exactly 6 digits
+    // PATTERN: /^\d{6}$/
+    // REQUIRED: Yes
+    // FORMAT: XXXXXX (6 digits)
+
+    // ===== TEST DATA EXAMPLES =====
+    // --Valid Test Data--
+    // VERIFICATION CODE: "123456" | "789012" | "555555" | "000000"
+
+    // --Invalid Test Data--
+    // VERIFICATION CODE: "123" | "12345" | "1234567" | "abc123" | "" (empty)
     
     // ===== NAVIGATION AND HEADER ELEMENTS =====
     public liliLogo!: Locator;                                     // Lili logo image

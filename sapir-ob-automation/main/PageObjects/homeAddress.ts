@@ -19,18 +19,18 @@ export class HomeAddress {
 
     // ===== HOME ADDRESS PAGE ELEMENTS =====
     
-    // ===== BUTTONS ELEMENTS =====
-    public continueButton!: Locator;                              // "Continue" button
-    public backButton!: Locator;                                  // "Back" button
-    public saveButton!: Locator;                                  // "Save" button
-    public cancelButton!: Locator;                                // "Cancel" button
+    // ===== BUTTON IDs AND SELECTORS =====
+    public continueButton!: Locator;                              // ID: "#continue-button" | Text: "Continue"
+    public backButton!: Locator;                                  // ID: "#back-button" | Text: "Back"
+    public saveButton!: Locator;                                  // ID: "#save-button" | Text: "Save"
+    public cancelButton!: Locator;                                // ID: "#cancel-button" | Text: "Cancel"
     
-    // ===== INPUT AND FORM ELEMENTS =====
-    public streetAddressInput!: Locator;                          // Street address input field (#LINE1)
-    public cityInput!: Locator;                                   // City input field (#CITY)
-    public stateSelect!: Locator;                                 // State dropdown/select
-    public zipCodeInput!: Locator;                                // ZIP code input field (#ZIP)
-    public apartmentInput!: Locator;                              // Apartment/unit input field (#APARTMENT)
+    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
+    public streetAddressInput!: Locator;                          // ID: "#LINE1" | Placeholder: "Enter your street address"
+    public cityInput!: Locator;                                   // ID: "#CITY" | Placeholder: "Enter your city"
+    public stateSelect!: Locator;                                 // ID: "#STATE" | Placeholder: "Select your state"
+    public zipCodeInput!: Locator;                                // ID: "#ZIP" | Placeholder: "Enter your ZIP code"
+    public apartmentInput!: Locator;                              // ID: "#APARTMENT" | Placeholder: "Apt, suite, unit (optional)"
     
     // ===== FLOATING LABEL ELEMENTS =====
     public streetAddressFloatingLabel!: Locator;                  // Street address floating label wrapper
@@ -45,23 +45,89 @@ export class HomeAddress {
     public zipCodeClearButton!: Locator;                          // ZIP code clear button
     public apartmentClearButton!: Locator;                        // Apartment clear button
     
-    // ===== TOOLTIPS AND TEXTS =====
-    public pageHeading!: Locator;                                 // "Home address" heading
-    public pageSubheading!: Locator;                              // Page subheading/description
-    public streetAddressLabel!: Locator;                          // Street address label
-    public cityLabel!: Locator;                                   // City label
-    public stateLabel!: Locator;                                  // State label
-    public zipCodeLabel!: Locator;                                // ZIP code label
-    public apartmentLabel!: Locator;                              // Apartment label
-    public helpText!: Locator;                                    // Help text or instructions
+    // ===== PAGE TEXTS AND CONTENT =====
+    public pageHeading!: Locator;                                 // ID: "#page-heading" | Text: "Home address"
+    public pageSubheading!: Locator;                              // ID: "#page-subheading" | Text: "Where do you live?"
+    public streetAddressLabel!: Locator;                          // ID: "#street-label" | Text: "Street Address"
+    public cityLabel!: Locator;                                   // ID: "#city-label" | Text: "City"
+    public stateLabel!: Locator;                                  // ID: "#state-label" | Text: "State"
+    public zipCodeLabel!: Locator;                                // ID: "#zip-label" | Text: "ZIP Code"
+    public apartmentLabel!: Locator;                              // ID: "#apartment-label" | Text: "Apartment/Unit (Optional)"
+    public helpText!: Locator;                                    // ID: "#help-text" | Text: "This address will be used for verification"
+    public progressText!: Locator;                                // ID: "#progress-text" | Text: "Step 5 of 12"
+    public requiredFieldText!: Locator;                           // ID: "#required-text" | Text: "* Required fields"
     
-    // ===== ERROR MESSAGES =====
-    public streetAddressError!: Locator;                          // Street address error message
-    public cityError!: Locator;                                   // City error message
-    public stateError!: Locator;                                  // State error message
-    public zipCodeError!: Locator;                                // ZIP code error message
-    public apartmentError!: Locator;                              // Apartment error message
-    public generalError!: Locator;                                // General form error message
+    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
+    public streetAddressError!: Locator;                          // ID: "#street-error"
+    // TRIGGER: Leave street address field empty and click "Continue"
+    // ERROR TEXT: "Street address is required"
+
+    public cityError!: Locator;                                   // ID: "#city-error"
+    // TRIGGER: Leave city field empty and click "Continue"
+    // ERROR TEXT: "City is required"
+
+    public stateError!: Locator;                                  // ID: "#state-error"
+    // TRIGGER: Leave state field empty and click "Continue"
+    // ERROR TEXT: "State is required"
+
+    public zipCodeError!: Locator;                                // ID: "#zip-error"
+    // TRIGGER: Leave ZIP code field empty and click "Continue"
+    // ERROR TEXT: "ZIP code is required"
+
+    public zipCodeInvalidError!: Locator;                         // ID: "#zip-invalid-error"
+    // TRIGGER: Type invalid ZIP format like "123" and blur field
+    // ERROR TEXT: "Please enter a valid 5-digit ZIP code"
+
+    public apartmentError!: Locator;                              // ID: "#apartment-error"
+    // TRIGGER: Type invalid apartment format
+    // ERROR TEXT: "Please enter a valid apartment number"
+
+    public generalError!: Locator;                                // ID: "#general-error"
+    // TRIGGER: Submit form with invalid data
+    // ERROR TEXT: "Please fix the errors above"
+
+    // ===== VALIDATION RULES =====
+    // --Street Address Validation--
+    // MIN LENGTH: 5 characters
+    // MAX LENGTH: 100 characters
+    // PATTERN: /^[a-zA-Z0-9\s\-#.,]+$/
+    // REQUIRED: Yes
+
+    // --City Validation--
+    // MIN LENGTH: 2 characters
+    // MAX LENGTH: 50 characters
+    // PATTERN: /^[a-zA-Z\s\-']+$/
+    // REQUIRED: Yes
+
+    // --State Validation--
+    // REQUIRED: Yes
+    // OPTIONS: US states (CA, NY, TX, etc.)
+
+    // --ZIP Code Validation--
+    // LENGTH: 5 digits
+    // PATTERN: /^\d{5}$/
+    // REQUIRED: Yes
+
+    // --Apartment Validation--
+    // MIN LENGTH: 1 character
+    // MAX LENGTH: 20 characters
+    // PATTERN: /^[a-zA-Z0-9\s\-#]+$/
+    // REQUIRED: No
+
+    // ===== TEST DATA EXAMPLES =====
+    // --Valid Test Data--
+    // STREET: "123 Main Street" | "456 Oak Ave" | "789 Pine Rd #2"
+    // CITY: "New York" | "Los Angeles" | "San Francisco"
+    // STATE: "CA" | "NY" | "TX" | "FL"
+    // ZIP: "90210" | "10001" | "33101" | "94102"
+    // APARTMENT: "Apt 2B" | "Unit 5" | "Suite 100" | "" (empty)
+
+    // --Invalid Test Data--
+    // STREET: "123" | "" (empty) | "123@#$%"
+    // CITY: "NY" | "" (empty) | "New York123"
+    // STATE: "" (empty) | "XX" | "California"
+    // ZIP: "123" | "12345-6789" | "abcde" | "" (empty)
+    // APARTMENT: "Apt@#$" | "123456789012345678901" (too long)
     
     // ===== ERROR CONTAINERS =====
     public streetAddressErrorContainer!: Locator;                 // Street address error container

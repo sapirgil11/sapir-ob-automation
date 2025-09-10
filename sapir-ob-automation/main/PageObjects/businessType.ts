@@ -19,17 +19,17 @@ export class BusinessType {
 
     // ===== BUSINESS TYPE PAGE ELEMENTS =====
     
-    // ===== BUTTONS ELEMENTS =====
-    public continueButton!: Locator;                              // "Continue" button
-    public backButton!: Locator;                                  // "Back" button
-    public saveButton!: Locator;                                  // "Save" button
-    public cancelButton!: Locator;                                // "Cancel" button
+    // ===== BUTTON IDs AND SELECTORS =====
+    public continueButton!: Locator;                              // ID: "#continue-button" | Text: "Continue"
+    public backButton!: Locator;                                  // ID: "#back-button" | Text: "Back"
+    public saveButton!: Locator;                                  // ID: "#save-button" | Text: "Save"
+    public cancelButton!: Locator;                                // ID: "#cancel-button" | Text: "Cancel"
     
-    // ===== MAIN BUSINESS TYPE OPTIONS =====
-    public corporationOption!: Locator;                           // Corporation (S-Corp/C-Corp) option
-    public llcOption!: Locator;                                   // Limited Liability Company (LLC) option
-    public partnershipOption!: Locator;                           // Partnership option
-    public soleProprietorshipOption!: Locator;                    // Sole Proprietorship option
+    // ===== BUSINESS TYPE SELECTION OPTIONS =====
+    public corporationOption!: Locator;                           // ID: "#corporation-option" | Text: "Corporation (S-Corp/C-Corp)"
+    public llcOption!: Locator;                                   // ID: "#llc-option" | Text: "Limited Liability Company (LLC)"
+    public partnershipOption!: Locator;                           // ID: "#partnership-option" | Text: "Partnership"
+    public soleProprietorshipOption!: Locator;                    // ID: "#sole-proprietorship-option" | Text: "Sole Proprietorship"
     
     // ===== CORPORATION SUB-TYPES =====
     public sCorporationOption!: Locator;                          // S-Corp option
@@ -52,16 +52,43 @@ export class BusinessType {
     public selectedBusinessType!: Locator;                        // Currently selected business type
     public businessTypeContainer!: Locator;                       // Business type selection container
     
-    // ===== TOOLTIPS AND TEXTS =====
-    public pageHeading!: Locator;                                 // "Select your business type" heading
-    public pageSubheading!: Locator;                              // Page subheading/description
-    public helpText!: Locator;                                    // Help text or instructions
-    public businessTypeDescription!: Locator;                     // Business type description text
+    // ===== PAGE TEXTS AND CONTENT =====
+    public pageHeading!: Locator;                                 // ID: "#page-heading" | Text: "Select your business type"
+    public pageSubheading!: Locator;                              // ID: "#page-subheading" | Text: "Choose the business structure that best fits your company"
+    public helpText!: Locator;                                    // ID: "#help-text" | Text: "This helps us provide the right services for your business"
+    public businessTypeDescription!: Locator;                     // ID: "#business-description" | Text: "Business type descriptions and requirements"
+    public progressText!: Locator;                                // ID: "#progress-text" | Text: "Step 7 of 12"
+    public requiredFieldText!: Locator;                           // ID: "#required-text" | Text: "* Required fields"
+    public legalNotice!: Locator;                                 // ID: "#legal-notice" | Text: "Consult with a legal professional for specific advice"
     
-    // ===== ERROR MESSAGES =====
-    public businessTypeError!: Locator;                           // Business type selection error
-    public generalError!: Locator;                                // General form error message
-    public validationError!: Locator;                             // Validation error message
+    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
+    public businessTypeError!: Locator;                           // ID: "#business-type-error"
+    // TRIGGER: Click "Continue" without selecting a business type
+    // ERROR TEXT: "Please select a business type"
+
+    public generalError!: Locator;                                // ID: "#general-error"
+    // TRIGGER: Submit form with invalid data
+    // ERROR TEXT: "Please fix the errors above"
+
+    public validationError!: Locator;                             // ID: "#validation-error"
+    // TRIGGER: Select invalid business type combination
+    // ERROR TEXT: "Please select a valid business type"
+
+    // ===== VALIDATION RULES =====
+    // --Business Type Selection--
+    // REQUIRED: Yes
+    // OPTIONS: Corporation, LLC, Partnership, Sole Proprietorship
+    // SUB-TYPES: S-Corp, C-Corp, Single-Member LLC, Multi-Member LLC
+
+    // ===== TEST DATA EXAMPLES =====
+    // --Valid Business Types--
+    // CORPORATION: "S-Corporation" | "C-Corporation"
+    // LLC: "Single-Member LLC" | "Multi-Member LLC"
+    // PARTNERSHIP: "General Partnership" | "Limited Partnership"
+    // SOLE PROPRIETORSHIP: "Sole Proprietorship"
+
+    // --Invalid Business Types--
+    // INVALID: "" (empty) | "Invalid Type" | "Not Selected"
     
     // ===== ERROR CONTAINERS =====
     public businessTypeErrorContainer!: Locator;                  // Business type error container

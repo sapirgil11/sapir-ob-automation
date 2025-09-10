@@ -19,15 +19,15 @@ export class PersonalDetails {
 
     // ===== PERSONAL DETAILS PAGE ELEMENTS =====
     
-    // ===== BUTTONS ELEMENTS =====
-    public continueButton!: Locator;                              // "Continue" button
-    public backButton!: Locator;                                  // "Back" button
-    public saveButton!: Locator;                                  // "Save" button
-    public cancelButton!: Locator;                                // "Cancel" button
+    // ===== BUTTON IDs AND SELECTORS =====
+    public continueButton!: Locator;                              // ID: "#continue-button" | Text: "Continue"
+    public backButton!: Locator;                                  // ID: "#back-button" | Text: "Back"
+    public saveButton!: Locator;                                  // ID: "#save-button" | Text: "Save"
+    public cancelButton!: Locator;                                // ID: "#cancel-button" | Text: "Cancel"
     
-    // ===== INPUT AND PLACEHOLDER ELEMENTS =====
-    public firstNameInput!: Locator;                              // First name input field
-    public lastNameInput!: Locator;                               // Last name input field
+    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
+    public firstNameInput!: Locator;                              // ID: "#first-name" | Placeholder: "Enter your first name"
+    public lastNameInput!: Locator;                               // ID: "#last-name" | Placeholder: "Enter your last name"
     
     // ===== FLOATING LABEL ELEMENTS =====
     public firstNameFloatingLabel!: Locator;                      // First name floating label wrapper
@@ -35,17 +35,57 @@ export class PersonalDetails {
     public firstNameClearButton!: Locator;                        // First name clear button
     public lastNameClearButton!: Locator;                         // Last name clear button
     
-    // ===== TOOLTIPS AND TEXTS =====
-    public pageHeading!: Locator;                                 // "Your personal details" heading
-    public pageSubheading!: Locator;                              // Page subheading/description
-    public firstNameLabel!: Locator;                              // First name label
-    public lastNameLabel!: Locator;                               // Last name label
-    public helpText!: Locator;                                    // Help text/instructions
+    // ===== PAGE TEXTS AND CONTENT =====
+    public pageHeading!: Locator;                                 // ID: "#page-heading" | Text: "Your personal details"
+    public pageSubheading!: Locator;                              // ID: "#page-subheading" | Text: "Tell us about yourself"
+    public firstNameLabel!: Locator;                              // ID: "#first-name-label" | Text: "First Name"
+    public lastNameLabel!: Locator;                               // ID: "#last-name-label" | Text: "Last Name"
+    public helpText!: Locator;                                    // ID: "#help-text" | Text: "This information will be used to verify your identity"
+    public progressText!: Locator;                                // ID: "#progress-text" | Text: "Step 2 of 12"
+    public requiredFieldText!: Locator;                           // ID: "#required-text" | Text: "* Required fields"
     
-    // ===== LOCAL ERROR MESSAGES =====
-    public firstNameError!: Locator;                              // First name error message
-    public lastNameError!: Locator;                               // Last name error message
-    public generalError!: Locator;                                // General form error message
+    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
+    public firstNameError!: Locator;                              // ID: "#first-name-error"
+    // TRIGGER: Leave first name field empty and click "Continue"
+    // ERROR TEXT: "First name is required"
+
+    public lastNameError!: Locator;                               // ID: "#last-name-error"
+    // TRIGGER: Leave last name field empty and click "Continue"
+    // ERROR TEXT: "Last name is required"
+
+    public firstNameInvalidError!: Locator;                       // ID: "#first-name-invalid-error"
+    // TRIGGER: Type numbers or symbols in first name field
+    // ERROR TEXT: "First name can only contain letters"
+
+    public lastNameInvalidError!: Locator;                        // ID: "#last-name-invalid-error"
+    // TRIGGER: Type numbers or symbols in last name field
+    // ERROR TEXT: "Last name can only contain letters"
+
+    public generalError!: Locator;                                // ID: "#general-error"
+    // TRIGGER: Submit form with invalid data
+    // ERROR TEXT: "Please fix the errors above"
+
+    // ===== VALIDATION RULES =====
+    // --First Name Validation--
+    // MIN LENGTH: 1 character
+    // MAX LENGTH: 50 characters
+    // PATTERN: /^[a-zA-Z\s'-]+$/
+    // REQUIRED: Yes
+
+    // --Last Name Validation--
+    // MIN LENGTH: 1 character
+    // MAX LENGTH: 50 characters
+    // PATTERN: /^[a-zA-Z\s'-]+$/
+    // REQUIRED: Yes
+
+    // ===== TEST DATA EXAMPLES =====
+    // --Valid Test Data--
+    // FIRST NAME: "John" | "Mary-Jane" | "O'Connor" | "Jean-Pierre"
+    // LAST NAME: "Smith" | "Johnson-Wilson" | "O'Brien" | "Van Der Berg"
+
+    // --Invalid Test Data--
+    // FIRST NAME: "123" | "John123" | "John@" | "" (empty)
+    // LAST NAME: "456" | "Smith456" | "Smith#" | "" (empty)
     
     // ===== ERROR CONTAINERS =====
     public firstNameErrorContainer!: Locator;                     // First name error container

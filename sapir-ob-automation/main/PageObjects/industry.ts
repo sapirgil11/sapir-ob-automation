@@ -19,29 +19,60 @@ export class Industry {
 
     // ===== INDUSTRY PAGE ELEMENTS =====
     
-    // ===== HEADER AND NAVIGATION ELEMENTS =====
-    public pageHeading!: Locator;                                   // "Tell us about your business"
-    public progressIndicator!: Locator;                             // Progress steps indicator
-    public backButton!: Locator;                                    // "Back" button
-    public continueButton!: Locator;                                // "Continue" button
+    // ===== BUTTON IDs AND SELECTORS =====
+    public backButton!: Locator;                                    // ID: "#back-button" | Text: "Back"
+    public continueButton!: Locator;                                // ID: "#continue-button" | Text: "Continue"
+    public saveButton!: Locator;                                    // ID: "#save-button" | Text: "Save"
+    public cancelButton!: Locator;                                  // ID: "#cancel-button" | Text: "Cancel"
     
-    // ===== MAIN CONTENT ELEMENTS =====
-    public mainDescription!: Locator;                               // "Please select the industry that best describes your business."
-    public industryLabel!: Locator;                                 // "Industry" label
-    public subIndustryLabel!: Locator;                              // "Sub industry" label
+    // ===== PAGE TEXTS AND CONTENT =====
+    public pageHeading!: Locator;                                   // ID: "#page-heading" | Text: "Tell us about your business"
+    public mainDescription!: Locator;                               // ID: "#main-description" | Text: "Please select the industry that best describes your business."
+    public industryLabel!: Locator;                                 // ID: "#industry-label" | Text: "Industry"
+    public subIndustryLabel!: Locator;                              // ID: "#sub-industry-label" | Text: "Sub industry"
+    public progressText!: Locator;                                  // ID: "#progress-text" | Text: "Step 8 of 12"
+    public requiredFieldText!: Locator;                             // ID: "#required-text" | Text: "* Required fields"
+    public helpText!: Locator;                                      // ID: "#help-text" | Text: "This helps us provide relevant services for your industry"
     
-    // ===== INDUSTRY SELECTION DROPDOWNS =====
-    public industrySelect!: Locator;                                // Main industry dropdown
-    public subIndustrySelect!: Locator;                             // Sub industry dropdown
+    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
+    public industrySelect!: Locator;                                // ID: "#industry-select" | Placeholder: "Select your industry"
+    public subIndustrySelect!: Locator;                             // ID: "#sub-industry-select" | Placeholder: "Select your sub-industry"
     
     // ===== INDUSTRY OPTIONS (will be populated dynamically) =====
     public industryOptions!: Locator;                               // All industry options
     public subIndustryOptions!: Locator;                            // All sub-industry options
     
-    // ===== VALIDATION AND ERROR ELEMENTS =====
-    public industryError!: Locator;                                 // Industry selection error
-    public subIndustryError!: Locator;                              // Sub-industry selection error
-    public generalError!: Locator;                                  // General error message
+    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
+    public industryError!: Locator;                                 // ID: "#industry-error"
+    // TRIGGER: Click "Continue" without selecting an industry
+    // ERROR TEXT: "Please select an industry"
+
+    public subIndustryError!: Locator;                              // ID: "#sub-industry-error"
+    // TRIGGER: Click "Continue" without selecting a sub-industry
+    // ERROR TEXT: "Please select a sub-industry"
+
+    public generalError!: Locator;                                  // ID: "#general-error"
+    // TRIGGER: Submit form with invalid data
+    // ERROR TEXT: "Please fix the errors above"
+
+    // ===== VALIDATION RULES =====
+    // --Industry Selection--
+    // REQUIRED: Yes
+    // OPTIONS: Technology, Healthcare, Finance, Retail, Manufacturing, etc.
+
+    // --Sub-Industry Selection--
+    // REQUIRED: Yes (depends on main industry)
+    // OPTIONS: Varies based on selected industry
+
+    // ===== TEST DATA EXAMPLES =====
+    // --Valid Industry Combinations--
+    // TECHNOLOGY: "Software Development" | "IT Services" | "E-commerce"
+    // HEALTHCARE: "Medical Practice" | "Dental Services" | "Mental Health"
+    // FINANCE: "Accounting" | "Financial Planning" | "Insurance"
+    // RETAIL: "Online Retail" | "Brick & Mortar" | "Wholesale"
+
+    // --Invalid Industry Combinations--
+    // INVALID: "" (empty) | "Invalid Industry" | "Not Selected"
     
     // ===== FOOTER AND DISCLAIMER =====
     public disclaimerText!: Locator;                                // "Note, Lili cannot provide banking services..."

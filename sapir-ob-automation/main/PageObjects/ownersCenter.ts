@@ -2,29 +2,84 @@ import { Page, Locator } from '@playwright/test';
 
 export class OwnersCenter {
     private page: Page;
-    private pageHeading: Locator;
-    private pageSubTitle: Locator;
-    public continueButton: Locator;
-    private backButton: Locator;
-    
-    // Form fields
-    private ownerNameInput: Locator;
-    private ownerPercentageInput: Locator;
-    private addOwnerButton: Locator;
-    private onlyUboCheckbox: Locator;
-    private onlyUboLabel: Locator;
-    private multiOwnerConsentCheckbox: Locator;
-    private multiOwnerConsentLabel: Locator;
-    
-    // UBO Management
-    private uboList: Locator;
-    private uboItems: Locator;
-    private editUboButtons: Locator;
-    
-    // Error messages
-    private ownerPercentageError: Locator;
-    private onlyUboError: Locator;
-    private multiOwnerConsentError: Locator;
+    // ===== BUTTON IDs AND SELECTORS =====
+    public continueButton: Locator;                                // ID: "#formSubmitButton" | Text: "Continue"
+    private backButton: Locator;                                   // ID: "#back-button" | Text: "Back"
+    private saveButton: Locator;                                   // ID: "#save-button" | Text: "Save"
+    private cancelButton: Locator;                                 // ID: "#cancel-button" | Text: "Cancel"
+    private addOwnerButton: Locator;                               // ID: "#add-owner-button" | Text: "Add Owner"
+
+    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
+    private ownerNameInput: Locator;                               // ID: "#owner-name" | Placeholder: "Enter owner's full name"
+    private ownerPercentageInput: Locator;                         // ID: "#owner-percentage" | Placeholder: "Enter ownership percentage"
+    private onlyUboCheckbox: Locator;                              // ID: "#only-ubo" | Text: "I am the only UBO"
+    private onlyUboLabel: Locator;                                 // ID: "#only-ubo-label" | Text: "I am the only Ultimate Beneficial Owner"
+    private multiOwnerConsentCheckbox: Locator;                    // ID: "#multi-owner-consent" | Text: "I consent to multi-owner verification"
+    private multiOwnerConsentLabel: Locator;                       // ID: "#multi-owner-consent-label" | Text: "I consent to multi-owner verification process"
+
+    // ===== PAGE TEXTS AND CONTENT =====
+    private pageHeading: Locator;                                  // ID: "#page-heading" | Text: "Owners Center"
+    private pageSubTitle: Locator;                                 // ID: "#page-subtitle" | Text: "Tell us about business ownership"
+    private progressText: Locator;                                 // ID: "#progress-text" | Text: "Step 11 of 12"
+    private requiredFieldText: Locator;                            // ID: "#required-text" | Text: "* Required fields"
+    private helpText: Locator;                                     // ID: "#help-text" | Text: "This information is required for compliance verification"
+
+    // ===== UBO MANAGEMENT =====
+    private uboList: Locator;                                      // ID: "#ubo-list" | Container for UBO items
+    private uboItems: Locator;                                     // ID: "#ubo-items" | Individual UBO items
+    private editUboButtons: Locator;                               // ID: "#edit-ubo-buttons" | Edit buttons for UBO items
+
+    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
+    private ownerPercentageError: Locator;                         // ID: "#owner-percentage-error"
+    // TRIGGER: Leave ownership percentage field empty and click "Continue"
+    // ERROR TEXT: "Ownership percentage is required"
+
+    private ownerPercentageInvalidError: Locator;                  // ID: "#owner-percentage-invalid-error"
+    // TRIGGER: Type invalid percentage like "150" or "abc" and blur field
+    // ERROR TEXT: "Please enter a valid percentage (0-100)"
+
+    private onlyUboError: Locator;                                 // ID: "#only-ubo-error"
+    // TRIGGER: Click "Continue" without checking UBO checkbox
+    // ERROR TEXT: "Please confirm if you are the only UBO"
+
+    private multiOwnerConsentError: Locator;                       // ID: "#multi-owner-consent-error"
+    // TRIGGER: Click "Continue" without checking multi-owner consent
+    // ERROR TEXT: "You must consent to multi-owner verification"
+
+    // ===== VALIDATION RULES =====
+    // --Owner Name Validation--
+    // MIN LENGTH: 2 characters
+    // MAX LENGTH: 100 characters
+    // PATTERN: /^[a-zA-Z\s\-']+$/
+    // REQUIRED: Yes
+
+    // --Ownership Percentage Validation--
+    // MIN VALUE: 0
+    // MAX VALUE: 100
+    // PATTERN: /^\d+(\.\d{1,2})?$/
+    // REQUIRED: Yes
+    // FORMAT: Decimal number (e.g., 25.5, 100, 0)
+
+    // --UBO Checkbox Validation--
+    // REQUIRED: Yes
+    // TYPE: Checkbox must be checked
+
+    // --Multi-Owner Consent Validation--
+    // REQUIRED: Yes (if multiple owners)
+    // TYPE: Checkbox must be checked
+
+    // ===== TEST DATA EXAMPLES =====
+    // --Valid Test Data--
+    // OWNER NAME: "John Smith" | "Mary-Jane Wilson" | "O'Connor, Patrick"
+    // OWNERSHIP PERCENTAGE: "100" | "50" | "25.5" | "0"
+    // UBO: Checked
+    // MULTI-OWNER CONSENT: Checked (if applicable)
+
+    // --Invalid Test Data--
+    // OWNER NAME: "J" | "" (empty) | "John123" | "John@#$%"
+    // OWNERSHIP PERCENTAGE: "150" | "-10" | "abc" | "" (empty)
+    // UBO: Unchecked
+    // MULTI-OWNER CONSENT: Unchecked (if required)
 
     constructor(page: Page) {
         this.page = page;

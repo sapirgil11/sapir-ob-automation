@@ -3,24 +3,80 @@ import { Page, Locator } from '@playwright/test';
 export class KnowYourBusiness {
     private page: Page;
 
-    // Page elements
-    private pageHeading: Locator;
-    private pageSubTitle: Locator;
-    private continueButton: Locator;
-    private backButton: Locator;
+    // ===== BUTTON IDs AND SELECTORS =====
+    private continueButton: Locator;                               // ID: "#formSubmitButton" | Text: "Continue"
+    private backButton: Locator;                                   // ID: "#back-button" | Text: "Back"
+    private saveButton: Locator;                                   // ID: "#save-button" | Text: "Save"
+    private cancelButton: Locator;                                 // ID: "#cancel-button" | Text: "Cancel"
 
-    // Form fields
-    private businessNameInput: Locator;
-    public einInput: Locator;
-    private registeredStateSelect: Locator;
-    private agreementCheckbox: Locator;
-    private agreementText: Locator;
+    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
+    private businessNameInput: Locator;                            // ID: "#business-name" | Placeholder: "Enter your business name"
+    public einInput: Locator;                                      // ID: "#ein" | Placeholder: "Enter your EIN (XX-XXXXXXX)"
+    private registeredStateSelect: Locator;                        // ID: "#registered-state" | Placeholder: "Select your registered state"
+    private agreementCheckbox: Locator;                            // ID: "#agreement-checkbox" | Text: "I agree to the terms"
 
-    // Form validation
-    private businessNameError: Locator;
-    private einError: Locator;
-    private stateError: Locator;
-    private agreementError: Locator;
+    // ===== PAGE TEXTS AND CONTENT =====
+    private pageHeading: Locator;                                  // ID: "#page-heading" | Text: "Know Your Business"
+    private pageSubTitle: Locator;                                 // ID: "#page-subtitle" | Text: "Tell us about your business"
+    private agreementText: Locator;                                // ID: "#agreement-text" | Text: "I agree to the terms and conditions"
+    private progressText: Locator;                                 // ID: "#progress-text" | Text: "Step 9 of 12"
+    private requiredFieldText: Locator;                            // ID: "#required-text" | Text: "* Required fields"
+    private helpText: Locator;                                     // ID: "#help-text" | Text: "This information is required for business verification"
+
+    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
+    private businessNameError: Locator;                            // ID: "#business-name-error"
+    // TRIGGER: Leave business name field empty and click "Continue"
+    // ERROR TEXT: "Business name is required"
+
+    private einError: Locator;                                     // ID: "#ein-error"
+    // TRIGGER: Leave EIN field empty and click "Continue"
+    // ERROR TEXT: "EIN is required"
+
+    private einInvalidError: Locator;                              // ID: "#ein-invalid-error"
+    // TRIGGER: Type invalid EIN format like "123" and blur field
+    // ERROR TEXT: "Please enter a valid EIN (XX-XXXXXXX)"
+
+    private stateError: Locator;                                   // ID: "#state-error"
+    // TRIGGER: Leave state field empty and click "Continue"
+    // ERROR TEXT: "Registered state is required"
+
+    private agreementError: Locator;                               // ID: "#agreement-error"
+    // TRIGGER: Click "Continue" without checking agreement checkbox
+    // ERROR TEXT: "You must agree to the terms and conditions"
+
+    // ===== VALIDATION RULES =====
+    // --Business Name Validation--
+    // MIN LENGTH: 2 characters
+    // MAX LENGTH: 100 characters
+    // PATTERN: /^[a-zA-Z0-9\s\-&.,'()]+$/
+    // REQUIRED: Yes
+
+    // --EIN Validation--
+    // LENGTH: 9 digits
+    // PATTERN: /^\d{2}-?\d{7}$/
+    // REQUIRED: Yes
+    // FORMAT: XX-XXXXXXX or XXXXXXXXX
+
+    // --State Validation--
+    // REQUIRED: Yes
+    // OPTIONS: US states (CA, NY, TX, etc.)
+
+    // --Agreement Validation--
+    // REQUIRED: Yes
+    // TYPE: Checkbox must be checked
+
+    // ===== TEST DATA EXAMPLES =====
+    // --Valid Test Data--
+    // BUSINESS NAME: "ABC Company LLC" | "Smith & Associates" | "Tech Solutions Inc."
+    // EIN: "12-3456789" | "123456789" | "98-7654321"
+    // STATE: "CA" | "NY" | "TX" | "FL"
+    // AGREEMENT: Checked
+
+    // --Invalid Test Data--
+    // BUSINESS NAME: "A" | "" (empty) | "ABC@#$%"
+    // EIN: "123" | "12-345" | "abc-def-ghi" | "" (empty)
+    // STATE: "" (empty) | "XX" | "California"
+    // AGREEMENT: Unchecked
 
     constructor(page: Page) {
         this.page = page;

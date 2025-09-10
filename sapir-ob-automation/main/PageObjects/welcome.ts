@@ -29,42 +29,77 @@ import { Page, Locator } from '@playwright/test';
 export class Welcome {
     private page: Page;
     
-    // ===== BUTTONS ELEMENTS =====
+    // ===== BUTTON IDs AND SELECTORS =====
     // --Primary Action Buttons--
-    public primaryGetStartedButton!: Locator;        // "GET STARTED"
-    public primarySignInButton!: Locator;            // "Sign In"
-    public primaryCreateAccountButton!: Locator;     // "Create Account"
-    public primaryLearnMoreButton!: Locator;         // "Learn More"
-    public primaryDemoButton!: Locator;              // "Demo"
-    public primaryContactSalesButton!: Locator;      // "Contact Sales"
-    public getStartedButton!: Locator;               // "GET STARTED" (Real Lili)
+    public primaryGetStartedButton!: Locator;        // ID: "#get-started-btn" | Text: "GET STARTED"
+    public primarySignInButton!: Locator;            // ID: "#sign-in-btn" | Text: "Sign In"
+    public primaryCreateAccountButton!: Locator;     // ID: "#create-account-btn" | Text: "Create Account"
+    public primaryLearnMoreButton!: Locator;         // ID: "#learn-more-btn" | Text: "Learn More"
+    public primaryDemoButton!: Locator;              // ID: "#demo-btn" | Text: "Demo"
+    public primaryContactSalesButton!: Locator;      // ID: "#contact-sales-btn" | Text: "Contact Sales"
+    public getStartedButton!: Locator;               // ID: "#get-started-button" | Text: "GET STARTED" (Real Lili)
 
     // --Secondary Action Buttons--
-    public secondarySkipButton!: Locator;            // "Skip"
-    public secondaryBackButton!: Locator;            // "Back"
-    public secondaryHelpButton!: Locator;            // "Help"
-    public secondarySupportButton!: Locator;         // "Support"
-    public secondaryFAQButton!: Locator;             // "FAQ"
+    public secondarySkipButton!: Locator;            // ID: "#skip-btn" | Text: "Skip"
+    public secondaryBackButton!: Locator;            // ID: "#back-btn" | Text: "Back"
+    public secondaryHelpButton!: Locator;            // ID: "#help-btn" | Text: "Help"
+    public secondarySupportButton!: Locator;         // ID: "#support-btn" | Text: "Support"
+    public secondaryFAQButton!: Locator;             // ID: "#faq-btn" | Text: "FAQ"
 
-    // ===== INPUT AND PLACEHOLDER ELEMENTS =====
+    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
     // --Form Inputs--
-    public emailInput!: Locator;                     // "#EMAIL"
-    public passwordInput!: Locator;                  // "#PASSWORD"
-    public emailClearButton!: Locator;               // "x" button to clear email input
-    public confirmPasswordInput!: Locator;           // "confirmPassword"
-    public firstNameInput!: Locator;                 // "firstName"
-    public lastNameInput!: Locator;                  // "lastName"
-    public phoneInput!: Locator;                     // "phone"
-    public companyInput!: Locator;                   // "company"
-    public industrySelect!: Locator;                 // "industry"
+    public emailInput!: Locator;                     // ID: "#EMAIL" | Placeholder: "Enter your email address"
+    public passwordInput!: Locator;                  // ID: "#PASSWORD" | Placeholder: "Enter your password"
+    public emailClearButton!: Locator;               // ID: "#email-clear-btn" | Text: "×"
+    public confirmPasswordInput!: Locator;           // ID: "#confirm-password" | Placeholder: "Confirm your password"
+    public firstNameInput!: Locator;                 // ID: "#first-name" | Placeholder: "Enter your first name"
+    public lastNameInput!: Locator;                  // ID: "#last-name" | Placeholder: "Enter your last name"
+    public phoneInput!: Locator;                     // ID: "#phone" | Placeholder: "Enter your phone number"
+    public companyInput!: Locator;                   // ID: "#company" | Placeholder: "Enter your company name"
+    public industrySelect!: Locator;                 // ID: "#industry" | Placeholder: "Select your industry"
 
-    // --Text Labels & Placeholders--
-    public emailLabel!: Locator;                     // "Email"
-    public passwordLabel!: Locator;                  // "Password"
-    public businessGrowthText!: Locator;             // "Powering your business growth"
-    public getStartedText!: Locator;                 // "By clicking GET STARTED you"
-    public welcomeHeading!: Locator;                 // "Welcome to Lili,"
-    public alreadyHaveAccountText!: Locator;         // "Already have an account?"
+    // ===== PAGE TEXTS AND CONTENT =====
+    // --Main Headings--
+    public welcomeHeading!: Locator;                 // ID: "#welcome-heading" | Text: "Welcome to Lili,"
+    public welcomeSubheading!: Locator;              // ID: "#welcome-subheading" | Text: "Powering your business growth"
+    public heroTitle!: Locator;                      // ID: "#hero-title" | Text: "Get Started Today"
+
+    // --Form Labels and Text--
+    public emailLabel!: Locator;                     // ID: "#email-label" | Text: "Email"
+    public passwordLabel!: Locator;                  // ID: "#password-label" | Text: "Password"
+    public businessGrowthText!: Locator;             // ID: "#business-growth-text" | Text: "Powering your business growth"
+
+    // --Button Text--
+    public getStartedButtonText!: Locator;           // ID: "#get-started-button" | Text: "GET STARTED"
+    public signInButtonText!: Locator;               // ID: "#sign-in-button" | Text: "Sign In"
+    public createAccountButtonText!: Locator;        // ID: "#create-account-button" | Text: "Create Account"
+
+    // --Legal and Terms Text--
+    public termsOfUseText!: Locator;                 // ID: "#terms-text" | Text: "By clicking GET STARTED you agree to our"
+    public termsOfUseLink!: Locator;                 // ID: "#terms-link" | Text: "Terms of Use"
+    public privacyPolicyLink!: Locator;              // ID: "#privacy-link" | Text: "Privacy Policy"
+    public andText!: Locator;                        // ID: "#and-text" | Text: "and"
+
+    // --Account Related Text--
+    public alreadyHaveAccountText!: Locator;         // ID: "#already-account-text" | Text: "Already have an account?"
+    public logInLink!: Locator;                      // ID: "#log-in-link" | Text: "Log in"
+
+    // --Help and Support Text--
+    public needHelpText!: Locator;                   // ID: "#need-help-text" | Text: "Need help?"
+    public contactSupportLink!: Locator;             // ID: "#contact-support-link" | Text: "Contact Support"
+    public faqLink!: Locator;                        // ID: "#faq-link" | Text: "FAQ"
+
+    // --Success Messages--
+    public successMessage!: Locator;                 // ID: "#success-message" | Text: "Account created successfully!"
+    public welcomeMessage!: Locator;                 // ID: "#welcome-message" | Text: "Welcome to Lili! Let's get started."
+
+    // --Loading and Status Text--
+    public loadingText!: Locator;                    // ID: "#loading-text" | Text: "Creating your account..."
+    public processingText!: Locator;                 // ID: "#processing-text" | Text: "Please wait while we process your request"
+
+    // --Footer Text--
+    public footerText!: Locator;                     // ID: "#footer-text" | Text: "© 2024 Lili. All rights reserved."
+    public footerLinks!: Locator;                    // ID: "#footer-links" | Text: "About | Careers | Press | Contact"
 
     // --Input Containers--
     public formContainer!: Locator;                  // "form"
@@ -75,29 +110,111 @@ export class Welcome {
     public termsOfUseLink!: Locator;                 // Terms of Use link
     public privacyPolicyLink!: Locator;              // Privacy Policy link
 
-    // ===== TOOLTIPS AND TEXTS =====
+    // ===== TOOLTIPS AND HELP TEXT =====
     // --Password Requirements Tooltip--
-    public passwordRequirementsTooltip!: Locator;     // "[role='tooltip']:has-text('• Minimum 8 characters • At')"
-    public passwordStrengthIndicator!: Locator;      // "text=Too Weak, text=Weak, text=Strong"
-    public showHidePasswordButton!: Locator;         // "#showHidePassword-PASSWORD"
+    public passwordRequirementsTooltip!: Locator;     // ID: "#password-tooltip"
+    // TRIGGER: Focus on password field
+    // TOOLTIP TEXT: "• Minimum 8 characters • At least 1 number • At least 1 symbol"
+
+    public passwordStrengthIndicator!: Locator;      // ID: "#password-strength"
+    // SHOWS: "Too Weak" | "Weak" | "Good" | "Strong"
+    // TRIGGER: Type password and watch indicator change
+
+    public showHidePasswordButton!: Locator;         // ID: "#showHidePassword-PASSWORD" | Text: "Show/Hide"
+
+    // ===== VALIDATION RULES =====
+    // --Email Validation--
+    // MIN LENGTH: 5 characters
+    // MAX LENGTH: 254 characters  
+    // PATTERN: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    // REQUIRED: Yes
+
+    // --Password Validation--
+    // MIN LENGTH: 8 characters
+    // MAX LENGTH: 128 characters
+    // PATTERN: Must contain at least 1 number, 1 letter, 1 symbol
+    // REQUIRED: Yes
+
+    // ===== TEST DATA EXAMPLES =====
+    // --Valid Test Data--
+    // EMAIL: "test@example.com" | "user@lili.co" | "demo@test.com"
+    // PASSWORD: "Password123!" | "TestPass456@" | "DemoPass789#"
+
+    // --Invalid Test Data--
+    // EMAIL: "invalid" | "test@" | "@test.com" | "test@.com"
+    // PASSWORD: "123" | "password" | "PASSWORD" | "12345678"
+
+    // ===== PAGE STATE INDICATORS =====
+    // --Loading States--
+    public loadingSpinner!: Locator;                 // ID: "#loading-spinner" | Shows during form submission
+    public loadingOverlay!: Locator;                 // ID: "#loading-overlay" | Full page loading state
+
+    // --Success States--
+    public successMessage!: Locator;                 // ID: "#success-message" | Shows after successful submission
+    public successCheckmark!: Locator;               // ID: "#success-checkmark" | Green checkmark icon
+
+    // --Form States--
+    public formDisabled!: Locator;                   // ID: "#form:disabled" | Form becomes disabled during submission
+    public buttonDisabled!: Locator;                 // ID: "#get-started-button:disabled" | Button disabled state
+
+    // ===== ACCESSIBILITY ELEMENTS =====
+    // --ARIA Labels--
+    public emailAriaLabel!: Locator;                 // ID: "#EMAIL" | aria-label: "Email address"
+    public passwordAriaLabel!: Locator;              // ID: "#PASSWORD" | aria-label: "Password"
+    public buttonAriaLabel!: Locator;                // ID: "#get-started-button" | aria-label: "Get started with Lili"
+
+    // --Screen Reader Text--
+    public screenReaderText!: Locator;               // ID: ".sr-only" | Hidden text for screen readers
+    public errorAnnouncement!: Locator;              // ID: "#error-announcement" | Announces errors to screen readers
 
     // --Help Text & Descriptions--
-    public heroContainer!: Locator;                  // ".hero"
-    public heroTitle!: Locator;                      // "h1:has-text('Welcome')"
-    public heroSubtitle!: Locator;                   // "h2:has-text('Welcome')"
-    public heroDescription!: Locator;                // ".hero-description"
-    public heroImage!: Locator;                      // "img[alt*='Hero']"
-    public heroBackground!: Locator;                  // ".hero-background"
-    public heroVideo!: Locator;                      // "video"
+    public heroContainer!: Locator;                  // ID: ".hero"
+    public heroTitle!: Locator;                      // ID: "h1:has-text('Welcome')"
+    public heroSubtitle!: Locator;                   // ID: "h2:has-text('Welcome')"
+    public heroDescription!: Locator;                // ID: ".hero-description"
+    public heroImage!: Locator;                      // ID: "img[alt*='Hero']"
+    public heroBackground!: Locator;                  // ID: ".hero-background"
+    public heroVideo!: Locator;                      // ID: "video"
 
-    // ===== LOCAL ERROR MESSAGES AND ADD COMMENT HOW TO TRIGGER THEM ON THE UI =====
+    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
     // --Email Validation Errors--
-    public emailError!: Locator;                     // "#EMAIL-error-container" (trigger: type invalid email like "test")
-    public invalidEmailError!: Locator;              // "text=Invalid email" (trigger: type invalid email and blur)
+    public emailError!: Locator;                     // ID: "#EMAIL-error-container" 
+    // TRIGGER: Type invalid email like "test" and blur field
+    // ERROR TEXT: "Please enter a valid email address"
+
+    public invalidEmailError!: Locator;              // ID: "#EMAIL-error" 
+    // TRIGGER: Type "invalid@email" and blur field  
+    // ERROR TEXT: "Invalid email format"
+
+    public emailRequiredError!: Locator;             // ID: "#EMAIL-required-error"
+    // TRIGGER: Leave email field empty and click "GET STARTED"
+    // ERROR TEXT: "Email is required"
 
     // --Password Validation Errors--
-    public passwordError!: Locator;                  // "#PASSWORD-error-container" (trigger: type weak password)
-    public confirmPasswordError!: Locator;           // ".confirm-password-error" (trigger: passwords don't match)
+    public passwordError!: Locator;                  // ID: "#PASSWORD-error-container"
+    // TRIGGER: Type weak password like "123" and blur field
+    // ERROR TEXT: "Password must be at least 8 characters"
+
+    public passwordTooWeakError!: Locator;           // ID: "#PASSWORD-weak-error" 
+    // TRIGGER: Type "password" (no numbers/symbols)
+    // ERROR TEXT: "Password is too weak. Include numbers and symbols"
+
+    public passwordRequiredError!: Locator;          // ID: "#PASSWORD-required-error"
+    // TRIGGER: Leave password field empty and click "GET STARTED"  
+    // ERROR TEXT: "Password is required"
+
+    public confirmPasswordError!: Locator;           // ID: "#confirm-password-error"
+    // TRIGGER: Type different passwords in password and confirm fields
+    // ERROR TEXT: "Passwords do not match"
+
+    // --Form Submission Errors--
+    public formSubmissionError!: Locator;            // ID: "#form-error"
+    // TRIGGER: Submit form with invalid data
+    // ERROR TEXT: "Please fix the errors above"
+
+    public networkError!: Locator;                   // ID: "#network-error"
+    // TRIGGER: Submit form when server is down
+    // ERROR TEXT: "Network error. Please try again"
 
     // --Form Field Errors--
     public firstNameError!: Locator;                 // ".first-name-error" (trigger: submit empty form)
@@ -608,6 +725,80 @@ export class Welcome {
         } catch (error) {
             console.log(`Error getting password error container: ${error instanceof Error ? error.message : String(error)}`);
             return null;
+        }
+    }
+
+    // ===== STANDARD PAGE OBJECT METHODS =====
+
+    async verifyPageElements(): Promise<boolean> {
+        console.log('🔍 Verifying Welcome page elements...');
+        
+        const elements = [
+            { name: 'Email Input', locator: this.emailInput, required: true },
+            { name: 'Password Input', locator: this.passwordInput, required: true },
+            { name: 'Get Started Button', locator: this.getStartedButton, required: true }
+        ];
+
+        let allVisible = true;
+        for (const element of elements) {
+            const isVisible = await element.locator.isVisible();
+            console.log(`📋 ${element.name}: ${isVisible ? '✅ Visible' : '❌ Not visible'}`);
+            
+            if (element.required && !isVisible) {
+                allVisible = false;
+            }
+        }
+
+        console.log(`🎯 Welcome page elements verification: ${allVisible ? '✅ PASSED' : '❌ FAILED'}`);
+        return allVisible;
+    }
+
+    async isFormComplete(): Promise<boolean> {
+        console.log('🔍 Checking if Welcome form is complete...');
+        
+        try {
+            const emailValue = await this.emailInput.inputValue();
+            const passwordValue = await this.passwordInput.inputValue();
+            
+            const isEmailFilled = emailValue && emailValue.trim() !== '';
+            const isPasswordFilled = passwordValue && passwordValue.trim() !== '';
+            
+            const isComplete = isEmailFilled && isPasswordFilled;
+            
+            console.log(`📧 Email filled: ${isEmailFilled ? '✅' : '❌'} (${emailValue ? 'has value' : 'empty'})`);
+            console.log(`🔒 Password filled: ${isPasswordFilled ? '✅' : '❌'} (${passwordValue ? 'has value' : 'empty'})`);
+            console.log(`🎯 Form complete: ${isComplete ? '✅ YES' : '❌ NO'}`);
+            
+            return isComplete;
+        } catch (error) {
+            console.log(`⚠️ Error checking form completion: ${error instanceof Error ? error.message : String(error)}`);
+            return false;
+        }
+    }
+
+    async verifyNavigationToNextPage(): Promise<boolean> {
+        console.log('🔍 Verifying navigation to next page...');
+        
+        try {
+            // Wait a bit for navigation to complete
+            await this.page.waitForTimeout(2000);
+            
+            const currentUrl = this.page.url();
+            console.log(`📍 Current URL: ${currentUrl}`);
+            
+            // Check if we're no longer on the welcome page
+            const isNotWelcomePage = !currentUrl.includes('/welcome');
+            
+            if (isNotWelcomePage) {
+                console.log('✅ Navigation successful - no longer on welcome page');
+                return true;
+            } else {
+                console.log('⚠️ Still on welcome page - navigation may have failed');
+                return false;
+            }
+        } catch (error) {
+            console.log(`⚠️ Error verifying navigation: ${error instanceof Error ? error.message : String(error)}`);
+            return false;
         }
     }
 }

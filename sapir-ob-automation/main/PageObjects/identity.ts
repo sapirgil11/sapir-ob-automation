@@ -19,16 +19,16 @@ export class Identity {
 
     // ===== IDENTITY PAGE ELEMENTS =====
     
-    // ===== BUTTONS ELEMENTS =====
-    public continueButton!: Locator;                              // "Continue" button
-    public backButton!: Locator;                                  // "Back" button
-    public saveButton!: Locator;                                  // "Save" button
-    public cancelButton!: Locator;                                // "Cancel" button
+    // ===== BUTTON IDs AND SELECTORS =====
+    public continueButton!: Locator;                              // ID: "#continue-button" | Text: "Continue"
+    public backButton!: Locator;                                  // ID: "#back-button" | Text: "Back"
+    public saveButton!: Locator;                                  // ID: "#save-button" | Text: "Save"
+    public cancelButton!: Locator;                                // ID: "#cancel-button" | Text: "Cancel"
     
-    // ===== INPUT AND FORM ELEMENTS =====
-    public ssnInput!: Locator;                                    // SSN input field
-    public dateOfBirthInput!: Locator;                            // Date of birth input field
-    public ssnToggleVisibilityButton!: Locator;                   // SSN show/hide toggle button
+    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
+    public ssnInput!: Locator;                                    // ID: "#ssn" | Placeholder: "Enter your SSN"
+    public dateOfBirthInput!: Locator;                            // ID: "#date-of-birth" | Placeholder: "MM/DD/YYYY"
+    public ssnToggleVisibilityButton!: Locator;                   // ID: "#ssn-toggle" | Text: "Show/Hide"
     
     // ===== FLOATING LABEL ELEMENTS =====
     public ssnFloatingLabel!: Locator;                            // SSN floating label wrapper
@@ -36,19 +36,64 @@ export class Identity {
     public ssnClearButton!: Locator;                              // SSN clear button
     public dateOfBirthClearButton!: Locator;                      // Date of birth clear button
     
-    // ===== TOOLTIPS AND TEXTS =====
-    public pageHeading!: Locator;                                 // "Personal identity verification" heading
-    public pageSubheading!: Locator;                              // Page subheading/description
-    public ssnLabel!: Locator;                                    // SSN label
-    public dateOfBirthLabel!: Locator;                            // Date of birth label
-    public helpText!: Locator;                                    // Help text/instructions
+    // ===== PAGE TEXTS AND CONTENT =====
+    public pageHeading!: Locator;                                 // ID: "#page-heading" | Text: "Personal identity verification"
+    public pageSubheading!: Locator;                              // ID: "#page-subheading" | Text: "We need to verify your identity"
+    public ssnLabel!: Locator;                                    // ID: "#ssn-label" | Text: "Social Security Number"
+    public dateOfBirthLabel!: Locator;                            // ID: "#dob-label" | Text: "Date of Birth"
+    public helpText!: Locator;                                    // ID: "#help-text" | Text: "This information is used for identity verification"
+    public progressText!: Locator;                                // ID: "#progress-text" | Text: "Step 4 of 12"
+    public requiredFieldText!: Locator;                           // ID: "#required-text" | Text: "* Required fields"
+    public securityNotice!: Locator;                              // ID: "#security-notice" | Text: "Your information is secure and encrypted"
     public securityNotice!: Locator;                              // Security notice text
     public creditScoreNotice!: Locator;                           // Credit score impact notice
     
-    // ===== LOCAL ERROR MESSAGES =====
-    public ssnError!: Locator;                                    // SSN error message
-    public dateOfBirthError!: Locator;                            // Date of birth error message
-    public generalError!: Locator;                                // General form error message
+    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
+    public ssnError!: Locator;                                    // ID: "#ssn-error"
+    // TRIGGER: Leave SSN field empty and click "Continue"
+    // ERROR TEXT: "Social Security Number is required"
+
+    public ssnInvalidError!: Locator;                             // ID: "#ssn-invalid-error"
+    // TRIGGER: Type invalid SSN format like "123" and blur field
+    // ERROR TEXT: "Please enter a valid 9-digit SSN"
+
+    public dateOfBirthError!: Locator;                            // ID: "#dob-error"
+    // TRIGGER: Leave date of birth field empty and click "Continue"
+    // ERROR TEXT: "Date of birth is required"
+
+    public dateOfBirthInvalidError!: Locator;                     // ID: "#dob-invalid-error"
+    // TRIGGER: Type invalid date format like "13/45/2023" and blur field
+    // ERROR TEXT: "Please enter a valid date (MM/DD/YYYY)"
+
+    public ageRestrictionError!: Locator;                         // ID: "#age-error"
+    // TRIGGER: Enter date of birth making user under 18
+    // ERROR TEXT: "You must be at least 18 years old"
+
+    public generalError!: Locator;                                // ID: "#general-error"
+    // TRIGGER: Submit form with invalid data
+    // ERROR TEXT: "Please fix the errors above"
+
+    // ===== VALIDATION RULES =====
+    // --SSN Validation--
+    // LENGTH: Exactly 9 digits
+    // PATTERN: /^\d{3}-?\d{2}-?\d{4}$/
+    // REQUIRED: Yes
+    // FORMAT: XXX-XX-XXXX or XXXXXXXXX
+
+    // --Date of Birth Validation--
+    // FORMAT: MM/DD/YYYY
+    // PATTERN: /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/
+    // REQUIRED: Yes
+    // AGE: Must be 18+ years old
+
+    // ===== TEST DATA EXAMPLES =====
+    // --Valid Test Data--
+    // SSN: "123-45-6789" | "123456789" | "987-65-4321"
+    // DOB: "01/15/1990" | "12/31/1985" | "06/20/1995"
+
+    // --Invalid Test Data--
+    // SSN: "123" | "123-45" | "abc-def-ghij" | "" (empty)
+    // DOB: "13/45/2023" | "01/32/1990" | "abc/def/ghij" | "" (empty)
     
     // ===== ERROR CONTAINERS =====
     public ssnErrorContainer!: Locator;                           // SSN error container

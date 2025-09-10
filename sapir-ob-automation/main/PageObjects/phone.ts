@@ -19,29 +19,58 @@ export class Phone {
 
     // ===== PHONE NUMBER PAGE ELEMENTS =====
     
-    // ===== BUTTONS ELEMENTS =====
-    public continueButton!: Locator;                              // "Continue" button
-    public backButton!: Locator;                                  // "Back" button
-    public saveButton!: Locator;                                  // "Save" button
-    public cancelButton!: Locator;                                // "Cancel" button
+    // ===== BUTTON IDs AND SELECTORS =====
+    public continueButton!: Locator;                              // ID: "#continue-button" | Text: "Continue"
+    public backButton!: Locator;                                  // ID: "#back-button" | Text: "Back"
+    public saveButton!: Locator;                                  // ID: "#save-button" | Text: "Save"
+    public cancelButton!: Locator;                                // ID: "#cancel-button" | Text: "Cancel"
     
-    // ===== INPUT AND PLACEHOLDER ELEMENTS =====
-    public phoneNumberInput!: Locator;                            // Phone number input field
-    public countryCodeSelect!: Locator;                           // Country code dropdown/select
+    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
+    public phoneNumberInput!: Locator;                            // ID: "#phone-number" | Placeholder: "Enter your phone number"
+    public countryCodeSelect!: Locator;                           // ID: "#country-code" | Placeholder: "Select country code"
     
     // ===== FLOATING LABEL ELEMENTS =====
     public phoneNumberFloatingLabel!: Locator;                    // Phone number floating label wrapper
     public phoneNumberClearButton!: Locator;                      // Phone number clear button
     
-    // ===== TOOLTIPS AND TEXTS =====
-    public pageHeading!: Locator;                                 // "Your mobile number" heading
-    public pageSubheading!: Locator;                              // Page subheading/description
-    public phoneNumberLabel!: Locator;                            // Phone number label
-    public helpText!: Locator;                                    // Help text/instructions
+    // ===== PAGE TEXTS AND CONTENT =====
+    public pageHeading!: Locator;                                 // ID: "#page-heading" | Text: "Your mobile number"
+    public pageSubheading!: Locator;                              // ID: "#page-subheading" | Text: "We'll use this to verify your identity"
+    public phoneNumberLabel!: Locator;                            // ID: "#phone-label" | Text: "Phone Number"
+    public helpText!: Locator;                                    // ID: "#help-text" | Text: "Enter a valid phone number for verification"
+    public progressText!: Locator;                                // ID: "#progress-text" | Text: "Step 3 of 12"
+    public requiredFieldText!: Locator;                           // ID: "#required-text" | Text: "* Required fields"
     
-    // ===== LOCAL ERROR MESSAGES =====
-    public phoneNumberError!: Locator;                            // Phone number error message
-    public generalError!: Locator;                                // General form error message
+    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
+    public phoneNumberError!: Locator;                            // ID: "#phone-error"
+    // TRIGGER: Leave phone field empty and click "Continue"
+    // ERROR TEXT: "Phone number is required"
+
+    public phoneInvalidError!: Locator;                           // ID: "#phone-invalid-error"
+    // TRIGGER: Type invalid phone format like "123" and blur field
+    // ERROR TEXT: "Please enter a valid phone number"
+
+    public phoneTooShortError!: Locator;                          // ID: "#phone-too-short-error"
+    // TRIGGER: Type phone number with less than 10 digits
+    // ERROR TEXT: "Phone number must be at least 10 digits"
+
+    public generalError!: Locator;                                // ID: "#general-error"
+    // TRIGGER: Submit form with invalid data
+    // ERROR TEXT: "Please fix the errors above"
+
+    // ===== VALIDATION RULES =====
+    // --Phone Number Validation--
+    // MIN LENGTH: 10 digits
+    // MAX LENGTH: 15 digits
+    // PATTERN: /^\+?[\d\s\-\(\)]+$/
+    // REQUIRED: Yes
+
+    // ===== TEST DATA EXAMPLES =====
+    // --Valid Test Data--
+    // PHONE: "+1-555-123-4567" | "(555) 123-4567" | "5551234567" | "+44 20 7946 0958"
+
+    // --Invalid Test Data--
+    // PHONE: "123" | "abc-def-ghij" | "555-123" | "" (empty)
     
     // ===== ERROR CONTAINERS =====
     public phoneNumberErrorContainer!: Locator;                   // Phone number error container
