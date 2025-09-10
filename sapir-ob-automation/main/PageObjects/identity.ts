@@ -428,60 +428,6 @@ export class Identity {
         }
     }
 
-    // ===== VALIDATION TESTING METHODS =====
-
-    /**
-     * 🧪 Test required field validation
-     */
-    async testRequiredFieldValidation(): Promise<void> {
-        // Clear both fields
-        await this.ssnInput.clear();
-        await this.dateOfBirthInput.clear();
-        
-        // Click outside to trigger validation
-        await this.pageLayout.click();
-        
-        // Wait for error messages to appear
-        await this.page.waitForTimeout(1000);
-    }
-
-    /**
-     * 🧪 Test invalid SSN format validation
-     */
-    async testInvalidSSNFormatValidation(): Promise<void> {
-        await this.ssnInput.fill('123');
-        await this.pageLayout.click();
-        await this.page.waitForTimeout(1000);
-    }
-
-    /**
-     * 🧪 Test invalid date format validation
-     */
-    async testInvalidDateFormatValidation(): Promise<void> {
-        await this.dateOfBirthInput.fill('13/45/2000');
-        await this.pageLayout.click();
-        await this.page.waitForTimeout(1000);
-    }
-
-    /**
-     * 🧪 Test underage validation
-     */
-    async testUnderageValidation(): Promise<void> {
-        // Use a date that makes user under 18
-        const underageDate = '01/01/2010';
-        await this.dateOfBirthInput.fill(underageDate);
-        await this.pageLayout.click();
-        await this.page.waitForTimeout(1000);
-    }
-
-    /**
-     * 🧪 Test valid identity input
-     */
-    async testValidIdentityInput(): Promise<void> {
-        await this.ssnInput.fill('123-45-6789');
-        await this.dateOfBirthInput.fill('01/01/1990');
-        await this.page.waitForTimeout(1000);
-    }
 
     /**
      * 🧹 Clear SSN field using clear button

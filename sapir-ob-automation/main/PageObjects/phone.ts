@@ -384,38 +384,6 @@ export class Phone {
         }
     }
 
-    // ===== VALIDATION TESTING METHODS =====
-
-    /**
-     * 🧪 Test required field validation
-     */
-    async testRequiredFieldValidation(): Promise<void> {
-        // Clear phone number field
-        await this.phoneNumberInput.clear();
-        
-        // Click outside to trigger validation
-        await this.pageLayout.click();
-        
-        // Wait for error messages to appear
-        await this.page.waitForTimeout(1000);
-    }
-
-    /**
-     * 🧪 Test invalid phone format validation
-     */
-    async testInvalidPhoneFormatValidation(): Promise<void> {
-        await this.phoneNumberInput.fill('123');
-        await this.pageLayout.click();
-        await this.page.waitForTimeout(1000);
-    }
-
-    /**
-     * 🧪 Test valid phone input
-     */
-    async testValidPhoneInput(): Promise<void> {
-        await this.phoneNumberInput.fill('5551234567');
-        await this.page.waitForTimeout(1000);
-    }
 
     /**
      * 🧹 Clear phone number field using clear button

@@ -416,63 +416,6 @@ export class PersonalDetails {
         }
     }
 
-    // ===== VALIDATION TESTING METHODS =====
-
-    /**
-     * 🧪 Test required field validation
-     */
-    async testRequiredFieldValidation(): Promise<void> {
-        // Clear both fields
-        await this.firstNameInput.clear();
-        await this.lastNameInput.clear();
-        
-        // Click outside to trigger validation
-        await this.pageLayout.click();
-        
-        // Wait for error messages to appear
-        await this.page.waitForTimeout(1000);
-    }
-
-    /**
-     * 🧪 Test minimum length validation
-     */
-    async testMinLengthValidation(): Promise<void> {
-        await this.firstNameInput.fill('e');
-        await this.lastNameInput.fill('e');
-        await this.pageLayout.click();
-        await this.page.waitForTimeout(1000);
-    }
-
-    /**
-     * 🧪 Test letters only validation
-     */
-    async testLettersOnlyValidation(): Promise<void> {
-        await this.firstNameInput.fill('!!');
-        await this.lastNameInput.fill('!!');
-        await this.pageLayout.click();
-        await this.page.waitForTimeout(1000);
-    }
-
-    /**
-     * 🧪 Test maximum length validation
-     */
-    async testMaxLengthValidation(): Promise<void> {
-        const longName = 'sdfsdfsdfsdfsdfsdfisdfiisdijfijsdjif';
-        await this.firstNameInput.fill(longName);
-        await this.lastNameInput.fill(longName);
-        await this.pageLayout.click();
-        await this.page.waitForTimeout(1000);
-    }
-
-    /**
-     * 🧪 Test valid input
-     */
-    async testValidInput(): Promise<void> {
-        await this.firstNameInput.fill('Sapirrrrrr');
-        await this.lastNameInput.fill('Sapirrrrrr');
-        await this.page.waitForTimeout(1000);
-    }
-
     /**
      * 🧹 Clear first name field using clear button
      */
