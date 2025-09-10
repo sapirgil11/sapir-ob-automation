@@ -29,8 +29,8 @@ test.describe('👤 Personal Details Page Tests', () => {
         console.log(`   📧 Using email: ${randomEmail}`);
         await welcomePage.emailInput.fill(randomEmail);
         await welcomePage.passwordInput.fill('TestPassword123!');
-        await welcomePage.getStartedButton.click();
-
+            await welcomePage.getStartedButton.click();
+            
         // ===== STEP 2: EMAIL VERIFICATION =====
         console.log('📧 Step 2: Email Verification...');
         await page.waitForURL('**/email-verification**');
@@ -41,14 +41,14 @@ test.describe('👤 Personal Details Page Tests', () => {
         const emailPrefix = randomEmail.split('@')[0];
         console.log(`   🔑 Email prefix for MFA: ${emailPrefix}`);
         
-        const mfaExtractor = new MFACodeExtractor(context, page);
-        const mfaCode = await mfaExtractor.extractMFACode(emailPrefix);
+                const mfaExtractor = new MFACodeExtractor(context, page);
+                const mfaCode = await mfaExtractor.extractMFACode(emailPrefix);
         console.log(`   ✅ MFA code extracted: ${mfaCode}`);
 
         // ===== STEP 4: PERSONAL DETAILS PAGE =====
         console.log('👤 Step 4: Personal Details Page...');
         await verificationPage.enterVerificationCode(mfaCode);
-        console.log('   ✅ MFA code entered, waiting for personal details page...');
+                console.log('   ✅ MFA code entered, waiting for personal details page...');
         await page.waitForURL('**/personal-details**');
         await page.waitForTimeout(2000);
         console.log('   ✅ Reached Personal Details page successfully!');
@@ -68,8 +68,8 @@ test.describe('👤 Personal Details Page Tests', () => {
         console.log('\n🧪 Testing Personal Details page functionality...');
 
         // Verify page elements
-        const pageElementsVisible = await personalDetailsPage.verifyPageElements();
-        expect(pageElementsVisible).toBe(true);
+        const pageLoaded = await personalDetailsPage.isPersonalDetailsPageLoaded();
+        expect(pageLoaded).toBe(true);
         console.log('✅ Page elements verified');
 
         // Test personal details form filling
@@ -81,9 +81,9 @@ test.describe('👤 Personal Details Page Tests', () => {
         
         await personalDetailsPage.firstNameInput.fill(testFirstName);
         await personalDetailsPage.lastNameInput.fill(testLastName);
-
+        
         // Verify form is complete
-        const isFormComplete = await personalDetailsPage.isFormComplete();
+        const isFormComplete = await personalDetailsPage.isContinueButtonEnabled();
         console.log(`📊 Form complete: ${isFormComplete}`);
         expect(isFormComplete).toBe(true);
 
@@ -95,17 +95,13 @@ test.describe('👤 Personal Details Page Tests', () => {
         console.log('⏰ Waiting for navigation to next page...');
         await page.waitForTimeout(5000);
         
-        const navigationSuccess = await personalDetailsPage.verifyNavigationToNextPage();
-        console.log(`✅ Navigation successful: ${navigationSuccess}`);
+        const currentUrl = page.url();
+        console.log(`📍 Current URL: ${currentUrl}`);
         
-        if (navigationSuccess) {
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
-            console.log('✅ SUCCESS: Navigated to next page!');
+        if (currentUrl.includes('/phone')) {
+            console.log('✅ SUCCESS: Navigated to phone page!');
         } else {
             console.log('⚠️ Navigation may have failed, checking current URL...');
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
         }
 
         console.log('\n✅ Personal Details Page - Complete Personal Details Flow Test Completed!');

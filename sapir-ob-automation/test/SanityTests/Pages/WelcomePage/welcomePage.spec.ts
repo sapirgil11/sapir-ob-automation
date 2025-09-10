@@ -55,8 +55,8 @@ test.describe('📱 Welcome Page Tests', () => {
 
         // Click Get Started button
         console.log('➡️ Clicking Get Started button...');
-        await welcomePage.getStartedButton.click();
-
+                await welcomePage.getStartedButton.click();
+                
         // Verify navigation to next page
         console.log('⏰ Waiting for navigation to next page...');
         await page.waitForTimeout(5000);

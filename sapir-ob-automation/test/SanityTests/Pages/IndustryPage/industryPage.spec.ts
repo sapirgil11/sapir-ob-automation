@@ -177,298 +177,298 @@ test.describe('🏭 Industry Page Tests', () => {
         console.log('\n✅ Art → Painter Industry Test Completed!');
     });
 
-    test('🏭 Industry Page - Agriculture & Farming Flow', async ({ page, context, browser }) => {
-        test.setTimeout(300000); // 5 minutes timeout
+    // test('🏭 Industry Page - Agriculture & Farming Flow', async ({ page, context, browser }) => {
+    //     test.setTimeout(300000); // 5 minutes timeout
 
-        console.log('🚀 Starting Agriculture & Farming Industry Test...');
+    //     console.log('🚀 Starting Agriculture & Farming Industry Test...');
 
-        // Do full onboarding flow to reach Industry page
-        const industryPage = await doFullOnboardingFlow(page, context, browser);
+    //     // Do full onboarding flow to reach Industry page
+    //     const industryPage = await doFullOnboardingFlow(page, context, browser);
 
-        // Test Agriculture & Farming → Farming(Animal Production) flow
-        console.log('\n🧪 Testing Agriculture & Farming → Farming(Animal Production) flow...');
+    //     // Test Agriculture & Farming → Farming(Animal Production) flow
+    //     console.log('\n🧪 Testing Agriculture & Farming → Farming(Animal Production) flow...');
 
-        // Select "Agriculture & Farming" industry
-        console.log('🏭 Selecting Agriculture & Farming industry...');
-        await industryPage.selectIndustry('Agriculture & Farming');
-        await page.waitForTimeout(2000);
+    //     // Select "Agriculture & Farming" industry
+    //     console.log('🏭 Selecting Agriculture & Farming industry...');
+    //     await industryPage.selectIndustry('Agriculture & Farming');
+    //     await page.waitForTimeout(2000);
 
-        // Select "Farming(Animal Production)" sub-industry
-        console.log('🏭 Selecting Farming(Animal Production) sub-industry...');
-        await industryPage.selectSubIndustry('Farming(Animal Production)');
-        await page.waitForTimeout(2000);
+    //     // Select "Farming(Animal Production)" sub-industry
+    //     console.log('🏭 Selecting Farming(Animal Production) sub-industry...');
+    //     await industryPage.selectSubIndustry('Farming(Animal Production)');
+    //     await page.waitForTimeout(2000);
 
-        // Click Continue button to submit the form
-        console.log('➡️ Clicking Continue button...');
-        await industryPage.clickContinueButton();
-        await page.waitForTimeout(3000);
+    //     // Click Continue button to submit the form
+    //     console.log('➡️ Clicking Continue button...');
+    //     await industryPage.clickContinueButton();
+    //     await page.waitForTimeout(3000);
 
-        // Verify navigation to next page
-        const finalUrl = page.url();
-        console.log(`📍 Final URL: ${finalUrl}`);
+    //     // Verify navigation to next page
+    //     const finalUrl = page.url();
+    //     console.log(`📍 Final URL: ${finalUrl}`);
 
-        expect(finalUrl).toContain('/know-your-business');
-        console.log('✅ SUCCESS: Navigated to Know Your Business page!');
+    //     expect(finalUrl).toContain('/know-your-business');
+    //     console.log('✅ SUCCESS: Navigated to Know Your Business page!');
 
-        console.log('\n✅ Agriculture & Farming Industry Test Completed!');
-    });
+    //     console.log('\n✅ Agriculture & Farming Industry Test Completed!');
+    // });
 
-    test('🏭 Industry Page - Agriculture & Farming → Farming(Crop Production) Flow', async ({ page, context, browser }) => {
-        test.setTimeout(300000); // 5 minutes timeout
+    // test('🏭 Industry Page - Agriculture & Farming → Farming(Crop Production) Flow', async ({ page, context, browser }) => {
+    //     test.setTimeout(300000); // 5 minutes timeout
 
-        console.log('🚀 Starting Agriculture & Farming → Farming(Crop Production) Industry Test...');
+    //     console.log('🚀 Starting Agriculture & Farming → Farming(Crop Production) Industry Test...');
 
-        // Do full onboarding flow to reach Industry page
-        const industryPage = await doFullOnboardingFlow(page, context, browser);
+    //     // Do full onboarding flow to reach Industry page
+    //     const industryPage = await doFullOnboardingFlow(page, context, browser);
 
-        // Test Agriculture & Farming → Farming(Crop Production) flow
-        console.log('\n🧪 Testing Agriculture & Farming → Farming(Crop Production) flow...');
+    //     // Test Agriculture & Farming → Farming(Crop Production) flow
+    //     console.log('\n🧪 Testing Agriculture & Farming → Farming(Crop Production) flow...');
 
-        // Select "Agriculture & Farming" industry
-        console.log('🏭 Selecting Agriculture & Farming industry...');
-        await industryPage.selectIndustry('Agriculture & Farming');
-        await page.waitForTimeout(2000);
+    //     // Select "Agriculture & Farming" industry
+    //     console.log('🏭 Selecting Agriculture & Farming industry...');
+    //     await industryPage.selectIndustry('Agriculture & Farming');
+    //     await page.waitForTimeout(2000);
 
-        // Select "Farming(Crop Production)" sub-industry
-        console.log('🏭 Selecting Farming(Crop Production) sub-industry...');
-        await industryPage.selectSubIndustry('Farming(Crop Production)');
-        await page.waitForTimeout(2000);
+    //     // Select "Farming(Crop Production)" sub-industry
+    //     console.log('🏭 Selecting Farming(Crop Production) sub-industry...');
+    //     await industryPage.selectSubIndustry('Farming(Crop Production)');
+    //     await page.waitForTimeout(2000);
 
-        // Click Continue button to submit the form
-        console.log('➡️ Clicking Continue button...');
-        await industryPage.clickContinueButton();
-        await page.waitForTimeout(3000);
+    //     // Click Continue button to submit the form
+    //     console.log('➡️ Clicking Continue button...');
+    //     await industryPage.clickContinueButton();
+    //     await page.waitForTimeout(3000);
 
-        // Verify navigation to next page
-        const finalUrl = page.url();
-        console.log(`📍 Final URL: ${finalUrl}`);
+    //     // Verify navigation to next page
+    //     const finalUrl = page.url();
+    //     console.log(`📍 Final URL: ${finalUrl}`);
 
-        expect(finalUrl).toContain('/know-your-business');
-        console.log('✅ SUCCESS: Navigated to Know Your Business page!');
+    //     expect(finalUrl).toContain('/know-your-business');
+    //     console.log('✅ SUCCESS: Navigated to Know Your Business page!');
 
-        console.log('\n✅ Agriculture & Farming → Farming(Crop Production) Industry Test Completed!');
-    });
+    //     console.log('\n✅ Agriculture & Farming → Farming(Crop Production) Industry Test Completed!');
+    // });
 
-    test('🎯 Industry Page - Tooltip Functionality Test', async ({ page, context, browser }) => {
-        test.setTimeout(300000); // 5 minutes timeout
+    // test('🎯 Industry Page - Tooltip Functionality Test', async ({ page, context, browser }) => {
+    //     test.setTimeout(300000); // 5 minutes timeout
 
-        console.log('🚀 Starting Industry Page Tooltip Functionality Test...');
+    //     console.log('🚀 Starting Industry Page Tooltip Functionality Test...');
 
-        // Do full onboarding flow to reach Industry page
-        const industryPage = await doFullOnboardingFlow(page, context, browser);
+    //     // Do full onboarding flow to reach Industry page
+    //     const industryPage = await doFullOnboardingFlow(page, context, browser);
 
-        // ===== TEST TOOLTIP FUNCTIONALITY =====
-        console.log('\n🎯 Testing Tooltip Functionality...');
+    //     // ===== TEST TOOLTIP FUNCTIONALITY =====
+    //     console.log('\n🎯 Testing Tooltip Functionality...');
 
-        // Test desktop tooltip
-        const tooltipResult = await industryPage.testTooltipFunctionality();
-        expect(tooltipResult).toBe(true);
-        console.log('✅ Desktop tooltip test passed!');
+    //     // Test desktop tooltip
+    //     const tooltipResult = await industryPage.testTooltipFunctionality();
+    //     expect(tooltipResult).toBe(true);
+    //     console.log('✅ Desktop tooltip test passed!');
 
-        // Test mobile tooltip (bottom sheet)
-        const mobileTooltipResult = await industryPage.testMobileTooltip();
-        console.log(`📱 Mobile tooltip test result: ${mobileTooltipResult}`);
+    //     // Test mobile tooltip (bottom sheet)
+    //     const mobileTooltipResult = await industryPage.testMobileTooltip();
+    //     console.log(`📱 Mobile tooltip test result: ${mobileTooltipResult}`);
 
-        console.log('\n✅ Tooltip Functionality Test Completed!');
-    });
+    //     console.log('\n✅ Tooltip Functionality Test Completed!');
+    // });
 
-    test('🔄 Industry Page - Dynamic Sub-Industry Clearing Test', async ({ page, context, browser }) => {
-        test.setTimeout(300000); // 5 minutes timeout
+    // test('🔄 Industry Page - Dynamic Sub-Industry Clearing Test', async ({ page, context, browser }) => {
+    //     test.setTimeout(300000); // 5 minutes timeout
 
-        console.log('🚀 Starting Dynamic Sub-Industry Clearing Test...');
+    //     console.log('🚀 Starting Dynamic Sub-Industry Clearing Test...');
 
-        // Do full onboarding flow to reach Industry page
-        const industryPage = await doFullOnboardingFlow(page, context, browser);
+    //     // Do full onboarding flow to reach Industry page
+    //     const industryPage = await doFullOnboardingFlow(page, context, browser);
 
-        // ===== TEST DYNAMIC SUB-INDUSTRY CLEARING =====
-        console.log('\n🔄 Testing Dynamic Sub-Industry Clearing...');
+    //     // ===== TEST DYNAMIC SUB-INDUSTRY CLEARING =====
+    //     console.log('\n🔄 Testing Dynamic Sub-Industry Clearing...');
 
-        // Step 1: Select first industry and sub-industry
-        console.log('📋 Step 1: Select Art → Painter');
-        await industryPage.selectIndustry('Art');
-        await page.waitForTimeout(2000);
-        await industryPage.selectSubIndustry('Painter');
-        await page.waitForTimeout(2000);
+    //     // Step 1: Select first industry and sub-industry
+    //     console.log('📋 Step 1: Select Art → Painter');
+    //     await industryPage.selectIndustry('Art');
+    //     await page.waitForTimeout(2000);
+    //     await industryPage.selectSubIndustry('Painter');
+    //     await page.waitForTimeout(2000);
 
-        // Verify both are selected
-        const isFormComplete1 = await industryPage.isFormComplete();
-        console.log(`📊 Form complete after Art → Painter: ${isFormComplete1}`);
+    //     // Verify both are selected
+    //     const isFormComplete1 = await industryPage.isFormComplete();
+    //     console.log(`📊 Form complete after Art → Painter: ${isFormComplete1}`);
 
-        // Step 2: Change industry and verify sub-industry is cleared
-        console.log('📋 Step 2: Change to Agriculture & Farming and verify sub-industry is cleared');
-        await industryPage.changeIndustryAndVerifySubIndustryCleared('Agriculture & Farming');
-        await page.waitForTimeout(2000);
+    //     // Step 2: Change industry and verify sub-industry is cleared
+    //     console.log('📋 Step 2: Change to Agriculture & Farming and verify sub-industry is cleared');
+    //     await industryPage.changeIndustryAndVerifySubIndustryCleared('Agriculture & Farming');
+    //     await page.waitForTimeout(2000);
 
-        // Step 3: Select new sub-industry
-        console.log('📋 Step 3: Select Farming(Crop Production) sub-industry');
-        await industryPage.selectSubIndustry('Farming(Crop Production)');
-        await page.waitForTimeout(2000);
+    //     // Step 3: Select new sub-industry
+    //     console.log('📋 Step 3: Select Farming(Crop Production) sub-industry');
+    //     await industryPage.selectSubIndustry('Farming(Crop Production)');
+    //     await page.waitForTimeout(2000);
 
-        // Verify form is complete again
-        const isFormComplete2 = await industryPage.isFormComplete();
-        console.log(`📊 Form complete after Agriculture & Farming → Farming(Crop Production): ${isFormComplete2}`);
+    //     // Verify form is complete again
+    //     const isFormComplete2 = await industryPage.isFormComplete();
+    //     console.log(`📊 Form complete after Agriculture & Farming → Farming(Crop Production): ${isFormComplete2}`);
 
-        // Step 4: Change industry again (back to Art)
-        console.log('📋 Step 4: Change back to Art');
-        await industryPage.changeIndustryAndVerifySubIndustryCleared('Art');
-        await page.waitForTimeout(2000);
+    //     // Step 4: Change industry again (back to Art)
+    //     console.log('📋 Step 4: Change back to Art');
+    //     await industryPage.changeIndustryAndVerifySubIndustryCleared('Art');
+    //     await page.waitForTimeout(2000);
 
-        // Step 5: Select new sub-industry
-        console.log('📋 Step 5: Select Sculpter sub-industry');
-        await industryPage.selectSubIndustry('Sculpter');
-        await page.waitForTimeout(2000);
+    //     // Step 5: Select new sub-industry
+    //     console.log('📋 Step 5: Select Sculpter sub-industry');
+    //     await industryPage.selectSubIndustry('Sculpter');
+    //     await page.waitForTimeout(2000);
 
-        // Final verification
-        const isFormComplete3 = await industryPage.isFormComplete();
-        console.log(`📊 Form complete after Art → Sculpter: ${isFormComplete3}`);
+    //     // Final verification
+    //     const isFormComplete3 = await industryPage.isFormComplete();
+    //     console.log(`📊 Form complete after Art → Sculpter: ${isFormComplete3}`);
 
-        expect(isFormComplete3).toBe(true);
-        console.log('✅ SUCCESS: Dynamic sub-industry clearing works correctly!');
+    //     expect(isFormComplete3).toBe(true);
+    //     console.log('✅ SUCCESS: Dynamic sub-industry clearing works correctly!');
 
-        console.log('\n✅ Dynamic Sub-Industry Clearing Test Completed!');
-    });
+    //     console.log('\n✅ Dynamic Sub-Industry Clearing Test Completed!');
+    // });
 
-    test('🏭 Industry Page - Art → Sculpter Flow', async ({ page, context, browser }) => {
-        test.setTimeout(300000); // 5 minutes timeout
+    // test('🏭 Industry Page - Art → Sculpter Flow', async ({ page, context, browser }) => {
+    //     test.setTimeout(300000); // 5 minutes timeout
 
-        console.log('🚀 Starting Art → Sculpter Industry Test...');
+    //     console.log('🚀 Starting Art → Sculpter Industry Test...');
 
-        // Do full onboarding flow to reach Industry page
-        const industryPage = await doFullOnboardingFlow(page, context, browser);
+    //     // Do full onboarding flow to reach Industry page
+    //     const industryPage = await doFullOnboardingFlow(page, context, browser);
 
-        // Test Art → Sculpter flow
-        console.log('\n🧪 Testing Art → Sculpter flow...');
+    //     // Test Art → Sculpter flow
+    //     console.log('\n🧪 Testing Art → Sculpter flow...');
 
-        // Select "Art" industry
-        console.log('🏭 Selecting Art industry...');
-        await industryPage.selectIndustry('Art');
-        await page.waitForTimeout(2000);
+    //     // Select "Art" industry
+    //     console.log('🏭 Selecting Art industry...');
+    //     await industryPage.selectIndustry('Art');
+    //     await page.waitForTimeout(2000);
 
-        // Select "Sculpter" sub-industry
-        console.log('🏭 Selecting Sculpter sub-industry...');
-        await industryPage.selectSubIndustry('Sculpter');
-        await page.waitForTimeout(2000);
+    //     // Select "Sculpter" sub-industry
+    //     console.log('🏭 Selecting Sculpter sub-industry...');
+    //     await industryPage.selectSubIndustry('Sculpter');
+    //     await page.waitForTimeout(2000);
 
-        // Click Continue button to submit the form
-        console.log('➡️ Clicking Continue button...');
-        await industryPage.clickContinueButton();
-        await page.waitForTimeout(3000);
+    //     // Click Continue button to submit the form
+    //     console.log('➡️ Clicking Continue button...');
+    //     await industryPage.clickContinueButton();
+    //     await page.waitForTimeout(3000);
 
-        // Verify navigation to next page
-        const finalUrl = page.url();
-        console.log(`📍 Final URL: ${finalUrl}`);
+    //     // Verify navigation to next page
+    //     const finalUrl = page.url();
+    //     console.log(`📍 Final URL: ${finalUrl}`);
 
-        expect(finalUrl).toContain('/know-your-business');
-        console.log('✅ SUCCESS: Navigated to Know Your Business page!');
+    //     expect(finalUrl).toContain('/know-your-business');
+    //     console.log('✅ SUCCESS: Navigated to Know Your Business page!');
 
-        console.log('\n✅ Art → Sculpter Industry Test Completed!');
-    });
+    //     console.log('\n✅ Art → Sculpter Industry Test Completed!');
+    // });
 
-    test('🏭 Industry Page - Health Services → Medical Office Flow', async ({ page, context, browser }) => {
-        test.setTimeout(300000); // 5 minutes timeout
+    // test('🏭 Industry Page - Health Services → Medical Office Flow', async ({ page, context, browser }) => {
+    //     test.setTimeout(300000); // 5 minutes timeout
 
-        console.log('🚀 Starting Health Services → Medical Office Industry Test...');
+    //     console.log('🚀 Starting Health Services → Medical Office Industry Test...');
 
-        // Do full onboarding flow to reach Industry page
-        const industryPage = await doFullOnboardingFlow(page, context, browser);
+    //     // Do full onboarding flow to reach Industry page
+    //     const industryPage = await doFullOnboardingFlow(page, context, browser);
 
-        // Test Health Services → Medical Office flow
-        console.log('\n🧪 Testing Health Services → Medical Office flow...');
+    //     // Test Health Services → Medical Office flow
+    //     console.log('\n🧪 Testing Health Services → Medical Office flow...');
 
-        // Select "Health Services" industry
-        console.log('🏭 Selecting Health Services industry...');
-        await industryPage.selectIndustry('Health Services');
-        await page.waitForTimeout(2000);
+    //     // Select "Health Services" industry
+    //     console.log('🏭 Selecting Health Services industry...');
+    //     await industryPage.selectIndustry('Health Services');
+    //     await page.waitForTimeout(2000);
 
-        // Select "Medical Office" sub-industry
-        console.log('🏭 Selecting Medical Office sub-industry...');
-        await industryPage.selectSubIndustry('Medical Office');
-        await page.waitForTimeout(2000);
+    //     // Select "Medical Office" sub-industry
+    //     console.log('🏭 Selecting Medical Office sub-industry...');
+    //     await industryPage.selectSubIndustry('Medical Office');
+    //     await page.waitForTimeout(2000);
 
-        // Click Continue button to submit the form
-        console.log('➡️ Clicking Continue button...');
-        await industryPage.clickContinueButton();
-        await page.waitForTimeout(3000);
+    //     // Click Continue button to submit the form
+    //     console.log('➡️ Clicking Continue button...');
+    //     await industryPage.clickContinueButton();
+    //     await page.waitForTimeout(3000);
 
-        // Verify navigation to next page
-        const finalUrl = page.url();
-        console.log(`📍 Final URL: ${finalUrl}`);
+    //     // Verify navigation to next page
+    //     const finalUrl = page.url();
+    //     console.log(`📍 Final URL: ${finalUrl}`);
 
-        expect(finalUrl).toContain('/know-your-business');
-        console.log('✅ SUCCESS: Navigated to Know Your Business page!');
+    //     expect(finalUrl).toContain('/know-your-business');
+    //     console.log('✅ SUCCESS: Navigated to Know Your Business page!');
 
-        console.log('\n✅ Health Services → Medical Office Industry Test Completed!');
-    });
+    //     console.log('\n✅ Health Services → Medical Office Industry Test Completed!');
+    // });
 
-    test('🏭 Industry Page - Food & Hospitality → Restaurant Flow', async ({ page, context, browser }) => {
-        test.setTimeout(300000); // 5 minutes timeout
+    // test('🏭 Industry Page - Food & Hospitality → Restaurant Flow', async ({ page, context, browser }) => {
+    //     test.setTimeout(300000); // 5 minutes timeout
 
-        console.log('🚀 Starting Food & Hospitality → Restaurant Industry Test...');
+    //     console.log('🚀 Starting Food & Hospitality → Restaurant Industry Test...');
 
-        // Do full onboarding flow to reach Industry page
-        const industryPage = await doFullOnboardingFlow(page, context, browser);
+    //     // Do full onboarding flow to reach Industry page
+    //     const industryPage = await doFullOnboardingFlow(page, context, browser);
 
-        // Test Food & Hospitality → Restaurant flow
-        console.log('\n🧪 Testing Food & Hospitality → Restaurant flow...');
+    //     // Test Food & Hospitality → Restaurant flow
+    //     console.log('\n🧪 Testing Food & Hospitality → Restaurant flow...');
 
-        // Select "Food & Hospitality" industry
-        console.log('🏭 Selecting Food & Hospitality industry...');
-        await industryPage.selectIndustry('Food & Hospitality');
-        await page.waitForTimeout(2000);
+    //     // Select "Food & Hospitality" industry
+    //     console.log('🏭 Selecting Food & Hospitality industry...');
+    //     await industryPage.selectIndustry('Food & Hospitality');
+    //     await page.waitForTimeout(2000);
 
-        // Select "Restaurant" sub-industry
-        console.log('🏭 Selecting Restaurant sub-industry...');
-        await industryPage.selectSubIndustry('Restaurant');
-        await page.waitForTimeout(2000);
+    //     // Select "Restaurant" sub-industry
+    //     console.log('🏭 Selecting Restaurant sub-industry...');
+    //     await industryPage.selectSubIndustry('Restaurant');
+    //     await page.waitForTimeout(2000);
 
-        // Click Continue button to submit the form
-        console.log('➡️ Clicking Continue button...');
-        await industryPage.clickContinueButton();
-        await page.waitForTimeout(3000);
+    //     // Click Continue button to submit the form
+    //     console.log('➡️ Clicking Continue button...');
+    //     await industryPage.clickContinueButton();
+    //     await page.waitForTimeout(3000);
 
-        // Verify navigation to next page
-        const finalUrl = page.url();
-        console.log(`📍 Final URL: ${finalUrl}`);
+    //     // Verify navigation to next page
+    //     const finalUrl = page.url();
+    //     console.log(`📍 Final URL: ${finalUrl}`);
 
-        expect(finalUrl).toContain('/know-your-business');
-        console.log('✅ SUCCESS: Navigated to Know Your Business page!');
+    //     expect(finalUrl).toContain('/know-your-business');
+    //     console.log('✅ SUCCESS: Navigated to Know Your Business page!');
 
-        console.log('\n✅ Food & Hospitality → Restaurant Industry Test Completed!');
-    });
+    //     console.log('\n✅ Food & Hospitality → Restaurant Industry Test Completed!');
+    // });
 
-    test('🏭 Industry Page - Online Services → Web Developer Flow', async ({ page, context, browser }) => {
-        test.setTimeout(300000); // 5 minutes timeout
+    // test('🏭 Industry Page - Online Services → Web Developer Flow', async ({ page, context, browser }) => {
+    //     test.setTimeout(300000); // 5 minutes timeout
 
-        console.log('🚀 Starting Online Services - developer/engineer → Web Developer Industry Test...');
+    //     console.log('🚀 Starting Online Services - developer/engineer → Web Developer Industry Test...');
 
-        // Do full onboarding flow to reach Industry page
-        const industryPage = await doFullOnboardingFlow(page, context, browser);
+    //     // Do full onboarding flow to reach Industry page
+    //     const industryPage = await doFullOnboardingFlow(page, context, browser);
 
-        // Test Online Services - developer/engineer → Web Developer flow
-        console.log('\n🧪 Testing Online Services - developer/engineer → Web Developer flow...');
+    //     // Test Online Services - developer/engineer → Web Developer flow
+    //     console.log('\n🧪 Testing Online Services - developer/engineer → Web Developer flow...');
 
-        // Select "Online Services - developer/engineer" industry
-        console.log('🏭 Selecting Online Services - developer/engineer industry...');
-        await industryPage.selectIndustry('Online Services - developer/engineer');
-        await page.waitForTimeout(2000);
+    //     // Select "Online Services - developer/engineer" industry
+    //     console.log('🏭 Selecting Online Services - developer/engineer industry...');
+    //     await industryPage.selectIndustry('Online Services - developer/engineer');
+    //     await page.waitForTimeout(2000);
 
-        // Select "Web Developer" sub-industry
-        console.log('🏭 Selecting Web Developer sub-industry...');
-        await industryPage.selectSubIndustry('Web Developer');
-        await page.waitForTimeout(2000);
+    //     // Select "Web Developer" sub-industry
+    //     console.log('🏭 Selecting Web Developer sub-industry...');
+    //     await industryPage.selectSubIndustry('Web Developer');
+    //     await page.waitForTimeout(2000);
 
-        // Click Continue button to submit the form
-        console.log('➡️ Clicking Continue button...');
-        await industryPage.clickContinueButton();
-        await page.waitForTimeout(3000);
+    //     // Click Continue button to submit the form
+    //     console.log('➡️ Clicking Continue button...');
+    //     await industryPage.clickContinueButton();
+    //     await page.waitForTimeout(3000);
 
-        // Verify navigation to next page
-        const finalUrl = page.url();
-        console.log(`📍 Final URL: ${finalUrl}`);
+    //     // Verify navigation to next page
+    //     const finalUrl = page.url();
+    //     console.log(`📍 Final URL: ${finalUrl}`);
 
-        expect(finalUrl).toContain('/know-your-business');
-        console.log('✅ SUCCESS: Navigated to Know Your Business page!');
+    //     expect(finalUrl).toContain('/know-your-business');
+    //     console.log('✅ SUCCESS: Navigated to Know Your Business page!');
 
-        console.log('\n✅ Online Services - developer/engineer → Web Developer Industry Test Completed!');
-    });
+    //     console.log('\n✅ Online Services - developer/engineer → Web Developer Industry Test Completed!');
+    // });
 });

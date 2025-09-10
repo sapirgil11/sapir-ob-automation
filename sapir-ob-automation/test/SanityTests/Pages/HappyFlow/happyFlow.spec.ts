@@ -28,7 +28,7 @@ test.describe('Happy Flow Tests', () => {
         await page.goto('https://lili-onboarding-integ.lili.co/welcome');
         await page.waitForLoadState('domcontentloaded');
         await page.waitForTimeout(2000);
-
+        
         // Initialize page objects
         const welcomePage = new WelcomePage(page);
         const verificationPage = new VerificationPage(page);
@@ -105,7 +105,7 @@ test.describe('Happy Flow Tests', () => {
         await page.waitForURL('**/home-address**');
         console.log('   ✅ Identity completed, waiting for home address page...');
         await page.waitForTimeout(2000);
-
+        
         console.log('   🏠 Filling home address...');
         await homeAddressPage.fillStreetAddress('123 Main St');
         await homeAddressPage.fillCity('New York');
@@ -241,9 +241,9 @@ test.describe('Happy Flow Tests', () => {
         
         // Run the full onboarding flow
         const ownersCenterPage = await doFullOnboardingFlow(page, context, browser);
-        
-        // ===== FINAL RESULTS =====
-        console.log('\n🎉 ===== HAPPY FLOW COMPLETED =====');
+            
+            // ===== FINAL RESULTS =====
+            console.log('\n🎉 ===== HAPPY FLOW COMPLETED =====');
         const finalUrl = page.url();
         const finalTitle = await page.title();
         console.log(`   🌐 Final URL: ${finalUrl}`);

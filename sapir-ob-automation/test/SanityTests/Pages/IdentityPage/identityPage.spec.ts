@@ -96,8 +96,8 @@ test.describe('🆔 Identity Page Tests', () => {
         console.log('\n🧪 Testing Identity page functionality...');
 
         // Verify page elements
-        const pageElementsVisible = await identityPage.verifyPageElements();
-        expect(pageElementsVisible).toBe(true);
+        const pageLoaded = await identityPage.isIdentityPageLoaded();
+        expect(pageLoaded).toBe(true);
         console.log('✅ Page elements verified');
 
         // Test identity form filling
@@ -110,29 +110,40 @@ test.describe('🆔 Identity Page Tests', () => {
         await identityPage.dateOfBirthInput.fill('01/01/1991');
 
         // Verify form is complete
-        const isFormComplete = await identityPage.isFormComplete();
+        const isFormComplete = await identityPage.isContinueButtonEnabled();
         console.log(`📊 Form complete: ${isFormComplete}`);
         expect(isFormComplete).toBe(true);
 
         // Click Continue button
         console.log('➡️ Clicking Continue button...');
-        await identityPage.clickContinueButton();
+        
+        // Wait for button to be ready
+        await page.waitForTimeout(1000);
+        
+        // Try multiple clicking approaches
+        try {
+            await identityPage.clickContinueButton();
+            console.log('✅ Continue button clicked successfully');
+        } catch (error) {
+            console.log('⚠️ First click attempt failed, trying alternative approach...');
+            await page.locator('button:has-text("Continue")').click();
+        }
 
-        // Verify navigation to next page
+        // Wait for navigation to next page
         console.log('⏰ Waiting for navigation to next page...');
-        await page.waitForTimeout(5000);
-        
-        const navigationSuccess = await identityPage.verifyNavigationToNextPage();
-        console.log(`✅ Navigation successful: ${navigationSuccess}`);
-        
-        if (navigationSuccess) {
+        try {
+            await page.waitForURL('**/home-address**', { timeout: 10000 });
+            console.log('✅ SUCCESS: Navigated to home address page!');
+        } catch (error) {
+            console.log('⚠️ Navigation timeout, checking current URL...');
             const currentUrl = page.url();
             console.log(`📍 Current URL: ${currentUrl}`);
-            console.log('✅ SUCCESS: Navigated to next page!');
-        } else {
-            console.log('⚠️ Navigation may have failed, checking current URL...');
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
+            
+            // Check for validation errors
+            const errors = await identityPage.getFormValidationErrors();
+            if (errors.length > 0) {
+                console.log('❌ Form validation errors:', errors);
+            }
         }
 
         console.log('\n✅ Identity Page - Complete Identity Flow Test Completed!');

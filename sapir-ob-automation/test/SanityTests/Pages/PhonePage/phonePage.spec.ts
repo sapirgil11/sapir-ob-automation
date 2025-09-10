@@ -80,8 +80,8 @@ test.describe('📞 Phone Page Tests', () => {
         console.log('\n🧪 Testing Phone page functionality...');
 
         // Verify page elements
-        const pageElementsVisible = await phonePage.verifyPageElements();
-        expect(pageElementsVisible).toBe(true);
+        const pageLoaded = await phonePage.isPhonePageLoaded();
+        expect(pageLoaded).toBe(true);
         console.log('✅ Page elements verified');
 
         // Test phone number form filling
@@ -95,7 +95,7 @@ test.describe('📞 Phone Page Tests', () => {
         await phonePage.phoneNumberInput.fill(validPhone);
 
         // Verify form is complete
-        const isFormComplete = await phonePage.isFormComplete();
+        const isFormComplete = await phonePage.isContinueButtonEnabled();
         console.log(`📊 Form complete: ${isFormComplete}`);
         expect(isFormComplete).toBe(true);
 
@@ -107,17 +107,13 @@ test.describe('📞 Phone Page Tests', () => {
         console.log('⏰ Waiting for navigation to next page...');
         await page.waitForTimeout(5000);
         
-        const navigationSuccess = await phonePage.verifyNavigationToNextPage();
-        console.log(`✅ Navigation successful: ${navigationSuccess}`);
+        const currentUrl = page.url();
+        console.log(`📍 Current URL: ${currentUrl}`);
         
-        if (navigationSuccess) {
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
-            console.log('✅ SUCCESS: Navigated to next page!');
+        if (currentUrl.includes('/identity')) {
+            console.log('✅ SUCCESS: Navigated to identity page!');
         } else {
             console.log('⚠️ Navigation may have failed, checking current URL...');
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
         }
 
         console.log('\n✅ Phone Page - Complete Phone Number Flow Test Completed!');
