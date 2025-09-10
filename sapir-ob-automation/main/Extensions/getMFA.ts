@@ -4,7 +4,7 @@ import { Page, BrowserContext } from '@playwright/test';
  * 🔐 MFA CODE EXTRACTION UTILITY
  * 
  * This utility extracts MFA codes from mailforspam.com by:
- * 1. Opening a new tab with 1920x1080 resolution
+ * 1. Opening a new tab with 1880x798 resolution
  * 2. Navigating to mailforspam.com
  * 3. Entering the email prefix and clicking "Check"
  * 4. Waiting 3 seconds initially for email to arrive
@@ -34,9 +34,9 @@ export class MFACodeExtractor {
             console.log(`🔐 Starting MFA code extraction for prefix: ${emailPrefix}`);
             
             // Step 1: Open new tab with 1920x1080 resolution
-            console.log('   📱 Opening new tab with 1920x1080 resolution...');
+            console.log('   📱 Opening new tab with 1880x798 resolution...');
             newPage = await this.context.newPage();
-            await newPage.setViewportSize({ width: 1920, height: 1080 });
+            await newPage.setViewportSize({ width: 1880, height: 798 });
             
             // Step 2: Navigate to mailforspam.com
             console.log('   🌐 Navigating to mailforspam.com...');

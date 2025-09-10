@@ -4,7 +4,7 @@ import { WelcomePage } from '../../../../main/PageObjects/welcomePage';
 import { MFACodeExtractor } from '../../../../main/Extensions/getMFA';
 
 // Enforce 1920x1080 resolution for all tests in this file
-test.use({ viewport: { width: 1920, height: 1080 } });
+test.use({ viewport: { width: 1880, height: 798 } });
 
 test.describe('MFA Automation Tests', () => {
     let verificationPage: VerificationPage;

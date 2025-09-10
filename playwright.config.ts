@@ -25,7 +25,7 @@ export default defineConfig({
       name: 'chromium',
       use: { 
         ...devices['Desktop Chrome'],
-        viewport: { width: 1920, height: 1080 }, // Enforce 1920x1080 resolution
+        viewport: { width: 1880, height: 798 }, // Enforce 1880x798 resolution
         launchOptions: {
           slowMo: 1000,
         },

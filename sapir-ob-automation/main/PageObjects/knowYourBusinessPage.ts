@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 
 export class KnowYourBusinessPage {
     private page: Page;
@@ -15,8 +15,6 @@ export class KnowYourBusinessPage {
     private registeredStateSelect: Locator;
     private agreementCheckbox: Locator;
     private agreementText: Locator;
-
-
 
     // Form validation
     private businessNameError: Locator;
@@ -105,16 +103,36 @@ export class KnowYourBusinessPage {
 
     async checkForIRSError(): Promise<boolean> {
         try {
-            // Look for IRS-related error messages
-            const irsError = this.page.locator('text=IRS').or(this.page.locator('text=records')).or(this.page.locator('.error-message'));
-            const isVisible = await irsError.isVisible();
-            if (isVisible) {
-                const errorText = await irsError.textContent();
-                console.log(`⚠️ IRS Error detected: ${errorText}`);
-                return true;
+            // Look for specific EIN validation error messages
+            const errorSelectors = [
+                'text=EIN number isn\'t valid, please compare to your IRS document',
+                'text=EIN number isn\'t valid',
+                'text=please compare to your IRS document',
+                'text=IRS document',
+                'text=isn\'t valid',
+                '.error-message',
+                '[data-testid="error-message"]',
+                '.text-red-500',
+                '.text-error'
+            ];
+            
+            for (const selector of errorSelectors) {
+                try {
+                    const errorElement = this.page.locator(selector).first();
+                    const isVisible = await errorElement.isVisible({ timeout: 1000 });
+                    if (isVisible) {
+                        const errorText = await errorElement.textContent();
+                        console.log(`⚠️ EIN Validation Error detected: ${errorText}`);
+                        return true;
+                    }
+                } catch (error) {
+                    // Continue to next selector
+                }
             }
+            
             return false;
         } catch (error) {
+            console.log(`⚠️ Error checking for IRS validation: ${error.message}`);
             return false;
         }
     }
@@ -168,16 +186,35 @@ export class KnowYourBusinessPage {
             }
         }
         
-        // Wait longer for potential navigation
-        console.log('⏰ Waiting for navigation...');
-        await this.page.waitForTimeout(5000);
-        
-        // Also try Enter key as fallback
-        const currentUrl = this.page.url();
-        if (currentUrl.includes('/know-your-business')) {
-            console.log('⚠️ Still on same page, trying Enter key...');
-            await this.continueButton.press('Enter');
-            await this.page.waitForTimeout(3000);
+        // Wait for navigation to business address page
+        console.log('⏰ Waiting for navigation to business address page...');
+        try {
+            await this.page.waitForURL('**/business-address**', { timeout: 15000 });
+            console.log('✅ Successfully navigated to business address page');
+        } catch (error) {
+            console.log('⚠️ Navigation timeout, checking current page...');
+            
+            // Check if we're still on the same page
+            const currentUrl = this.page.url();
+            console.log(`📍 Current URL: ${currentUrl}`);
+            
+            if (currentUrl.includes('/know-your-business')) {
+                console.log('⚠️ Still on know-your-business page, trying Enter key...');
+                await this.continueButton.press('Enter');
+                await this.page.waitForTimeout(3000);
+                
+                // Try waiting for navigation again
+                try {
+                    await this.page.waitForURL('**/business-address**', { timeout: 10000 });
+                    console.log('✅ Successfully navigated to business address page after Enter key');
+                } catch (error2) {
+                    console.log('❌ Still failed to navigate, taking screenshot for debugging...');
+                    await this.page.screenshot({ path: 'know-your-business-navigation-failed.png', fullPage: true });
+                    throw new Error('Failed to navigate from know-your-business page to business-address page');
+                }
+            } else {
+                console.log(`✅ Navigated to different page: ${currentUrl}`);
+            }
         }
     }
 
@@ -243,8 +280,6 @@ export class KnowYourBusinessPage {
         };
     }
 
-
-
     // Error validation
     async hasValidationErrors(): Promise<boolean> {
         const hasBusinessNameError = await this.businessNameError.isVisible();
@@ -273,7 +308,6 @@ export class KnowYourBusinessPage {
         
         return errors;
     }
-
 
     // Navigation verification
     async verifyNavigationToNextPage(): Promise<boolean> {

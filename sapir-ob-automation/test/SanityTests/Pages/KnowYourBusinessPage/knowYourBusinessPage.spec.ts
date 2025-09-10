@@ -3,15 +3,15 @@ import { KnowYourBusinessPage } from '../../../../main/PageObjects/knowYourBusin
 import { WelcomePage } from '../../../../main/PageObjects/welcomePage';
 import { VerificationPage } from '../../../../main/PageObjects/verificationPage';
 import { PersonalDetailsPage } from '../../../../main/PageObjects/personalDetailsPage';
-import { PhonePage } from '../../../../main/PageObjects/phone';
-import { IdentityPage } from '../../../../main/PageObjects/identity';
+import { PhonePage } from '../../../../main/PageObjects/phonePage';
+import { IdentityPage } from '../../../../main/PageObjects/identityPage';
 import { HomeAddressPage } from '../../../../main/PageObjects/homeAddressPage';
 import { BusinessTypePage } from '../../../../main/PageObjects/businessTypePage';
 import { IndustryPage } from '../../../../main/PageObjects/industryPage';
 import { MFACodeExtractor } from '../../../../main/Extensions/getMFA';
 
 // Enforce 1920x1080 resolution for all tests in this file
-test.use({ viewport: { width: 1920, height: 1080 } });
+test.use({ viewport: { width: 1880, height: 798 } });
 
 
 test.describe('🏢 Know Your Business Page Tests', () => {
