@@ -1,6 +1,12 @@
 // Export Page Objects
-export { WelcomePage } from './welcomePage';
+export { Welcome } from './welcome';
 export { EmailVerificationPage } from './emailVerificationPage';
-
-// You can add more page objects here as needed
-// export { AnotherPageObject } from './anotherPageObject';
+export { BusinessAddress } from './businessAddress';
+export { BusinessType } from './businessType';
+export { HomeAddress } from './homeAddress';
+export { Identity } from './identity';
+export { Industry } from './industry';
+export { KnowYourBusiness } from './knowYourBusiness';
+export { OwnersCenter } from './ownersCenter';
+export { PersonalDetails } from './personalDetails';
+export { Phone } from './phone';

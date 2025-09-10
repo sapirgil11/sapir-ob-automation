@@ -1,8 +1,8 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
-import { PhonePage } from '../../../main/PageObjects/phonePage';
-import { WelcomePage } from '../../../main/PageObjects/welcomePage';
+import { Phone } from '../../../main/PageObjects/phone';
+import { Welcome } from '../../../main/PageObjects/welcome';
 import { EmailVerificationPage } from '../../../main/PageObjects/emailVerificationPage';
-import { PersonalDetailsPage } from '../../../main/PageObjects/personalDetailsPage';
+import { PersonalDetails } from '../../../main/PageObjects/personalDetails';
 import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
 // Enforce 1920x1080 resolution for all tests in this file
@@ -11,7 +11,7 @@ test.use({ viewport: { width: 1880, height: 798 } });
 test.describe('📞 Phone Page Tests', () => {
     
     // Helper function to do full onboarding flow up to phone page
-    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<PhonePage> {
+    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<Phone> {
         console.log('🚀 Starting Full Onboarding Flow to Phone Page...');
 
         // ===== STEP 1: WELCOME PAGE =====
@@ -21,10 +21,10 @@ test.describe('📞 Phone Page Tests', () => {
         await page.waitForTimeout(2000);
 
         // Initialize page objects
-        const welcomePage = new WelcomePage(page);
+        const welcomePage = new Welcome(page);
         const verificationPage = new EmailVerificationPage(page);
-        const personalDetailsPage = new PersonalDetailsPage(page);
-        const phonePage = new PhonePage(page);
+        const personalDetailsPage = new PersonalDetails(page);
+        const phonePage = new Phone(page);
 
         // Fill email and password first
         const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;

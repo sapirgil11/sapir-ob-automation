@@ -14,7 +14,7 @@ import { Locator, Page } from '@playwright/test';
  * 
  * Based on the structure discovered: 2 select elements (Industry + Sub Industry)
  */
-export class IndustryPage {
+export class Industry {
     private page: Page;
 
     // ===== INDUSTRY PAGE ELEMENTS =====

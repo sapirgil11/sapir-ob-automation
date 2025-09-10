@@ -1,15 +1,15 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
-import { OwnersCenterPage } from '../../../main/PageObjects/ownersCenterPage';
-import { WelcomePage } from '../../../main/PageObjects/welcomePage';
+import { OwnersCenter } from '../../../main/PageObjects/ownersCenter';
+import { Welcome } from '../../../main/PageObjects/welcome';
 import { EmailVerificationPage } from '../../../main/PageObjects/emailVerificationPage';
-import { PersonalDetailsPage } from '../../../main/PageObjects/personalDetailsPage';
-import { PhonePage } from '../../../main/PageObjects/phonePage';
-import { IdentityPage } from '../../../main/PageObjects/identityPage';
-import { HomeAddressPage } from '../../../main/PageObjects/homeAddressPage';
-import { BusinessTypePage } from '../../../main/PageObjects/businessTypePage';
-import { IndustryPage } from '../../../main/PageObjects/industryPage';
-import { KnowYourBusinessPage } from '../../../main/PageObjects/knowYourBusinessPage';
-import { BusinessAddressPage } from '../../../main/PageObjects/businessAddressPage';
+import { PersonalDetails } from '../../../main/PageObjects/personalDetails';
+import { Phone } from '../../../main/PageObjects/phone';
+import { Identity } from '../../../main/PageObjects/identity';
+import { HomeAddress } from '../../../main/PageObjects/homeAddress';
+import { BusinessType } from '../../../main/PageObjects/businessType';
+import { Industry } from '../../../main/PageObjects/industry';
+import { KnowYourBusiness } from '../../../main/PageObjects/knowYourBusiness';
+import { BusinessAddress } from '../../../main/PageObjects/businessAddress';
 import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
 // Enforce 1920x1080 resolution for all tests in this file
@@ -18,7 +18,7 @@ test.use({ viewport: { width: 1880, height: 798 } });
 test.describe('👥 Owners Center Page Tests', () => {
     
     // Helper function to do full onboarding flow up to owners center page
-    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<OwnersCenterPage> {
+    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<OwnersCenter> {
         console.log('🚀 Starting Full Onboarding Flow to Owners Center Page...');
 
         // ===== STEP 1: WELCOME PAGE =====
@@ -28,17 +28,17 @@ test.describe('👥 Owners Center Page Tests', () => {
         await page.waitForTimeout(2000);
 
         // Initialize page objects
-        const welcomePage = new WelcomePage(page);
+        const welcomePage = new Welcome(page);
         const verificationPage = new EmailVerificationPage(page);
-        const personalDetailsPage = new PersonalDetailsPage(page);
-        const phonePage = new PhonePage(page);
-        const identityPage = new IdentityPage(page);
-        const homeAddressPage = new HomeAddressPage(page);
-        const businessTypePage = new BusinessTypePage(page);
-        const industryPage = new IndustryPage(page);
-        const knowYourBusinessPage = new KnowYourBusinessPage(page);
-        const businessAddressPage = new BusinessAddressPage(page);
-        const ownersCenterPage = new OwnersCenterPage(page);
+        const personalDetailsPage = new PersonalDetails(page);
+        const phonePage = new Phone(page);
+        const identityPage = new Identity(page);
+        const homeAddressPage = new HomeAddress(page);
+        const businessTypePage = new BusinessType(page);
+        const industryPage = new Industry(page);
+        const knowYourBusinessPage = new KnowYourBusiness(page);
+        const businessAddressPage = new BusinessAddress(page);
+        const ownersCenterPage = new OwnersCenter(page);
 
         // Fill email and password first
         const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;

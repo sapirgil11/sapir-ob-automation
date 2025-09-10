@@ -14,7 +14,7 @@ import { Locator, Page } from '@playwright/test';
  * 
  * All selectors are based on common address form patterns and Lili onboarding structure.
  */
-export class HomeAddressPage {
+export class HomeAddress {
     private page: Page;
 
     // ===== HOME ADDRESS PAGE ELEMENTS =====

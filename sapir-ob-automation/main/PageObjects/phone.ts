@@ -14,7 +14,7 @@ import { Locator, Page } from '@playwright/test';
  * 
  * All selectors are based on the actual phone number page structure.
  */
-export class PhonePage {
+export class Phone {
     private page: Page;
 
     // ===== PHONE NUMBER PAGE ELEMENTS =====

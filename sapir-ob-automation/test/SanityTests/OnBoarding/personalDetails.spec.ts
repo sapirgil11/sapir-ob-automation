@@ -1,6 +1,6 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
-import { PersonalDetailsPage } from '../../../main/PageObjects/personalDetailsPage';
-import { WelcomePage } from '../../../main/PageObjects/welcomePage';
+import { PersonalDetails } from '../../../main/PageObjects/personalDetails';
+import { Welcome } from '../../../main/PageObjects/welcome';
 import { EmailVerificationPage } from '../../../main/PageObjects/emailVerificationPage';
 import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
@@ -10,7 +10,7 @@ test.use({ viewport: { width: 1880, height: 798 } });
 test.describe('👤 Personal Details Page Tests', () => {
     
     // Helper function to do full onboarding flow up to personal details page
-    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<PersonalDetailsPage> {
+    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<PersonalDetails> {
         console.log('🚀 Starting Full Onboarding Flow to Personal Details Page...');
 
         // ===== STEP 1: WELCOME PAGE =====
@@ -20,9 +20,9 @@ test.describe('👤 Personal Details Page Tests', () => {
         await page.waitForTimeout(2000);
 
         // Initialize page objects
-        const welcomePage = new WelcomePage(page);
+        const welcomePage = new Welcome(page);
         const verificationPage = new EmailVerificationPage(page);
-        const personalDetailsPage = new PersonalDetailsPage(page);
+        const personalDetailsPage = new PersonalDetails(page);
 
         // Fill email and password first
         const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;

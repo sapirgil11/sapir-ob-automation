@@ -1,11 +1,11 @@
 import { test, expect, Page } from '@playwright/test';
-import { WelcomePage } from '../../../main/PageObjects/welcomePage';
+import { Welcome } from '../../../main/PageObjects/welcome';
 import { EmailVerificationPage } from '../../../main/PageObjects/emailVerificationPage';
-import { PersonalDetailsPage } from '../../../main/PageObjects/personalDetailsPage';
-import { PhonePage } from '../../../main/PageObjects/phonePage';
-import { IdentityPage } from '../../../main/PageObjects/identityPage';
-import { HomeAddressPage } from '../../../main/PageObjects/homeAddressPage';
-import { BusinessTypePage } from '../../../main/PageObjects/businessTypePage';
+import { PersonalDetails } from '../../../main/PageObjects/personalDetails';
+import { Phone } from '../../../main/PageObjects/phone';
+import { Identity } from '../../../main/PageObjects/identity';
+import { HomeAddress } from '../../../main/PageObjects/homeAddress';
+import { BusinessType } from '../../../main/PageObjects/businessType';
 import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
 /**
@@ -36,13 +36,13 @@ test.describe('🏢 Business Type Page Tests', () => {
         await page.waitForTimeout(2000);
 
         // Initialize page objects
-        const welcomePage = new WelcomePage(page);
+        const welcomePage = new Welcome(page);
         const verificationPage = new EmailVerificationPage(page);
-        const personalDetailsPage = new PersonalDetailsPage(page);
-        const phonePage = new PhonePage(page);
-        const identityPage = new IdentityPage(page);
-        const homeAddressPage = new HomeAddressPage(page);
-        const businessTypePage = new BusinessTypePage(page);
+        const personalDetailsPage = new PersonalDetails(page);
+        const phonePage = new Phone(page);
+        const identityPage = new Identity(page);
+        const homeAddressPage = new HomeAddress(page);
+        const businessTypePage = new BusinessType(page);
 
         // Fill email and password first
         const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;

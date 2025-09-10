@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { EmailVerificationPage } from '../../../main/PageObjects/emailVerificationPage';
-import { WelcomePage } from '../../../main/PageObjects/welcomePage';
+import { Welcome } from '../../../main/PageObjects/welcome';
 import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
 // Enforce 1920x1080 resolution for all tests in this file
@@ -8,11 +8,11 @@ test.use({ viewport: { width: 1880, height: 798 } });
 
 test.describe('MFA Automation Tests', () => {
     let verificationPage: EmailVerificationPage;
-    let welcomePage: WelcomePage;
+    let welcomePage: Welcome;
 
     test.beforeEach(async ({ page }) => {
         verificationPage = new EmailVerificationPage(page);
-        welcomePage = new WelcomePage(page);
+        welcomePage = new Welcome(page);
         
         // Start from welcome page and follow proper flow to reach verification page
         console.log('🚀 Starting MFA automation test - navigating through welcome page first...');

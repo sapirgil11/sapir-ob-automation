@@ -1,5 +1,5 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
-import { WelcomePage } from '../../../main/PageObjects/welcomePage';
+import { Welcome } from '../../../main/PageObjects/welcome';
 
 // Enforce 1920x1080 resolution for all tests in this file
 test.use({ viewport: { width: 1880, height: 798 } });
@@ -7,7 +7,7 @@ test.use({ viewport: { width: 1880, height: 798 } });
 test.describe('📱 Welcome Page Tests', () => {
     
     // Helper function to do full onboarding flow starting from welcome page
-    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<WelcomePage> {
+    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<Welcome> {
         console.log('🚀 Starting Full Onboarding Flow from Welcome Page...');
 
         // ===== STEP 1: WELCOME PAGE =====
@@ -17,7 +17,7 @@ test.describe('📱 Welcome Page Tests', () => {
         await page.waitForTimeout(2000);
 
         // Initialize page objects
-        const welcomePage = new WelcomePage(page);
+        const welcomePage = new Welcome(page);
         console.log('   ✅ Reached Welcome page successfully!');
         
         return welcomePage;

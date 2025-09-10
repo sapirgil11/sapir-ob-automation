@@ -14,7 +14,7 @@ import { Locator, Page } from '@playwright/test';
  * 
  * All selectors are based on common business type selection patterns and Lili onboarding structure.
  */
-export class BusinessTypePage {
+export class BusinessType {
     private page: Page;
 
     // ===== BUSINESS TYPE PAGE ELEMENTS =====

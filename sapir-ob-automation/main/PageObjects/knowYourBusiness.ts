@@ -1,6 +1,6 @@
 import { Page, Locator } from '@playwright/test';
 
-export class KnowYourBusinessPage {
+export class KnowYourBusiness {
     private page: Page;
 
     // Page elements

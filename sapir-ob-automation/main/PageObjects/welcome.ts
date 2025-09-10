@@ -26,7 +26,7 @@ import { Page, Locator } from '@playwright/test';
  * STATUS: 3/8 non-working elements fixed so far! 🎯
  */
 
-export class WelcomePage {
+export class Welcome {
     private page: Page;
     
     // ===== BUTTONS ELEMENTS =====

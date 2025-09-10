@@ -1,23 +1,23 @@
 import { Locator, Page } from '@playwright/test';
 
 /**
- * 🆔 IDENTITY PAGE OBJECT
+ * 🎯 PERSONAL DETAILS PAGE OBJECT
  * 
- * This page object contains all identity verification page elements organized by category:
+ * This page object contains all personal details page elements organized by category:
  * - Header and Navigation Elements
  * - Main Content and Headings  
- * - Form and Input Elements (SSN, Date of Birth)
+ * - Form and Input Elements
  * - Progress Steps and Navigation
  * - Validation Messages and Errors
  * - Buttons and Actions
  * - Page Layout and UI Elements
  * 
- * All selectors are based on the actual identity page structure.
+ * All selectors are based on the actual personal details page structure.
  */
-export class IdentityPage {
+export class PersonalDetails {
     private page: Page;
 
-    // ===== IDENTITY PAGE ELEMENTS =====
+    // ===== PERSONAL DETAILS PAGE ELEMENTS =====
     
     // ===== BUTTONS ELEMENTS =====
     public continueButton!: Locator;                              // "Continue" button
@@ -25,41 +25,41 @@ export class IdentityPage {
     public saveButton!: Locator;                                  // "Save" button
     public cancelButton!: Locator;                                // "Cancel" button
     
-    // ===== INPUT AND FORM ELEMENTS =====
-    public ssnInput!: Locator;                                    // SSN input field
-    public dateOfBirthInput!: Locator;                            // Date of birth input field
-    public ssnToggleVisibilityButton!: Locator;                   // SSN show/hide toggle button
+    // ===== INPUT AND PLACEHOLDER ELEMENTS =====
+    public firstNameInput!: Locator;                              // First name input field
+    public lastNameInput!: Locator;                               // Last name input field
     
     // ===== FLOATING LABEL ELEMENTS =====
-    public ssnFloatingLabel!: Locator;                            // SSN floating label wrapper
-    public dateOfBirthFloatingLabel!: Locator;                    // Date of birth floating label wrapper
-    public ssnClearButton!: Locator;                              // SSN clear button
-    public dateOfBirthClearButton!: Locator;                      // Date of birth clear button
+    public firstNameFloatingLabel!: Locator;                      // First name floating label wrapper
+    public lastNameFloatingLabel!: Locator;                       // Last name floating label wrapper
+    public firstNameClearButton!: Locator;                        // First name clear button
+    public lastNameClearButton!: Locator;                         // Last name clear button
     
     // ===== TOOLTIPS AND TEXTS =====
-    public pageHeading!: Locator;                                 // "Personal identity verification" heading
+    public pageHeading!: Locator;                                 // "Your personal details" heading
     public pageSubheading!: Locator;                              // Page subheading/description
-    public ssnLabel!: Locator;                                    // SSN label
-    public dateOfBirthLabel!: Locator;                            // Date of birth label
+    public firstNameLabel!: Locator;                              // First name label
+    public lastNameLabel!: Locator;                               // Last name label
     public helpText!: Locator;                                    // Help text/instructions
-    public securityNotice!: Locator;                              // Security notice text
-    public creditScoreNotice!: Locator;                           // Credit score impact notice
     
     // ===== LOCAL ERROR MESSAGES =====
-    public ssnError!: Locator;                                    // SSN error message
-    public dateOfBirthError!: Locator;                            // Date of birth error message
+    public firstNameError!: Locator;                              // First name error message
+    public lastNameError!: Locator;                               // Last name error message
     public generalError!: Locator;                                // General form error message
     
     // ===== ERROR CONTAINERS =====
-    public ssnErrorContainer!: Locator;                           // SSN error container
-    public dateOfBirthErrorContainer!: Locator;                   // Date of birth error container
+    public firstNameErrorContainer!: Locator;                     // First name error container
+    public lastNameErrorContainer!: Locator;                      // Last name error container
     
     // ===== SPECIFIC ERROR MESSAGES =====
-    public ssnRequiredError!: Locator;                            // "SSN is required" error
-    public ssnInvalidError!: Locator;                             // "Please enter a valid SSN" error
-    public dateOfBirthRequiredError!: Locator;                    // "Birth date is required" error
-    public dateOfBirthInvalidError!: Locator;                     // "Please enter a valid birth date" error
-    public dateOfBirthTooYoungError!: Locator;                    // "Sorry, but you have to be at least 18 to open an account" error
+    public firstNameRequiredError!: Locator;                      // "First name is required" error
+    public lastNameRequiredError!: Locator;                       // "Last name is required" error
+    public firstNameMinLengthError!: Locator;                     // "First name must be at least" error
+    public lastNameMinLengthError!: Locator;                      // "Last name must be at least" error
+    public firstNameLettersOnlyError!: Locator;                   // "First name must contain letters only" error
+    public lastNameLettersOnlyError!: Locator;                    // "Last name must contain letters only" error
+    public firstNameMaxLengthError!: Locator;                     // "First name must be at most 30" error
+    public lastNameMaxLengthError!: Locator;                      // "Last name must be at most 30" error
     
     // ===== NAVIGATION AND HEADER ELEMENTS =====
     public liliLogo!: Locator;                                    // Lili logo image
@@ -76,12 +76,12 @@ export class IdentityPage {
     public ownersCenterStep!: Locator;                            // "Owners Center" step in sidebar
     public choosePlanStep!: Locator;                              // "Choose a Plan" step in sidebar
     public confirmationStep!: Locator;                            // "Confirmation" step in sidebar
-    public personalDetailsStep!: Locator;                         // "Personal Details" step in sidebar
+    public personalDetailsStep!: Locator;                         // "Personal Details" step (current)
     
     // ===== PROGRESS STEPS AND NAVIGATION =====
     public stepIndicator!: Locator;                               // Current step indicator
     public progressBar!: Locator;                                 // Progress bar
-    public stepCounter!: Locator;                                 // Step counter (e.g., "Step 4 of 8")
+    public stepCounter!: Locator;                                 // Step counter (e.g., "Step 2 of 8")
     
     // ===== STATUS MESSAGES AND TIMERS =====
     public successMessage!: Locator;                              // Success message
@@ -89,7 +89,7 @@ export class IdentityPage {
     public infoMessage!: Locator;                                 // Info message
     
     // ===== SECURITY AND NOTICES =====
-    public federalRegulationsNotice!: Locator;                    // Federal regulations notice
+    public securityNotice!: Locator;                              // Security notice
     public privacyNotice!: Locator;                               // Privacy notice
     public termsNotice!: Locator;                                 // Terms and conditions notice
     
@@ -117,7 +117,7 @@ export class IdentityPage {
     }
 
     /**
-     * 🔧 Initialize all locators for the identity page
+     * 🔧 Initialize all locators for the personal details page
      */
     private initializeAllLocators(): void {
         this.initializeButtonElements();
@@ -148,15 +148,14 @@ export class IdentityPage {
      * 📝 Initialize input elements
      */
     private initializeInputElements(): void {
-        this.ssnInput = this.page.locator('#SSN, input[id="SSN"]');
-        this.dateOfBirthInput = this.page.locator('#DATE_OF_BIRTH, input[id="DATE_OF_BIRTH"]');
-        this.ssnToggleVisibilityButton = this.page.locator('button:has(img[alt="hide"]), button:has(img[alt="show"])');
+        this.firstNameInput = this.page.locator('#FIRST_NAME, input[id="FIRST_NAME"]');
+        this.lastNameInput = this.page.locator('#LAST_NAME, input[id="LAST_NAME"]');
         
         // Floating label elements
-        this.ssnFloatingLabel = this.page.locator('#SSN-floating-label #LiliFloatingWrapper');
-        this.dateOfBirthFloatingLabel = this.page.locator('#DATE_OF_BIRTH-floating-label #LiliFloatingWrapper');
-        this.ssnClearButton = this.page.locator('#SSN-floating-label #ClearInput');
-        this.dateOfBirthClearButton = this.page.locator('#DATE_OF_BIRTH-floating-label #ClearInput');
+        this.firstNameFloatingLabel = this.page.locator('#FIRST_NAME-floating-label #LiliFloatingWrapper');
+        this.lastNameFloatingLabel = this.page.locator('#LAST_NAME-floating-label #LiliFloatingWrapper');
+        this.firstNameClearButton = this.page.locator('#FIRST_NAME-floating-label #ClearInput');
+        this.lastNameClearButton = this.page.locator('#LAST_NAME-floating-label #ClearInput');
     }
 
     /**
@@ -165,31 +164,32 @@ export class IdentityPage {
     private initializeTooltipAndTextElements(): void {
         this.pageHeading = this.page.locator('#stepPageHeader, h5[id="stepPageHeader"]');
         this.pageSubheading = this.page.locator('#stepPageContent, div[id="stepPageContent"]');
-        this.ssnLabel = this.page.locator('label[for="SSN"], label:has-text("Social security number")');
-        this.dateOfBirthLabel = this.page.locator('label[for="DATE_OF_BIRTH"], label:has-text("Date of birth")');
+        this.firstNameLabel = this.page.locator('label[for="FIRST_NAME"], label:has-text("First name")');
+        this.lastNameLabel = this.page.locator('label[for="LAST_NAME"], label:has-text("Last name")');
         this.helpText = this.page.locator('p:has-text("help"), div:has-text("instructions")');
-        this.securityNotice = this.page.locator('text=federal regulations, text=security');
-        this.creditScoreNotice = this.page.locator('text=credit score, text=impact');
     }
 
     /**
      * ⚠️ Initialize error message elements
      */
     private initializeErrorMessageElements(): void {
-        this.ssnError = this.page.locator('[data-testid*="ssn-error"], .error:has-text("SSN")');
-        this.dateOfBirthError = this.page.locator('[data-testid*="dateOfBirth-error"], .error:has-text("birth date")');
+        this.firstNameError = this.page.locator('[data-testid*="firstName-error"], .error:has-text("First name")');
+        this.lastNameError = this.page.locator('[data-testid*="lastName-error"], .error:has-text("Last name")');
         this.generalError = this.page.locator('.error, .alert-error, [role="alert"]');
         
         // Error containers
-        this.ssnErrorContainer = this.page.locator('#SSN-error-container');
-        this.dateOfBirthErrorContainer = this.page.locator('#DATE_OF_BIRTH-error-container');
+        this.firstNameErrorContainer = this.page.locator('#FIRST_NAME-error-container');
+        this.lastNameErrorContainer = this.page.locator('#LAST_NAME-error-container');
         
         // Specific error messages
-        this.ssnRequiredError = this.page.locator('text=SSN is required');
-        this.ssnInvalidError = this.page.locator('text=Please enter a valid SSN');
-        this.dateOfBirthRequiredError = this.page.locator('text=Birth date is required');
-        this.dateOfBirthInvalidError = this.page.locator('text=Please enter a valid birth date');
-        this.dateOfBirthTooYoungError = this.page.locator('text=Sorry, but you have to be at least 18 to open an account');
+        this.firstNameRequiredError = this.page.locator('text=First name is required');
+        this.lastNameRequiredError = this.page.locator('text=Last name is required');
+        this.firstNameMinLengthError = this.page.locator('text=First name must be at least');
+        this.lastNameMinLengthError = this.page.locator('text=Last name must be at least');
+        this.firstNameLettersOnlyError = this.page.locator('text=First name must contain letters only');
+        this.lastNameLettersOnlyError = this.page.locator('text=Last name must contain letters only');
+        this.firstNameMaxLengthError = this.page.locator('text=First name must be at most 30');
+        this.lastNameMaxLengthError = this.page.locator('text=Last name must be at most 30');
     }
 
     /**
@@ -239,7 +239,7 @@ export class IdentityPage {
      * 🔒 Initialize security elements
      */
     private initializeSecurityElements(): void {
-        this.federalRegulationsNotice = this.page.locator('text=federal regulations, text=security');
+        this.securityNotice = this.page.locator('text=security, text=secure');
         this.privacyNotice = this.page.locator('text=privacy, text=confidential');
         this.termsNotice = this.page.locator('text=terms, text=conditions');
     }
@@ -277,37 +277,37 @@ export class IdentityPage {
     // ===== PAGE VERIFICATION METHODS =====
 
     /**
-     * 🔍 Check if identity page is loaded
+     * 🔍 Check if personal details page is loaded
      */
-    async isIdentityPageLoaded(): Promise<boolean> {
+    async isPersonalDetailsPageLoaded(): Promise<boolean> {
         try {
             const url = this.page.url();
             const heading = await this.pageHeading.isVisible();
-            return url.includes('/identity') && heading;
+            return url.includes('/personal-details') && heading;
         } catch (error) {
             return false;
         }
     }
 
     /**
-     * ⏳ Wait for identity page to load
+     * ⏳ Wait for personal details page to load
      */
-    async waitForIdentityPageToLoad(): Promise<void> {
-        await this.page.waitForURL('**/identity**');
+    async waitForPersonalDetailsPageToLoad(): Promise<void> {
+        await this.page.waitForURL('**/personal-details**');
         await this.pageHeading.waitFor({ state: 'visible' });
     }
 
     // ===== FORM INTERACTION METHODS =====
 
     /**
-     * 📝 Fill identity form
+     * 📝 Fill personal details form
      */
-    async fillIdentityForm(data: {
-        ssn?: string;
-        dateOfBirth?: string;
+    async fillPersonalDetailsForm(data: {
+        firstName?: string;
+        lastName?: string;
     }): Promise<void> {
-        if (data.ssn) await this.ssnInput.fill(data.ssn);
-        if (data.dateOfBirth) await this.dateOfBirthInput.fill(data.dateOfBirth);
+        if (data.firstName) await this.firstNameInput.fill(data.firstName);
+        if (data.lastName) await this.lastNameInput.fill(data.lastName);
     }
 
     /**
@@ -322,13 +322,6 @@ export class IdentityPage {
      */
     async clickBackButton(): Promise<void> {
         await this.backButton.click();
-    }
-
-    /**
-     * 👁️ Toggle SSN visibility
-     */
-    async toggleSSNVisibility(): Promise<void> {
-        await this.ssnToggleVisibilityButton.click();
     }
 
     // ===== VALIDATION METHODS =====
@@ -347,8 +340,8 @@ export class IdentityPage {
         const errors: string[] = [];
         
         const errorElements = [
-            this.ssnError,
-            this.dateOfBirthError,
+            this.firstNameError,
+            this.lastNameError,
             this.generalError
         ];
 
@@ -390,8 +383,8 @@ export class IdentityPage {
      */
     async testRequiredFieldValidation(): Promise<void> {
         // Clear both fields
-        await this.ssnInput.clear();
-        await this.dateOfBirthInput.clear();
+        await this.firstNameInput.clear();
+        await this.lastNameInput.clear();
         
         // Click outside to trigger validation
         await this.pageLayout.click();
@@ -401,55 +394,57 @@ export class IdentityPage {
     }
 
     /**
-     * 🧪 Test invalid SSN format validation
+     * 🧪 Test minimum length validation
      */
-    async testInvalidSSNFormatValidation(): Promise<void> {
-        await this.ssnInput.fill('123');
+    async testMinLengthValidation(): Promise<void> {
+        await this.firstNameInput.fill('e');
+        await this.lastNameInput.fill('e');
         await this.pageLayout.click();
         await this.page.waitForTimeout(1000);
     }
 
     /**
-     * 🧪 Test invalid date format validation
+     * 🧪 Test letters only validation
      */
-    async testInvalidDateFormatValidation(): Promise<void> {
-        await this.dateOfBirthInput.fill('13/45/2000');
+    async testLettersOnlyValidation(): Promise<void> {
+        await this.firstNameInput.fill('!!');
+        await this.lastNameInput.fill('!!');
         await this.pageLayout.click();
         await this.page.waitForTimeout(1000);
     }
 
     /**
-     * 🧪 Test underage validation
+     * 🧪 Test maximum length validation
      */
-    async testUnderageValidation(): Promise<void> {
-        // Use a date that makes user under 18
-        const underageDate = '01/01/2010';
-        await this.dateOfBirthInput.fill(underageDate);
+    async testMaxLengthValidation(): Promise<void> {
+        const longName = 'sdfsdfsdfsdfsdfsdfisdfiisdijfijsdjif';
+        await this.firstNameInput.fill(longName);
+        await this.lastNameInput.fill(longName);
         await this.pageLayout.click();
         await this.page.waitForTimeout(1000);
     }
 
     /**
-     * 🧪 Test valid identity input
+     * 🧪 Test valid input
      */
-    async testValidIdentityInput(): Promise<void> {
-        await this.ssnInput.fill('123-45-6789');
-        await this.dateOfBirthInput.fill('01/01/1990');
+    async testValidInput(): Promise<void> {
+        await this.firstNameInput.fill('Sapirrrrrr');
+        await this.lastNameInput.fill('Sapirrrrrr');
         await this.page.waitForTimeout(1000);
     }
 
     /**
-     * 🧹 Clear SSN field using clear button
+     * 🧹 Clear first name field using clear button
      */
-    async clearSSNField(): Promise<void> {
-        await this.ssnClearButton.click();
+    async clearFirstNameField(): Promise<void> {
+        await this.firstNameClearButton.click();
     }
 
     /**
-     * 🧹 Clear date of birth field using clear button
+     * 🧹 Clear last name field using clear button
      */
-    async clearDateOfBirthField(): Promise<void> {
-        await this.dateOfBirthClearButton.click();
+    async clearLastNameField(): Promise<void> {
+        await this.lastNameClearButton.click();
     }
 
     /**
