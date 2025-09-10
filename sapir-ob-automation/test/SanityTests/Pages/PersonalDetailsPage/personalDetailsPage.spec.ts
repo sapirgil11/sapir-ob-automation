@@ -1,7 +1,7 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
 import { PersonalDetailsPage } from '../../../../main/PageObjects/personalDetailsPage';
 import { WelcomePage } from '../../../../main/PageObjects/welcomePage';
-import { VerificationPage } from '../../../../main/PageObjects/verificationPage';
+import { EmailVerificationPage } from '../../../../main/PageObjects/emailVerificationPage';
 import { MFACodeExtractor } from '../../../../main/Extensions/getMFA';
 
 // Enforce 1920x1080 resolution for all tests in this file
@@ -21,7 +21,7 @@ test.describe('👤 Personal Details Page Tests', () => {
 
         // Initialize page objects
         const welcomePage = new WelcomePage(page);
-        const verificationPage = new VerificationPage(page);
+        const verificationPage = new EmailVerificationPage(page);
         const personalDetailsPage = new PersonalDetailsPage(page);
 
         // Fill email and password first

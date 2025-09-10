@@ -1,6 +1,6 @@
 // Export Page Objects
 export { WelcomePage } from './welcomePage';
-export { VerificationPage } from './verificationPage';
+export { EmailVerificationPage } from './emailVerificationPage';
 
 // You can add more page objects here as needed
 // export { AnotherPageObject } from './anotherPageObject';

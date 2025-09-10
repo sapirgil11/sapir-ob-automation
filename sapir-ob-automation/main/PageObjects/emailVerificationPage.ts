@@ -1,9 +1,9 @@
 import { Locator, Page } from '@playwright/test';
 
 /**
- * 🎯 VERIFICATION PAGE OBJECT - Based on Playwright Recording
+ * 📧 EMAIL VERIFICATION PAGE OBJECT - Based on Playwright Recording
  * 
- * This page object contains all verification page elements organized by category:
+ * This page object contains all email verification page elements organized by category:
  * - Header and Navigation Elements
  * - Main Content and Headings  
  * - Form and Input Elements
@@ -12,9 +12,9 @@ import { Locator, Page } from '@playwright/test';
  * - Security and Notices
  * - Page Layout and UI Elements
  * 
- * All selectors are based on the actual recording data from the verification page.
+ * All selectors are based on the actual recording data from the email verification page.
  */
-export class VerificationPage {
+export class EmailVerificationPage {
     private page: Page;
 
     // ===== VERIFICATION PAGE ELEMENTS =====

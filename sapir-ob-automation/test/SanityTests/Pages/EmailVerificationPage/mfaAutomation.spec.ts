@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { VerificationPage } from '../../../../main/PageObjects/verificationPage';
+import { EmailVerificationPage } from '../../../../main/PageObjects/emailVerificationPage';
 import { WelcomePage } from '../../../../main/PageObjects/welcomePage';
 import { MFACodeExtractor } from '../../../../main/Extensions/getMFA';
 
@@ -7,11 +7,11 @@ import { MFACodeExtractor } from '../../../../main/Extensions/getMFA';
 test.use({ viewport: { width: 1880, height: 798 } });
 
 test.describe('MFA Automation Tests', () => {
-    let verificationPage: VerificationPage;
+    let verificationPage: EmailVerificationPage;
     let welcomePage: WelcomePage;
 
     test.beforeEach(async ({ page }) => {
-        verificationPage = new VerificationPage(page);
+        verificationPage = new EmailVerificationPage(page);
         welcomePage = new WelcomePage(page);
         
         // Start from welcome page and follow proper flow to reach verification page

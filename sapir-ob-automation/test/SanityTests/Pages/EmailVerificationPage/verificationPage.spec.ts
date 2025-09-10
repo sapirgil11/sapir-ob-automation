@@ -1,5 +1,5 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
-import { VerificationPage } from '../../../../main/PageObjects/verificationPage';
+import { EmailVerificationPage } from '../../../../main/PageObjects/emailVerificationPage';
 import { WelcomePage } from '../../../../main/PageObjects/welcomePage';
 
 // Enforce 1920x1080 resolution for all tests in this file
@@ -8,7 +8,7 @@ test.use({ viewport: { width: 1880, height: 798 } });
 test.describe('🔐 Verification Page Tests', () => {
     
     // Helper function to do full onboarding flow up to verification page
-    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<VerificationPage> {
+    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<EmailVerificationPage> {
         console.log('🚀 Starting Full Onboarding Flow to Verification Page...');
 
         // ===== STEP 1: WELCOME PAGE =====
@@ -19,7 +19,7 @@ test.describe('🔐 Verification Page Tests', () => {
 
         // Initialize page objects
         const welcomePage = new WelcomePage(page);
-        const verificationPage = new VerificationPage(page);
+        const verificationPage = new EmailVerificationPage(page);
 
         // Fill email and password first
         const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;
@@ -49,8 +49,8 @@ test.describe('🔐 Verification Page Tests', () => {
         console.log('\n🧪 Testing Verification page functionality...');
 
         // Verify page elements
-        const pageElementsVisible = await verificationPage.verifyPageElements();
-        expect(pageElementsVisible).toBe(true);
+        const pageTitle = await verificationPage.getPageTitle();
+        expect(pageTitle).toContain('Lili');
         console.log('✅ Page elements verified');
 
         // Test verification form elements

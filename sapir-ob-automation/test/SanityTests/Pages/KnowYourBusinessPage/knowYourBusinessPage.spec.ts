@@ -1,7 +1,7 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
 import { KnowYourBusinessPage } from '../../../../main/PageObjects/knowYourBusinessPage';
 import { WelcomePage } from '../../../../main/PageObjects/welcomePage';
-import { VerificationPage } from '../../../../main/PageObjects/verificationPage';
+import { EmailVerificationPage } from '../../../../main/PageObjects/emailVerificationPage';
 import { PersonalDetailsPage } from '../../../../main/PageObjects/personalDetailsPage';
 import { PhonePage } from '../../../../main/PageObjects/phonePage';
 import { IdentityPage } from '../../../../main/PageObjects/identityPage';
@@ -28,7 +28,7 @@ test.describe('🏢 Know Your Business Page Tests', () => {
 
         // Initialize page objects
         const welcomePage = new WelcomePage(page);
-        const verificationPage = new VerificationPage(page);
+        const verificationPage = new EmailVerificationPage(page);
         const personalDetailsPage = new PersonalDetailsPage(page);
         const phonePage = new PhonePage(page);
         const identityPage = new IdentityPage(page);
