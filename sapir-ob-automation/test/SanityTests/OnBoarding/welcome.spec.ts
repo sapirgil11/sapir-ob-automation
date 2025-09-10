@@ -46,7 +46,7 @@ test.describe('📱 Welcome Page Tests', () => {
         console.log(`📧 Using email: ${randomEmail}`);
         
         await welcomePage.emailInput.fill(randomEmail);
-        await welcomePage.passwordInput.fill('TestPassword123!');
+        await welcomePage.passwordInput.fill('Password123!');
 
         // Verify form is complete
         const isFormComplete = await welcomePage.isFormComplete();

@@ -32,7 +32,7 @@ test.describe('🆔 Identity Page Tests', () => {
         const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;
         console.log(`   📧 Using email: ${randomEmail}`);
         await welcomePage.emailInput.fill(randomEmail);
-        await welcomePage.passwordInput.fill('TestPassword123!');
+        await welcomePage.passwordInput.fill('Password123!');
         await welcomePage.getStartedButton.click();
 
         // ===== STEP 2: EMAIL VERIFICATION =====
