@@ -1,7 +1,7 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
 import { Identity } from '../../../main/PageObjects/identity';
 import { Welcome } from '../../../main/PageObjects/welcome';
-import { EmailVerificationPage } from '../../../main/PageObjects/emailVerificationPage';
+import { EmailVerificationPage } from '../../../main/PageObjects/emailVerification';
 import { PersonalDetails } from '../../../main/PageObjects/personalDetails';
 import { Phone } from '../../../main/PageObjects/phone';
 import { MFACodeExtractor } from '../../../main/Extensions/getMFA';

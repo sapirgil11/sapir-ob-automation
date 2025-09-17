@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { EmailVerificationPage } from '../../../main/PageObjects/emailVerificationPage';
+import { EmailVerificationPage } from '../../../main/PageObjects/emailVerification';
 import { Welcome } from '../../../main/PageObjects/welcome';
 import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 

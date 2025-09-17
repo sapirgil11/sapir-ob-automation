@@ -1,7 +1,7 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
 import { PersonalDetails } from '../../../main/PageObjects/personalDetails';
 import { Welcome } from '../../../main/PageObjects/welcome';
-import { EmailVerificationPage } from '../../../main/PageObjects/emailVerificationPage';
+import { EmailVerificationPage } from '../../../main/PageObjects/emailVerification';
 import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
 // Enforce 1920x1080 resolution for all tests in this file

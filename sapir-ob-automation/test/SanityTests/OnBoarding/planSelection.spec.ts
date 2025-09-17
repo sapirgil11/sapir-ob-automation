@@ -1,5 +1,5 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
-import { BusinessAddress } from '../../../main/PageObjects/businessAddress';
+import { PlanSelection } from '../../../main/PageObjects/planSelection';
 import { Welcome } from '../../../main/PageObjects/welcome';
 import { EmailVerificationPage } from '../../../main/PageObjects/emailVerification';
 import { PersonalDetails } from '../../../main/PageObjects/personalDetails';
@@ -9,16 +9,18 @@ import { HomeAddress } from '../../../main/PageObjects/homeAddress';
 import { BusinessType } from '../../../main/PageObjects/businessType';
 import { Industry } from '../../../main/PageObjects/industry';
 import { KnowYourBusiness } from '../../../main/PageObjects/knowYourBusiness';
+import { BusinessAddress } from '../../../main/PageObjects/businessAddress';
+import { OwnersCenter } from '../../../main/PageObjects/ownersCenter';
 import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
-// Enforce 1920x1080 resolution for all tests in this file
+// Enforce 1880x798 resolution for all tests in this file
 test.use({ viewport: { width: 1880, height: 798 } });
 
-test.describe('🏢 Business Address Page Tests', () => {
+test.describe('📋 Plan Selection Page Tests', () => {
     
-    // Helper function to do full onboarding flow up to business address page
-    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<BusinessAddress> {
-        console.log('🚀 Starting Full Onboarding Flow to Business Address Page...');
+    // Helper function to do full onboarding flow up to plan selection page
+    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<PlanSelection> {
+        console.log('🚀 Starting Full Onboarding Flow to Plan Selection Page...');
 
         // ===== STEP 1: WELCOME PAGE =====
         console.log('📱 Step 1: Navigating to Welcome Page...');
@@ -37,6 +39,8 @@ test.describe('🏢 Business Address Page Tests', () => {
         const industryPage = new Industry(page);
         const knowYourBusinessPage = new KnowYourBusiness(page);
         const businessAddressPage = new BusinessAddress(page);
+        const ownersCenterPage = new OwnersCenter(page);
+        const planSelectionPage = new PlanSelection(page);
 
         // Fill email and password first
         const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;
@@ -78,7 +82,6 @@ test.describe('🏢 Business Address Page Tests', () => {
         await page.waitForTimeout(2000);
 
         console.log('   📞 Filling phone number...');
-        // Generate random phone number to avoid conflicts between tests
         const randomPhone = `+1 212 459${Math.floor(1000 + Math.random() * 9000)}`;
         console.log(`   📱 Using phone number: ${randomPhone}`);
         await phonePage.phoneNumberInput.fill(randomPhone);
@@ -107,7 +110,6 @@ test.describe('🏢 Business Address Page Tests', () => {
         await homeAddressPage.fillCity('New York');
         await homeAddressPage.fillZipCode('10001');
         
-        // Handle state selection the same way as the working test
         await homeAddressPage.stateSelect.click();
         await page.waitForTimeout(1000);
         await page.locator('div').filter({ hasText: 'NY' }).nth(3).click();
@@ -121,7 +123,6 @@ test.describe('🏢 Business Address Page Tests', () => {
         await page.waitForURL('**/business-type**');
         await page.waitForTimeout(2000);
 
-        // Select Corporation → S-Corp to reach Industry page
         await businessTypePage.selectCorporation();
         await page.waitForTimeout(2000);
         await businessTypePage.selectSCorporation();
@@ -133,7 +134,6 @@ test.describe('🏢 Business Address Page Tests', () => {
         await page.waitForTimeout(2000);
         console.log('   ✅ Reached Industry page successfully!');
 
-        // Select industry to reach Know Your Business page
         await industryPage.industrySelect.click();
         await page.locator('text=Art').click();
         await industryPage.subIndustrySelect.click();
@@ -165,7 +165,7 @@ test.describe('🏢 Business Address Page Tests', () => {
         
         // Fill EIN with retry logic for IRS errors
         let einAttempts = 0;
-        const maxEinAttempts = 5; // Increased attempts
+        const maxEinAttempts = 5;
         let einSuccess = false;
         
         while (!einSuccess && einAttempts < maxEinAttempts) {
@@ -174,7 +174,7 @@ test.describe('🏢 Business Address Page Tests', () => {
             console.log(`📝 Attempt ${einAttempts}: Using EIN: ${randomEIN}`);
             
             await knowYourBusinessPage.fillEIN(randomEIN);
-            await page.waitForTimeout(2000); // Increased wait time
+            await page.waitForTimeout(2000);
             
             const hasIRSError = await knowYourBusinessPage.checkForIRSError();
             if (hasIRSError) {
@@ -189,118 +189,82 @@ test.describe('🏢 Business Address Page Tests', () => {
         
         if (!einSuccess) {
             console.log(`⚠️ Failed to find valid EIN after ${maxEinAttempts} attempts, continuing anyway...`);
-            // Don't throw error, just continue with the test
         }
         
         await knowYourBusinessPage.selectRegisteredState('New York');
         await knowYourBusinessPage.checkAgreement();
+        
+        // Use the PageObject's built-in retry logic for navigation
+        console.log('➡️ Clicking Continue button with retry logic...');
         await knowYourBusinessPage.clickContinueButton();
 
         // ===== STEP 11: BUSINESS ADDRESS PAGE =====
         console.log('🏢 Step 11: Business Address Page...');
-        await page.waitForURL('**/business-address**');
+        await page.waitForURL('**/business-address**', { timeout: 10000 });
         await businessAddressPage.waitForPageLoad();
         console.log('   ✅ Reached Business Address page successfully!');
         
-        return businessAddressPage;
-    }
-
-    test('🏢 Business Address Page - Same as Primary Address Flow', async ({ page, context, browser }) => {
-        test.setTimeout(300000); // 5 minutes timeout
-
-        console.log('🚀 Starting Business Address Page - Same as Primary Address Test...');
-
-        // Do full onboarding flow to reach Business Address page
-        const businessAddressPage = await doFullOnboardingFlow(page, context, browser);
-
-        // Test the Business Address page
-        console.log('\n🧪 Testing Business Address page functionality...');
-
-        // Verify page elements
-        const pageElementsVisible = await businessAddressPage.verifyPageElements();
-        expect(pageElementsVisible).toBe(true);
-        console.log('✅ Page elements verified');
-
-        // Test "Same as Primary Address" flow
-        console.log('\n🏠 Testing "Same as Primary Address" flow...');
         await businessAddressPage.useSameAsPrimaryAddress();
-
-        // Verify form is complete
-        const isFormComplete = await businessAddressPage.isFormComplete();
-        console.log(`📊 Form complete: ${isFormComplete}`);
-        expect(isFormComplete).toBe(true);
-
-        // Click Continue button
-        console.log('➡️ Clicking Continue button...');
         await businessAddressPage.clickContinueButton();
 
-        // Verify navigation to next page
-        console.log('⏰ Waiting for navigation to next page...');
-        await page.waitForTimeout(5000);
+        // ===== STEP 12: OWNERS CENTER PAGE =====
+        console.log('👥 Step 12: Owners Center Page...');
+        await page.waitForURL('**/owners-center**', { timeout: 10000 });
+        await ownersCenterPage.waitForPageLoad();
+        console.log('   ✅ Reached Owners Center page successfully!');
         
-        const navigationSuccess = await businessAddressPage.verifyNavigationToNextPage();
-        console.log(`✅ Navigation successful: ${navigationSuccess}`);
+        await ownersCenterPage.fillSingleOwnerForm(100);
+        await ownersCenterPage.clickContinueButton();
+
+        // ===== STEP 13: PLAN SELECTION PAGE =====
+        console.log('📋 Step 13: Plan Selection Page...');
+        console.log('⏰ Waiting for navigation to Plan Selection...');
+        await page.waitForURL('**/plan-selection**', { timeout: 10000 });
+        await planSelectionPage.waitForPageLoad();
+        console.log('   ✅ Reached Plan Selection page successfully!');
         
-        if (navigationSuccess) {
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
-            console.log('✅ SUCCESS: Navigated to next page!');
-        } else {
-            console.log('⚠️ Navigation may have failed, checking current URL...');
-            const currentUrl = page.url();
-            console.log(`📍 Current URL: ${currentUrl}`);
-        }
+        return planSelectionPage;
+    }
 
-        console.log('\n✅ Business Address Page - Same as Primary Address Test Completed!');
-    });
-
-    test('🏢 Business Address Page - Custom Address Flow', async ({ page, context, browser }) => {
+    test('📋 Plan Selection Page - Basic Plan with Monthly Billing', async ({ page, context, browser }) => {
         test.setTimeout(300000); // 5 minutes timeout
 
-        console.log('🚀 Starting Business Address Page - Custom Address Test...');
+        console.log('🚀 Starting Plan Selection Page - Basic Plan Test...');
 
-        // Do full onboarding flow to reach Business Address page
-        const businessAddressPage = await doFullOnboardingFlow(page, context, browser);
+        // Do full onboarding flow to reach Plan Selection page
+        const planSelectionPage = await doFullOnboardingFlow(page, context, browser);
 
-        // Test the Business Address page
-        console.log('\n🧪 Testing Business Address page functionality...');
+        // Test the Plan Selection page
+        console.log('\n🧪 Testing Plan Selection page functionality...');
 
         // Verify page elements
-        const pageElementsVisible = await businessAddressPage.verifyPageElements();
+        const pageElementsVisible = await planSelectionPage.verifyPageElements();
         expect(pageElementsVisible).toBe(true);
         console.log('✅ Page elements verified');
 
-        // Test custom address flow
-        console.log('\n🏢 Testing custom business address flow...');
-        
-        const businessAddress = {
-            line1: '456 Business Ave',
-            apartment: 'Suite 200',
-            city: 'New York',
-            state: 'New York',
-            zip: '10002'
-        };
-
-        await businessAddressPage.fillCompleteAddress(businessAddress);
+        // Test Basic Plan selection
+        console.log('\n📋 Testing Basic Plan selection...');
+        await planSelectionPage.selectBasicPlan();
+        await planSelectionPage.selectMonthlyBilling();
 
         // Verify form is complete
-        const isFormComplete = await businessAddressPage.isFormComplete();
+        const isFormComplete = await planSelectionPage.isFormComplete();
         console.log(`📊 Form complete: ${isFormComplete}`);
         expect(isFormComplete).toBe(true);
 
         // Get form values to verify
-        const formValues = await businessAddressPage.getFormValues();
+        const formValues = await planSelectionPage.getFormValues();
         console.log('📋 Form values:', formValues);
 
         // Click Continue button
         console.log('➡️ Clicking Continue button...');
-        await businessAddressPage.clickContinueButton();
+        await planSelectionPage.clickContinueButton();
 
         // Verify navigation to next page
         console.log('⏰ Waiting for navigation to next page...');
         await page.waitForTimeout(5000);
         
-        const navigationSuccess = await businessAddressPage.verifyNavigationToNextPage();
+        const navigationSuccess = await planSelectionPage.verifyNavigationToNextPage();
         console.log(`✅ Navigation successful: ${navigationSuccess}`);
         
         if (navigationSuccess) {
@@ -313,61 +277,48 @@ test.describe('🏢 Business Address Page Tests', () => {
             console.log(`📍 Current URL: ${currentUrl}`);
         }
 
-        console.log('\n✅ Business Address Page - Custom Address Test Completed!');
+        console.log('\n✅ Plan Selection Page - Basic Plan Test Completed!');
     });
 
-    test('🏢 Business Address Page - Toggle Same as Primary Flow', async ({ page, context, browser }) => {
+    test('📋 Plan Selection Page - Pro Plan with Annual Billing', async ({ page, context, browser }) => {
         test.setTimeout(300000); // 5 minutes timeout
 
-        console.log('🚀 Starting Business Address Page - Toggle Same as Primary Test...');
+        console.log('🚀 Starting Plan Selection Page - Pro Plan Test...');
 
-        // Do full onboarding flow to reach Business Address page
-        const businessAddressPage = await doFullOnboardingFlow(page, context, browser);
+        // Do full onboarding flow to reach Plan Selection page
+        const planSelectionPage = await doFullOnboardingFlow(page, context, browser);
 
-        // Test the Business Address page
-        console.log('\n🧪 Testing Business Address page functionality...');
+        // Test the Plan Selection page
+        console.log('\n🧪 Testing Plan Selection page functionality...');
 
         // Verify page elements
-        const pageElementsVisible = await businessAddressPage.verifyPageElements();
+        const pageElementsVisible = await planSelectionPage.verifyPageElements();
         expect(pageElementsVisible).toBe(true);
         console.log('✅ Page elements verified');
 
-        // Test toggle functionality
-        console.log('\n🔄 Testing toggle "Same as Primary" functionality...');
-        
-        // First, check "Same as Primary"
-        await businessAddressPage.useSameAsPrimaryAddress();
-        let isFormComplete = await businessAddressPage.isFormComplete();
-        console.log(`📊 Form complete after checking same as primary: ${isFormComplete}`);
+        // Test Pro Plan selection
+        console.log('\n📋 Testing Pro Plan selection...');
+        await planSelectionPage.selectProPlan();
+        await planSelectionPage.selectAnnualBilling();
+
+        // Verify form is complete
+        const isFormComplete = await planSelectionPage.isFormComplete();
+        console.log(`📊 Form complete: ${isFormComplete}`);
         expect(isFormComplete).toBe(true);
 
-        // Then uncheck and fill custom address
-        await businessAddressPage.uncheckSameAsPrimary();
-        
-        const businessAddress = {
-            line1: '789 Corporate Blvd',
-            apartment: 'Floor 5',
-            city: 'New York',
-            state: 'New York',
-            zip: '10003'
-        };
-
-        await businessAddressPage.fillCompleteAddress(businessAddress);
-
-        // Verify form is still complete
-        isFormComplete = await businessAddressPage.isFormComplete();
-        console.log(`📊 Form complete after custom address: ${isFormComplete}`);
-        expect(isFormComplete).toBe(true);
+        // Get form values to verify
+        const formValues = await planSelectionPage.getFormValues();
+        console.log('📋 Form values:', formValues);
 
         // Click Continue button
         console.log('➡️ Clicking Continue button...');
-        await businessAddressPage.clickContinueButton();
+        await planSelectionPage.clickContinueButton();
 
         // Verify navigation to next page
         console.log('⏰ Waiting for navigation to next page...');
         await page.waitForTimeout(5000);
         
-        const navigationSuccess = await businessAddressPage.verifyNavigationToNextPage();
+        const navigationSuccess = await planSelectionPage.verifyNavigationToNextPage();
         console.log(`✅ Navigation successful: ${navigationSuccess}`);
         
         if (navigationSuccess) {
@@ -380,6 +331,132 @@ test.describe('🏢 Business Address Page Tests', () => {
             console.log(`📍 Current URL: ${currentUrl}`);
         }
 
-        console.log('\n✅ Business Address Page - Toggle Same as Primary Test Completed!');
+        console.log('\n✅ Plan Selection Page - Pro Plan Test Completed!');
+    });
+
+    test('📋 Plan Selection Page - Premium Plan with Monthly Billing', async ({ page, context, browser }) => {
+        test.setTimeout(300000); // 5 minutes timeout
+
+        console.log('🚀 Starting Plan Selection Page - Premium Plan Test...');
+
+        // Do full onboarding flow to reach Plan Selection page
+        const planSelectionPage = await doFullOnboardingFlow(page, context, browser);
+
+        // Test the Plan Selection page
+        console.log('\n🧪 Testing Plan Selection page functionality...');
+
+        // Verify page elements
+        const pageElementsVisible = await planSelectionPage.verifyPageElements();
+        expect(pageElementsVisible).toBe(true);
+        console.log('✅ Page elements verified');
+
+        // Test Premium Plan selection
+        console.log('\n📋 Testing Premium Plan selection...');
+        await planSelectionPage.selectPremiumPlan();
+        await planSelectionPage.selectMonthlyBilling();
+
+        // Verify form is complete
+        const isFormComplete = await planSelectionPage.isFormComplete();
+        console.log(`📊 Form complete: ${isFormComplete}`);
+        expect(isFormComplete).toBe(true);
+
+        // Get form values to verify
+        const formValues = await planSelectionPage.getFormValues();
+        console.log('📋 Form values:', formValues);
+
+        // Click Continue button
+        console.log('➡️ Clicking Continue button...');
+        await planSelectionPage.clickContinueButton();
+
+        // Verify navigation to next page
+        console.log('⏰ Waiting for navigation to next page...');
+        await page.waitForTimeout(5000);
+        
+        const navigationSuccess = await planSelectionPage.verifyNavigationToNextPage();
+        console.log(`✅ Navigation successful: ${navigationSuccess}`);
+        
+        if (navigationSuccess) {
+            const currentUrl = page.url();
+            console.log(`📍 Current URL: ${currentUrl}`);
+            console.log('✅ SUCCESS: Navigated to next page!');
+        } else {
+            console.log('⚠️ Navigation may have failed, checking current URL...');
+            const currentUrl = page.url();
+            console.log(`📍 Current URL: ${currentUrl}`);
+        }
+
+        console.log('\n✅ Plan Selection Page - Premium Plan Test Completed!');
+    });
+
+    test('📋 Plan Selection Page - Plan Switching and Billing Toggle', async ({ page, context, browser }) => {
+        test.setTimeout(300000); // 5 minutes timeout
+
+        console.log('🚀 Starting Plan Selection Page - Plan Switching Test...');
+
+        // Do full onboarding flow to reach Plan Selection page
+        const planSelectionPage = await doFullOnboardingFlow(page, context, browser);
+
+        // Test the Plan Selection page
+        console.log('\n🧪 Testing Plan Selection page functionality...');
+
+        // Verify page elements
+        const pageElementsVisible = await planSelectionPage.verifyPageElements();
+        expect(pageElementsVisible).toBe(true);
+        console.log('✅ Page elements verified');
+
+        // Test plan switching functionality
+        console.log('\n🔄 Testing plan switching functionality...');
+        
+        // First, select Basic Plan with Monthly billing
+        await planSelectionPage.selectBasicPlan();
+        await planSelectionPage.selectMonthlyBilling();
+        let isFormComplete = await planSelectionPage.isFormComplete();
+        console.log(`📊 Form complete after Basic + Monthly: ${isFormComplete}`);
+        expect(isFormComplete).toBe(true);
+
+        // Switch to Pro Plan with Annual billing
+        await planSelectionPage.selectProPlan();
+        await planSelectionPage.selectAnnualBilling();
+        
+        // Verify form is still complete
+        isFormComplete = await planSelectionPage.isFormComplete();
+        console.log(`📊 Form complete after Pro + Annual: ${isFormComplete}`);
+        expect(isFormComplete).toBe(true);
+
+        // Switch to Premium Plan with Monthly billing
+        await planSelectionPage.selectPremiumPlan();
+        await planSelectionPage.selectMonthlyBilling();
+        
+        // Verify form is still complete
+        isFormComplete = await planSelectionPage.isFormComplete();
+        console.log(`📊 Form complete after Premium + Monthly: ${isFormComplete}`);
+        expect(isFormComplete).toBe(true);
+
+        // Get final form values
+        const formValues = await planSelectionPage.getFormValues();
+        console.log('📋 Final form values:', formValues);
+
+        // Click Continue button
+        console.log('➡️ Clicking Continue button...');
+        await planSelectionPage.clickContinueButton();
+
+        // Verify navigation to next page
+        console.log('⏰ Waiting for navigation to next page...');
+        await page.waitForTimeout(5000);
+        
+        const navigationSuccess = await planSelectionPage.verifyNavigationToNextPage();
+        console.log(`✅ Navigation successful: ${navigationSuccess}`);
+        
+        if (navigationSuccess) {
+            const currentUrl = page.url();
+            console.log(`📍 Current URL: ${currentUrl}`);
+            console.log('✅ SUCCESS: Navigated to next page!');
+        } else {
+            console.log('⚠️ Navigation may have failed, checking current URL...');
+            const currentUrl = page.url();
+            console.log(`📍 Current URL: ${currentUrl}`);
+        }
+
+        console.log('\n✅ Plan Selection Page - Plan Switching Test Completed!');
     });
 });

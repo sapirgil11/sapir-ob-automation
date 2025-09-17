@@ -1,5 +1,5 @@
 import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
-import { EmailVerificationPage } from '../../../main/PageObjects/emailVerificationPage';
+import { EmailVerificationPage } from '../../../main/PageObjects/emailVerification';
 import { Welcome } from '../../../main/PageObjects/welcome';
 
 // Enforce 1920x1080 resolution for all tests in this file
