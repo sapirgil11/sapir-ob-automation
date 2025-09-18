@@ -1,442 +1,480 @@
 import { Locator, Page } from '@playwright/test';
 
 /**
- * 🎯 PERSONAL DETAILS PAGE OBJECT
+ * 🎯 PERSONAL DETAILS PAGE OBJECT - Production Elements Only
  * 
- * This page object contains all personal details page elements organized by category:
- * - Header and Navigation Elements
- * - Main Content and Headings  
- * - Form and Input Elements
- * - Progress Steps and Navigation
- * - Validation Messages and Errors
- * - Buttons and Actions
- * - Page Layout and UI Elements
+ * This page object contains only the elements that are actually used in the real Lili application,
+ * based on the UI automation project at /Users/sapir.abargil/Downloads/ui-automation-master
  * 
- * All selectors are based on the actual personal details page structure.
+ * Production Elements:
+ * - firstName input field
+ * - lastName input field
+ * - continue button (elCta)
+ * - error messages (firstNameMessage, lastNameMessage)
+ * - referral field
  */
 export class PersonalDetails {
     private page: Page;
 
-    // ===== PERSONAL DETAILS PAGE ELEMENTS =====
+    // ===== CORE PRODUCTION ELEMENTS =====
     
-    // ===== BUTTON IDs AND SELECTORS =====
-    public continueButton!: Locator;                              // ID: "#continue-button" | Text: "Continue"
-    public backButton!: Locator;                                  // ID: "#back-button" | Text: "Back"
-    public saveButton!: Locator;                                  // ID: "#save-button" | Text: "Save"
-    public cancelButton!: Locator;                                // ID: "#cancel-button" | Text: "Cancel"
+    // --Form Input Fields--
+    public firstNameInput!: Locator;                              // ID: "#firstName" | Placeholder: "Enter your first name"
+    public lastNameInput!: Locator;                               // ID: "#lastName" | Placeholder: "Enter your last name"
     
-    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
-    public firstNameInput!: Locator;                              // ID: "#first-name" | Placeholder: "Enter your first name"
-    public lastNameInput!: Locator;                               // ID: "#last-name" | Placeholder: "Enter your last name"
+    // --Action Buttons--
+    public continueButton!: Locator;                              // ID: "#elCta" | Text: "Continue"
     
-    // ===== FLOATING LABEL ELEMENTS =====
+    // --Error Messages--
+    public firstNameError!: Locator;                              // ID: "#firstNameMessage"
+    public lastNameError!: Locator;                               // ID: "#lastNameMessage"
+    
+    // --Additional Fields--
+    public referralField!: Locator;                               // ID: "#referral"
+    
+    // --Page Content Elements--
+    public pageHeading!: Locator;                                 // ID: "#stepPageHeader" | Text: "Your personal details"
+    public pageSubheading!: Locator;                              // ID: "#stepPageContent" | Text: "Tell us about yourself"
+    public firstNameLabel!: Locator;                              // Label for first name field
+    public lastNameLabel!: Locator;                               // Label for last name field
+    
+    // --Floating Label Elements--
     public firstNameFloatingLabel!: Locator;                      // First name floating label wrapper
     public lastNameFloatingLabel!: Locator;                       // Last name floating label wrapper
     public firstNameClearButton!: Locator;                        // First name clear button
     public lastNameClearButton!: Locator;                         // Last name clear button
     
-    // ===== PAGE TEXTS AND CONTENT =====
-    public pageHeading!: Locator;                                 // ID: "#page-heading" | Text: "Your personal details"
-    public pageSubheading!: Locator;                              // ID: "#page-subheading" | Text: "Tell us about yourself"
-    public firstNameLabel!: Locator;                              // ID: "#first-name-label" | Text: "First Name"
-    public lastNameLabel!: Locator;                               // ID: "#last-name-label" | Text: "Last Name"
-    public helpText!: Locator;                                    // ID: "#help-text" | Text: "This information will be used to verify your identity"
-    public progressText!: Locator;                                // ID: "#progress-text" | Text: "Step 2 of 12"
-    public requiredFieldText!: Locator;                           // ID: "#required-text" | Text: "* Required fields"
-    
-    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
-    public firstNameError!: Locator;                              // ID: "#first-name-error"
-    // TRIGGER: Leave first name field empty and click "Continue"
-    // ERROR TEXT: "First name is required"
-
-    public lastNameError!: Locator;                               // ID: "#last-name-error"
-    // TRIGGER: Leave last name field empty and click "Continue"
-    // ERROR TEXT: "Last name is required"
-
-    public firstNameInvalidError!: Locator;                       // ID: "#first-name-invalid-error"
-    // TRIGGER: Type numbers or symbols in first name field
-    // ERROR TEXT: "First name can only contain letters"
-
-    public lastNameInvalidError!: Locator;                        // ID: "#last-name-invalid-error"
-    // TRIGGER: Type numbers or symbols in last name field
-    // ERROR TEXT: "Last name can only contain letters"
-
-    public generalError!: Locator;                                // ID: "#general-error"
-    // TRIGGER: Submit form with invalid data
-    // ERROR TEXT: "Please fix the errors above"
-
-    // ===== VALIDATION RULES =====
-    // --First Name Validation--
-    // MIN LENGTH: 1 character
-    // MAX LENGTH: 50 characters
-    // PATTERN: /^[a-zA-Z\s'-]+$/
-    // REQUIRED: Yes
-
-    // --Last Name Validation--
-    // MIN LENGTH: 1 character
-    // MAX LENGTH: 50 characters
-    // PATTERN: /^[a-zA-Z\s'-]+$/
-    // REQUIRED: Yes
-
-    // ===== TEST DATA EXAMPLES =====
-    // --Valid Test Data--
-    // FIRST NAME: "John" | "Mary-Jane" | "O'Connor" | "Jean-Pierre"
-    // LAST NAME: "Smith" | "Johnson-Wilson" | "O'Brien" | "Van Der Berg"
-
-    // --Invalid Test Data--
-    // FIRST NAME: "123" | "John123" | "John@" | "" (empty)
-    // LAST NAME: "456" | "Smith456" | "Smith#" | "" (empty)
-    
-    // ===== ERROR CONTAINERS =====
+    // --Error Containers--
     public firstNameErrorContainer!: Locator;                     // First name error container
     public lastNameErrorContainer!: Locator;                      // Last name error container
-    
-    // ===== SPECIFIC ERROR MESSAGES =====
-    public firstNameRequiredError!: Locator;                      // "First name is required" error
-    public lastNameRequiredError!: Locator;                       // "Last name is required" error
-    public firstNameMinLengthError!: Locator;                     // "First name must be at least" error
-    public lastNameMinLengthError!: Locator;                      // "Last name must be at least" error
-    public firstNameLettersOnlyError!: Locator;                   // "First name must contain letters only" error
-    public lastNameLettersOnlyError!: Locator;                    // "Last name must contain letters only" error
-    public firstNameMaxLengthError!: Locator;                     // "First name must be at most 30" error
-    public lastNameMaxLengthError!: Locator;                      // "Last name must be at most 30" error
-    
-    // ===== NAVIGATION AND HEADER ELEMENTS =====
-    public liliLogo!: Locator;                                    // Lili logo image
-    public pageTitle!: Locator;                                   // Page title in sidebar
-    public breadcrumb!: Locator;                                  // Breadcrumb navigation
-    
-    // ===== CONTENT AND DISPLAY ELEMENTS =====
-    public progressSteps!: Locator;                               // Progress steps sidebar navigation
-    public contactStep!: Locator;                                 // "Contact" step in sidebar
-    public phoneNumberStep!: Locator;                             // "Phone Number" step in sidebar
-    public identityStep!: Locator;                                // "Identity" step in sidebar
-    public homeAddressStep!: Locator;                             // "Home Address" step in sidebar
-    public businessDetailsStep!: Locator;                         // "Business Details" step in sidebar
-    public ownersCenterStep!: Locator;                            // "Owners Center" step in sidebar
-    public choosePlanStep!: Locator;                              // "Choose a Plan" step in sidebar
-    public confirmationStep!: Locator;                            // "Confirmation" step in sidebar
-    public personalDetailsStep!: Locator;                         // "Personal Details" step (current)
-    
-    // ===== PROGRESS STEPS AND NAVIGATION =====
-    public stepIndicator!: Locator;                               // Current step indicator
-    public progressBar!: Locator;                                 // Progress bar
-    public stepCounter!: Locator;                                 // Step counter (e.g., "Step 2 of 8")
-    
-    // ===== STATUS MESSAGES AND TIMERS =====
-    public successMessage!: Locator;                              // Success message
-    public warningMessage!: Locator;                              // Warning message
-    public infoMessage!: Locator;                                 // Info message
-    
-    // ===== SECURITY AND NOTICES =====
-    public securityNotice!: Locator;                              // Security notice
-    public privacyNotice!: Locator;                               // Privacy notice
-    public termsNotice!: Locator;                                 // Terms and conditions notice
-    
-    // ===== PAGE LAYOUT AND UI ELEMENTS =====
-    public pageLayout!: Locator;                                  // Main page layout container
-    public pageContent!: Locator;                                 // Page content area
-    public pageWrapper!: Locator;                                 // Page wrapper
-    public formContainer!: Locator;                               // Form container
-    public sidebar!: Locator;                                     // Sidebar navigation
-    public mainContent!: Locator;                                 // Main content area
-    
-    // ===== FORM VALIDATION ELEMENTS =====
-    public requiredFieldIndicator!: Locator;                      // Required field indicator (*)
-    public fieldValidationIcon!: Locator;                         // Field validation icon
-    public formValidationSummary!: Locator;                       // Form validation summary
-    
-    // ===== ACCESSIBILITY ELEMENTS =====
-    public skipLink!: Locator;                                    // Skip to main content link
-    public accessibilityToggle!: Locator;                         // Accessibility toggle
-    public highContrastToggle!: Locator;                          // High contrast toggle
 
     constructor(page: Page) {
         this.page = page;
         this.initializeAllLocators();
     }
 
-    /**
-     * 🔧 Initialize all locators for the personal details page
-     */
     private initializeAllLocators(): void {
-        this.initializeButtonElements();
-        this.initializeInputElements();
-        this.initializeTooltipAndTextElements();
-        this.initializeErrorMessageElements();
-        this.initializeNavigationElements();
+        this.initializeCoreElements();
+        this.initializeErrorElements();
         this.initializeContentElements();
-        this.initializeProgressElements();
-        this.initializeStatusElements();
-        this.initializeSecurityElements();
-        this.initializeLayoutElements();
-        this.initializeValidationElements();
-        this.initializeAccessibilityElements();
     }
 
-    /**
-     * 🔘 Initialize button elements
-     */
-    private initializeButtonElements(): void {
-        this.continueButton = this.page.getByRole('button', { name: 'Continue' });
-        this.backButton = this.page.locator('#back, button[id="back"]');
-        this.saveButton = this.page.locator('button:has-text("Save")');
-        this.cancelButton = this.page.locator('button:has-text("Cancel")');
-    }
-
-    /**
-     * 📝 Initialize input elements
-     */
-    private initializeInputElements(): void {
+    private initializeCoreElements(): void {
+        // Core form elements - Updated to match actual HTML structure
         this.firstNameInput = this.page.locator('#FIRST_NAME, input[id="FIRST_NAME"]');
         this.lastNameInput = this.page.locator('#LAST_NAME, input[id="LAST_NAME"]');
+        this.continueButton = this.page.locator('#formSubmitButton, button[id="formSubmitButton"]');
+        this.referralField = this.page.locator('#referral, input[id="referral"]');
         
-        // Floating label elements
-        this.firstNameFloatingLabel = this.page.locator('#FIRST_NAME-floating-label #LiliFloatingWrapper');
-        this.lastNameFloatingLabel = this.page.locator('#LAST_NAME-floating-label #LiliFloatingWrapper');
-        this.firstNameClearButton = this.page.locator('#FIRST_NAME-floating-label #ClearInput');
-        this.lastNameClearButton = this.page.locator('#LAST_NAME-floating-label #ClearInput');
+        // Floating label elements - Updated to match actual HTML structure
+        this.firstNameFloatingLabel = this.page.locator('#FIRST_NAME-floating-label, .floating-label:has(#FIRST_NAME)');
+        this.lastNameFloatingLabel = this.page.locator('#LAST_NAME-floating-label, .floating-label:has(#LAST_NAME)');
+        this.firstNameClearButton = this.page.locator('#FIRST_NAME-floating-label #ClearInput, #FIRST_NAME + button');
+        this.lastNameClearButton = this.page.locator('#LAST_NAME-floating-label #ClearInput, #LAST_NAME + button');
     }
 
-    /**
-     * 💬 Initialize tooltip and text elements
-     */
-    private initializeTooltipAndTextElements(): void {
+    private initializeErrorElements(): void {
+        // Error messages - Updated to match actual HTML structure
+        this.firstNameError = this.page.locator('#FIRST_NAME-error-container p, .error:has-text("First name")');
+        this.lastNameError = this.page.locator('#LAST_NAME-error-container p, .error:has-text("Last name")');
+        
+        // Error containers - Updated to match actual HTML structure
+        this.firstNameErrorContainer = this.page.locator('#FIRST_NAME-error-container, .error-container:has(#FIRST_NAME-error-container)');
+        this.lastNameErrorContainer = this.page.locator('#LAST_NAME-error-container, .error-container:has(#LAST_NAME-error-container)');
+    }
+
+    private initializeContentElements(): void {
+        // Page content elements
         this.pageHeading = this.page.locator('#stepPageHeader, h5[id="stepPageHeader"]');
         this.pageSubheading = this.page.locator('#stepPageContent, div[id="stepPageContent"]');
-        this.firstNameLabel = this.page.locator('label[for="FIRST_NAME"], label:has-text("First name")');
-        this.lastNameLabel = this.page.locator('label[for="LAST_NAME"], label:has-text("Last name")');
-        this.helpText = this.page.locator('p:has-text("help"), div:has-text("instructions")');
-    }
-
-    /**
-     * ⚠️ Initialize error message elements
-     */
-    private initializeErrorMessageElements(): void {
-        this.firstNameError = this.page.locator('[data-testid*="firstName-error"], .error:has-text("First name")');
-        this.lastNameError = this.page.locator('[data-testid*="lastName-error"], .error:has-text("Last name")');
-        this.generalError = this.page.locator('.error, .alert-error, [role="alert"]');
-        
-        // Error containers
-        this.firstNameErrorContainer = this.page.locator('#FIRST_NAME-error-container');
-        this.lastNameErrorContainer = this.page.locator('#LAST_NAME-error-container');
-        
-        // Specific error messages
-        this.firstNameRequiredError = this.page.locator('text=First name is required');
-        this.lastNameRequiredError = this.page.locator('text=Last name is required');
-        this.firstNameMinLengthError = this.page.locator('text=First name must be at least');
-        this.lastNameMinLengthError = this.page.locator('text=Last name must be at least');
-        this.firstNameLettersOnlyError = this.page.locator('text=First name must contain letters only');
-        this.lastNameLettersOnlyError = this.page.locator('text=Last name must contain letters only');
-        this.firstNameMaxLengthError = this.page.locator('text=First name must be at most 30');
-        this.lastNameMaxLengthError = this.page.locator('text=Last name must be at most 30');
-    }
-
-    /**
-     * 🧭 Initialize navigation elements
-     */
-    private initializeNavigationElements(): void {
-        this.liliLogo = this.page.locator('img[alt="Lili Logo"]').first();
-        this.pageTitle = this.page.locator('#stepPageHeader, h5[id="stepPageHeader"]');
-        this.breadcrumb = this.page.locator('nav[aria-label="breadcrumb"], .breadcrumb');
-    }
-
-    /**
-     * 📄 Initialize content elements
-     */
-    private initializeContentElements(): void {
-        this.progressSteps = this.page.locator('.progress-steps, .step-navigation');
-        this.contactStep = this.page.locator('text=Contact');
-        this.phoneNumberStep = this.page.locator('text=Phone Number');
-        this.identityStep = this.page.locator('text=Identity');
-        this.homeAddressStep = this.page.locator('text=Home Address');
-        this.businessDetailsStep = this.page.locator('text=Business Details');
-        this.ownersCenterStep = this.page.locator('text=Owners Center');
-        this.choosePlanStep = this.page.locator('text=Choose a Plan');
-        this.confirmationStep = this.page.locator('text=Confirmation');
-        this.personalDetailsStep = this.page.locator('text=Personal Details');
-    }
-
-    /**
-     * 📊 Initialize progress elements
-     */
-    private initializeProgressElements(): void {
-        this.stepIndicator = this.page.locator('.step-indicator, .current-step');
-        this.progressBar = this.page.locator('.progress-bar, .progress');
-        this.stepCounter = this.page.locator('.step-counter, .step-count');
-    }
-
-    /**
-     * ⏰ Initialize status elements
-     */
-    private initializeStatusElements(): void {
-        this.successMessage = this.page.locator('.success, .alert-success, [role="status"]');
-        this.warningMessage = this.page.locator('.warning, .alert-warning');
-        this.infoMessage = this.page.locator('.info, .alert-info');
-    }
-
-    /**
-     * 🔒 Initialize security elements
-     */
-    private initializeSecurityElements(): void {
-        this.securityNotice = this.page.locator('text=security, text=secure');
-        this.privacyNotice = this.page.locator('text=privacy, text=confidential');
-        this.termsNotice = this.page.locator('text=terms, text=conditions');
-    }
-
-    /**
-     * 🎨 Initialize layout elements
-     */
-    private initializeLayoutElements(): void {
-        this.pageLayout = this.page.locator('#page-layout, div[id="page-layout"]');
-        this.pageContent = this.page.locator('#page-content, div[id="page-content"]');
-        this.pageWrapper = this.page.locator('#page-wrapper, div[id="page-wrapper"]');
-        this.formContainer = this.page.locator('form, .form-container');
-        this.sidebar = this.page.locator('.sidebar, .side-nav');
-        this.mainContent = this.page.locator('.main-content, .main');
-    }
-
-    /**
-     * ✅ Initialize validation elements
-     */
-    private initializeValidationElements(): void {
-        this.requiredFieldIndicator = this.page.locator('.required, [aria-required="true"]');
-        this.fieldValidationIcon = this.page.locator('.validation-icon, .field-icon');
-        this.formValidationSummary = this.page.locator('.validation-summary, .form-errors');
-    }
-
-    /**
-     * ♿ Initialize accessibility elements
-     */
-    private initializeAccessibilityElements(): void {
-        this.skipLink = this.page.locator('a:has-text("Skip"), .skip-link');
-        this.accessibilityToggle = this.page.locator('.accessibility-toggle, [aria-label*="accessibility"]');
-        this.highContrastToggle = this.page.locator('.high-contrast, [aria-label*="contrast"]');
+        this.firstNameLabel = this.page.locator('label[for="firstName"], label:has-text("First name")');
+        this.lastNameLabel = this.page.locator('label[for="lastName"], label:has-text("Last name")');
     }
 
     // ===== PAGE VERIFICATION METHODS =====
 
-    /**
-     * 🔍 Check if personal details page is loaded
-     */
     async isPersonalDetailsPageLoaded(): Promise<boolean> {
         try {
             const url = this.page.url();
             const heading = await this.pageHeading.isVisible();
             return url.includes('/personal-details') && heading;
         } catch (error) {
+            console.error('Error checking if personal details page is loaded:', error);
             return false;
         }
     }
 
-    /**
-     * ⏳ Wait for personal details page to load
-     */
     async waitForPersonalDetailsPageToLoad(): Promise<void> {
-        await this.page.waitForURL('**/personal-details**');
-        await this.pageHeading.waitFor({ state: 'visible' });
+        try {
+            await this.page.waitForURL('**/personal-details**');
+            await this.pageHeading.waitFor({ state: 'visible' });
+        } catch (error) {
+            console.error('Error waiting for personal details page to load:', error);
+        }
     }
 
     // ===== FORM INTERACTION METHODS =====
 
-    /**
-     * 📝 Fill personal details form
-     */
     async fillPersonalDetailsForm(data: {
         firstName?: string;
         lastName?: string;
     }): Promise<void> {
-        if (data.firstName) await this.firstNameInput.fill(data.firstName);
-        if (data.lastName) await this.lastNameInput.fill(data.lastName);
+        try {
+            if (data.firstName) {
+                console.log(`📝 Filling first name: ${data.firstName}`);
+                await this.fillFirstName(data.firstName);
+            }
+            if (data.lastName) {
+                console.log(`📝 Filling last name: ${data.lastName}`);
+                await this.fillLastName(data.lastName);
+            }
+        } catch (error) {
+            console.error('Error filling personal details form:', error);
+            throw error;
+        }
     }
 
-    /**
-     * 🔘 Click continue button
-     */
+    // Alternative method for filling form with better input handling
+    async fillFirstName(firstName: string): Promise<void> {
+        try {
+            console.log(`📝 Filling first name: ${firstName}`);
+            
+            // Wait for the input to be visible
+            await this.firstNameInput.waitFor({ state: 'visible' });
+            
+            // Click on the input field
+            await this.firstNameInput.click();
+            
+            // Clear any existing value
+            await this.firstNameInput.fill('');
+            
+            // Type the new value
+            await this.firstNameInput.type(firstName);
+            
+            // Wait for the value to be set
+            await this.page.waitForTimeout(500);
+            
+            // Verify the value was set
+            const currentValue = await this.firstNameInput.inputValue();
+            console.log(`✅ First name set to: ${currentValue}`);
+            
+        } catch (error) {
+            console.error('Error filling first name:', error);
+            throw error;
+        }
+    }
+
+    async fillLastName(lastName: string): Promise<void> {
+        try {
+            console.log(`📝 Filling last name: ${lastName}`);
+            
+            // Wait for the input to be visible
+            await this.lastNameInput.waitFor({ state: 'visible' });
+            
+            // Click on the input field
+            await this.lastNameInput.click();
+            
+            // Clear any existing value
+            await this.lastNameInput.fill('');
+            
+            // Type the new value
+            await this.lastNameInput.type(lastName);
+            
+            // Wait for the value to be set
+            await this.page.waitForTimeout(500);
+            
+            // Verify the value was set
+            const currentValue = await this.lastNameInput.inputValue();
+            console.log(`✅ Last name set to: ${currentValue}`);
+            
+        } catch (error) {
+            console.error('Error filling last name:', error);
+            throw error;
+        }
+    }
+
     async clickContinueButton(): Promise<void> {
-        await this.continueButton.click();
+        try {
+            console.log('➡️ Clicking continue button...');
+            
+            // Wait for the button to be visible and enabled
+            await this.continueButton.waitFor({ state: 'visible' });
+            
+            // Check if button is enabled
+            const isEnabled = await this.continueButton.isEnabled();
+            console.log(`📋 Continue button enabled: ${isEnabled ? '✅' : '❌'}`);
+            
+            if (!isEnabled) {
+                console.log('⚠️ Continue button is disabled, waiting for it to become enabled...');
+                await this.continueButton.waitFor({ state: 'attached' });
+                await this.page.waitForTimeout(1000);
+            }
+            
+            // Click the button
+            await this.continueButton.click();
+            
+            console.log('✅ Continue button clicked successfully');
+            
+        } catch (error) {
+            console.error('Error clicking continue button:', error);
+            throw error;
+        }
     }
 
-    /**
-     * ⬅️ Click back button
-     */
     async clickBackButton(): Promise<void> {
-        await this.backButton.click();
+        try {
+            console.log('⬅️ Clicking back button...');
+            const backButton = this.page.locator('#back, button[id="back"]');
+            await backButton.click();
+        } catch (error) {
+            console.error('Error clicking back button:', error);
+            throw error;
+        }
     }
 
     // ===== VALIDATION METHODS =====
 
-    /**
-     * ✅ Check if continue button is enabled
-     */
     async isContinueButtonEnabled(): Promise<boolean> {
-        return await this.continueButton.isEnabled();
+        try {
+            return await this.continueButton.isEnabled();
+        } catch (error) {
+            console.error('Error checking if continue button is enabled:', error);
+            return false;
+        }
     }
 
-    /**
-     * 📋 Get form validation errors
-     */
     async getFormValidationErrors(): Promise<string[]> {
         const errors: string[] = [];
         
-        const errorElements = [
-            this.firstNameError,
-            this.lastNameError,
-            this.generalError
-        ];
+        try {
+            const errorElements = [
+                { name: 'First Name Error', locator: this.firstNameError },
+                { name: 'Last Name Error', locator: this.lastNameError }
+            ];
 
-        for (const errorElement of errorElements) {
-            if (await errorElement.isVisible()) {
-                const errorText = await errorElement.textContent();
-                if (errorText) errors.push(errorText);
+            for (const errorElement of errorElements) {
+                if (await errorElement.locator.isVisible()) {
+                    const errorText = await errorElement.locator.textContent();
+                    if (errorText && errorText.trim()) {
+                        errors.push(errorText.trim());
+                        console.log(`⚠️ ${errorElement.name}: ${errorText.trim()}`);
+                    }
+                }
             }
+        } catch (error) {
+            console.error('Error getting form validation errors:', error);
         }
 
         return errors;
     }
 
-    /**
-     * 📝 Get page title
-     */
-    async getPageTitle(): Promise<string> {
-        return await this.page.title();
+    async hasFirstNameError(): Promise<boolean> {
+        try {
+            return await this.firstNameError.isVisible();
+        } catch (error) {
+            console.error('Error checking for first name error:', error);
+            return false;
+        }
     }
 
-    /**
-     * 🎯 Get current step information
-     */
-    async getCurrentStepInfo(): Promise<string> {
+    async hasLastNameError(): Promise<boolean> {
         try {
-            if (await this.stepCounter.isVisible()) {
-                return await this.stepCounter.textContent() || '';
+            return await this.lastNameError.isVisible();
+        } catch (error) {
+            console.error('Error checking for last name error:', error);
+            return false;
+        }
+    }
+
+    async getFirstNameErrorText(): Promise<string> {
+        try {
+            if (await this.firstNameError.isVisible()) {
+                return await this.firstNameError.textContent() || '';
             }
             return '';
         } catch (error) {
+            console.error('Error getting first name error text:', error);
             return '';
         }
     }
 
-    /**
-     * 🧹 Clear first name field using clear button
-     */
+    async getLastNameErrorText(): Promise<string> {
+        try {
+            if (await this.lastNameError.isVisible()) {
+                return await this.lastNameError.textContent() || '';
+            }
+            return '';
+        } catch (error) {
+            console.error('Error getting last name error text:', error);
+            return '';
+        }
+    }
+
+    // ===== UTILITY METHODS =====
+
+    async getPageTitle(): Promise<string> {
+        try {
+            return await this.page.title();
+        } catch (error) {
+            console.error('Error getting page title:', error);
+            return '';
+        }
+    }
+
+    async getCurrentStepInfo(): Promise<string> {
+        try {
+            if (await this.pageHeading.isVisible()) {
+                return await this.pageHeading.textContent() || '';
+            }
+            return '';
+        } catch (error) {
+            console.error('Error getting current step info:', error);
+            return '';
+        }
+    }
+
     async clearFirstNameField(): Promise<void> {
-        await this.firstNameClearButton.click();
+        try {
+            console.log('🧹 Clearing first name field...');
+            await this.firstNameClearButton.click();
+        } catch (error) {
+            console.error('Error clearing first name field:', error);
+            // Fallback to manual clear
+            await this.firstNameInput.fill('');
+        }
     }
 
-    /**
-     * 🧹 Clear last name field using clear button
-     */
     async clearLastNameField(): Promise<void> {
-        await this.lastNameClearButton.click();
+        try {
+            console.log('🧹 Clearing last name field...');
+            await this.lastNameClearButton.click();
+        } catch (error) {
+            console.error('Error clearing last name field:', error);
+            // Fallback to manual clear
+            await this.lastNameInput.fill('');
+        }
     }
 
-    /**
-     * ✅ Check if specific error message is visible
-     */
+    async getFirstNameValue(): Promise<string> {
+        try {
+            return await this.firstNameInput.inputValue();
+        } catch (error) {
+            console.error('Error getting first name value:', error);
+            return '';
+        }
+    }
+
+    async getLastNameValue(): Promise<string> {
+        try {
+            return await this.lastNameInput.inputValue();
+        } catch (error) {
+            console.error('Error getting last name value:', error);
+            return '';
+        }
+    }
+
+    // ===== PAGE OBJECT METHODS =====
+
+    async verifyPageElements(): Promise<boolean> {
+        console.log('🔍 Verifying Personal Details page elements...');
+        
+        const elements = [
+            { name: 'First Name Input', locator: this.firstNameInput, required: true },
+            { name: 'Last Name Input', locator: this.lastNameInput, required: true },
+            { name: 'Continue Button', locator: this.continueButton, required: true },
+            { name: 'Page Heading', locator: this.pageHeading, required: true }
+        ];
+
+        let allVisible = true;
+        for (const element of elements) {
+            const isVisible = await element.locator.isVisible();
+            console.log(`📋 ${element.name}: ${isVisible ? '✅ Visible' : '❌ Not visible'}`);
+            
+            if (element.required && !isVisible) {
+                allVisible = false;
+            }
+        }
+
+        console.log(`🎯 Personal Details page elements verification: ${allVisible ? '✅ PASSED' : '❌ FAILED'}`);
+        return allVisible;
+    }
+
+    async isFormComplete(): Promise<boolean> {
+        console.log('🔍 Checking if Personal Details form is complete...');
+        
+        try {
+            const firstNameValue = await this.getFirstNameValue();
+            const lastNameValue = await this.getLastNameValue();
+            
+            const isFirstNameFilled = Boolean(firstNameValue && firstNameValue.trim() !== '');
+            const isLastNameFilled = Boolean(lastNameValue && lastNameValue.trim() !== '');
+            
+            const isComplete = isFirstNameFilled && isLastNameFilled;
+            
+            console.log(`📝 First name filled: ${isFirstNameFilled ? '✅' : '❌'} (${firstNameValue ? 'has value' : 'empty'})`);
+            console.log(`📝 Last name filled: ${isLastNameFilled ? '✅' : '❌'} (${lastNameValue ? 'has value' : 'empty'})`);
+            console.log(`🎯 Form complete: ${isComplete ? '✅ YES' : '❌ NO'}`);
+            
+            return isComplete;
+        } catch (error) {
+            console.log(`⚠️ Error checking form completion: ${error instanceof Error ? error.message : String(error)}`);
+            return false;
+        }
+    }
+
+    async verifyNavigationToNextPage(): Promise<boolean> {
+        console.log('🔍 Verifying navigation to next page...');
+        
+        try {
+            // Wait a bit for navigation to complete
+            await this.page.waitForTimeout(2000);
+            
+            const currentUrl = this.page.url();
+            console.log(`📍 Current URL: ${currentUrl}`);
+            
+            // Check if we're no longer on the personal details page
+            const isNotPersonalDetailsPage = !currentUrl.includes('/personal-details');
+            
+            if (isNotPersonalDetailsPage) {
+                console.log('✅ Navigation successful - no longer on personal details page');
+                return true;
+            } else {
+                console.log('⚠️ Still on personal details page - navigation may have failed');
+                return false;
+            }
+        } catch (error) {
+            console.log(`⚠️ Error verifying navigation: ${error instanceof Error ? error.message : String(error)}`);
+            return false;
+        }
+    }
+
+    // ===== ERROR HANDLING METHODS =====
+
     async isErrorVisible(errorLocator: Locator): Promise<boolean> {
         try {
             return await errorLocator.isVisible();
         } catch (error) {
+            console.error('Error checking if error is visible:', error);
+            return false;
+        }
+    }
+
+    async waitForErrorToAppear(errorLocator: Locator, timeout: number = 5000): Promise<boolean> {
+        try {
+            await errorLocator.waitFor({ state: 'visible', timeout });
+            return true;
+        } catch (error) {
+            console.log(`Error did not appear within ${timeout}ms`);
+            return false;
+        }
+    }
+
+    async waitForErrorToDisappear(errorLocator: Locator, timeout: number = 5000): Promise<boolean> {
+        try {
+            await errorLocator.waitFor({ state: 'hidden', timeout });
+            return true;
+        } catch (error) {
+            console.log(`Error did not disappear within ${timeout}ms`);
             return false;
         }
     }
