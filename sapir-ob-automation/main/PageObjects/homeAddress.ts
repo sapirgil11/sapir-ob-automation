@@ -1,36 +1,33 @@
 import { Locator, Page } from '@playwright/test';
 
 /**
- * 🏠 HOME ADDRESS PAGE OBJECT
+ * 🎯 HOME ADDRESS PAGE OBJECT - Production Elements Only
  * 
- * This page object contains all home address page elements organized by category:
- * - Header and Navigation Elements
- * - Main Content and Headings  
- * - Form and Input Elements (Street Address, City, State, ZIP)
- * - Progress Steps and Navigation
- * - Validation Messages and Errors
- * - Buttons and Actions
- * - Page Layout and UI Elements
+ * This page object contains only the elements that are actually used in the real Lili application,
+ * based on the UI automation project at /Users/sapir.abargil/Downloads/ui-automation-master
  * 
- * All selectors are based on common address form patterns and Lili onboarding structure.
+ * Production Elements:
+ * - line1 (address field)
+ * - line2 (apartment/suite field)
+ * - city (city field)
+ * - elSelectState (state dropdown)
+ * - elSelectCountry (country dropdown)
+ * - postalCode (ZIP code field)
+ * - elCta (continue button)
  */
 export class HomeAddress {
     private page: Page;
 
-    // ===== HOME ADDRESS PAGE ELEMENTS =====
+    // ===== CORE INPUT FIELDS (PRODUCTION IDs) =====
     
-    // ===== BUTTON IDs AND SELECTORS =====
-    public continueButton!: Locator;                              // ID: "#continue-button" | Text: "Continue"
-    public backButton!: Locator;                                  // ID: "#back-button" | Text: "Back"
-    public saveButton!: Locator;                                  // ID: "#save-button" | Text: "Save"
-    public cancelButton!: Locator;                                // ID: "#cancel-button" | Text: "Cancel"
-    
-    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
-    public streetAddressInput!: Locator;                          // ID: "#LINE1" | Placeholder: "Enter your street address"
-    public cityInput!: Locator;                                   // ID: "#CITY" | Placeholder: "Enter your city"
-    public stateSelect!: Locator;                                 // ID: "#STATE" | Placeholder: "Select your state"
-    public zipCodeInput!: Locator;                                // ID: "#ZIP" | Placeholder: "Enter your ZIP code"
-    public apartmentInput!: Locator;                              // ID: "#APARTMENT" | Placeholder: "Apt, suite, unit (optional)"
+    // --Form Input Fields--
+    public line1Input!: Locator;                                   // ID: "#line1" | Placeholder: "Enter your street address"
+    public line2Input!: Locator;                                   // ID: "#line2" | Placeholder: "Apt, suite, unit (optional)"
+    public cityInput!: Locator;                                   // ID: "#city" | Placeholder: "Enter your city"
+    public stateSelect!: Locator;                                 // ID: "#elSelectState" | Placeholder: "Select your state"
+    public countrySelect!: Locator;                               // ID: "#elSelectCountry" | Placeholder: "Select your country"
+    public postalCodeInput!: Locator;                            // ID: "#postalCode" | Placeholder: "Enter your ZIP code"
+    public continueButton!: Locator;                              // ID: "#elCta" | Text: "Continue"
     
     // ===== FLOATING LABEL ELEMENTS =====
     public streetAddressFloatingLabel!: Locator;                  // Street address floating label wrapper

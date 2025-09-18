@@ -1,404 +1,326 @@
 import { Locator, Page } from '@playwright/test';
 
 /**
- * 📱 PHONE NUMBER PAGE OBJECT
+ * 🎯 PHONE PAGE OBJECT - Production Elements Only
  * 
- * This page object contains all phone number page elements organized by category:
- * - Header and Navigation Elements
- * - Main Content and Headings  
- * - Form and Input Elements
- * - Progress Steps and Navigation
- * - Validation Messages and Errors
- * - Buttons and Actions
- * - Page Layout and UI Elements
+ * This page object contains only the elements that are actually used in the real Lili application,
+ * based on the UI automation project at /Users/sapir.abargil/Downloads/ui-automation-master
  * 
- * All selectors are based on the actual phone number page structure.
+ * Production Elements:
+ * - PHONE_NUMBER-button-trigger (country code selector)
+ * - PHONE_NUMBER-international-phone-num (phone number input)
+ * - Search textbox (country search)
+ * - United States button
  */
 export class Phone {
     private page: Page;
 
-    // ===== PHONE NUMBER PAGE ELEMENTS =====
+    // ===== CORE INPUT FIELDS (PRODUCTION IDs) =====
     
-    // ===== BUTTON IDs AND SELECTORS =====
-    public continueButton!: Locator;                              // ID: "#continue-button" | Text: "Continue"
-    public backButton!: Locator;                                  // ID: "#back-button" | Text: "Back"
-    public saveButton!: Locator;                                  // ID: "#save-button" | Text: "Save"
-    public cancelButton!: Locator;                                // ID: "#cancel-button" | Text: "Cancel"
-    
-    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
-    public phoneNumberInput!: Locator;                            // ID: "#phone-number" | Placeholder: "Enter your phone number"
-    public countryCodeSelect!: Locator;                           // ID: "#country-code" | Placeholder: "Select country code"
-    
-    // ===== FLOATING LABEL ELEMENTS =====
-    public phoneNumberFloatingLabel!: Locator;                    // Phone number floating label wrapper
-    public phoneNumberClearButton!: Locator;                      // Phone number clear button
+    // --Phone Number Elements--
+    public countryCodeButton!: Locator;                            // ID: "[data-testid='PHONE_NUMBER-button-trigger']" | Text: "Country Code"
+    public phoneNumberInput!: Locator;                             // ID: "[data-testid='PHONE_NUMBER-international-phone-num']" | Placeholder: "Enter your phone number"
+    public countrySearchInput!: Locator;                           // ID: "textbox[name='Search...']" | Placeholder: "Search..."
+    public unitedStatesOption!: Locator;                           // ID: "button[name='🇺🇸 United States (+1)']" | Text: "🇺🇸 United States (+1)"
     
     // ===== PAGE TEXTS AND CONTENT =====
-    public pageHeading!: Locator;                                 // ID: "#page-heading" | Text: "Your mobile number"
-    public pageSubheading!: Locator;                              // ID: "#page-subheading" | Text: "We'll use this to verify your identity"
-    public phoneNumberLabel!: Locator;                            // ID: "#phone-label" | Text: "Phone Number"
-    public helpText!: Locator;                                    // ID: "#help-text" | Text: "Enter a valid phone number for verification"
-    public progressText!: Locator;                                // ID: "#progress-text" | Text: "Step 3 of 12"
-    public requiredFieldText!: Locator;                           // ID: "#required-text" | Text: "* Required fields"
+    public pageHeading!: Locator;                                 // ID: "heading[name='Your mobile number']" | Text: "Your mobile number"
+    public pageSubheading!: Locator;                              // ID: "text:has-text('Your account will be protected using Two-Factor Authentication with your mobile number.')" | Text: "Your account will be protected using Two-Factor Authentication with your mobile number."
     
     // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
-    public phoneNumberError!: Locator;                            // ID: "#phone-error"
-    // TRIGGER: Leave phone field empty and click "Continue"
-    // ERROR TEXT: "Phone number is required"
-
-    public phoneInvalidError!: Locator;                           // ID: "#phone-invalid-error"
-    // TRIGGER: Type invalid phone format like "123" and blur field
-    // ERROR TEXT: "Please enter a valid phone number"
-
-    public phoneTooShortError!: Locator;                          // ID: "#phone-too-short-error"
-    // TRIGGER: Type phone number with less than 10 digits
-    // ERROR TEXT: "Phone number must be at least 10 digits"
-
-    public generalError!: Locator;                                // ID: "#general-error"
-    // TRIGGER: Submit form with invalid data
-    // ERROR TEXT: "Please fix the errors above"
-
-    // ===== VALIDATION RULES =====
-    // --Phone Number Validation--
-    // MIN LENGTH: 10 digits
-    // MAX LENGTH: 15 digits
-    // PATTERN: /^\+?[\d\s\-\(\)]+$/
-    // REQUIRED: Yes
-
-    // ===== TEST DATA EXAMPLES =====
-    // --Valid Test Data--
-    // PHONE: "+1-555-123-4567" | "(555) 123-4567" | "5551234567" | "+44 20 7946 0958"
-
-    // --Invalid Test Data--
-    // PHONE: "123" | "abc-def-ghij" | "555-123" | "" (empty)
+    public phoneNumberError!: Locator;                            // ID: "text:has-text('Please enter a valid mobile number')" | Text: "Please enter a valid mobile number"
+    // TRIGGER: Focus and unfocus the phone number input field (blur event)
+    // ERROR TEXT: "Please enter a valid mobile number"
     
-    // ===== ERROR CONTAINERS =====
-    public phoneNumberErrorContainer!: Locator;                   // Phone number error container
-    
-    // ===== SPECIFIC ERROR MESSAGES =====
-    public phoneNumberRequiredError!: Locator;                    // "Mobile number is required" error
-    public phoneNumberInvalidError!: Locator;                     // "Please enter a valid mobile number" error
-    public phoneNumberFormatError!: Locator;                      // "Please enter a valid US number" error
-    
-    // ===== NAVIGATION AND HEADER ELEMENTS =====
-    public liliLogo!: Locator;                                    // Lili logo image
-    public pageTitle!: Locator;                                   // Page title in sidebar
-    public breadcrumb!: Locator;                                  // Breadcrumb navigation
-    
-    // ===== CONTENT AND DISPLAY ELEMENTS =====
-    public progressSteps!: Locator;                               // Progress steps sidebar navigation
-    public contactStep!: Locator;                                 // "Contact" step in sidebar
-    public phoneNumberStep!: Locator;                             // "Phone Number" step in sidebar
-    public identityStep!: Locator;                                // "Identity" step in sidebar
-    public homeAddressStep!: Locator;                             // "Home Address" step in sidebar
-    public businessDetailsStep!: Locator;                         // "Business Details" step in sidebar
-    public ownersCenterStep!: Locator;                            // "Owners Center" step in sidebar
-    public choosePlanStep!: Locator;                              // "Choose a Plan" step in sidebar
-    public confirmationStep!: Locator;                            // "Confirmation" step in sidebar
-    public personalDetailsStep!: Locator;                         // "Personal Details" step in sidebar
-    
-    // ===== PROGRESS STEPS AND NAVIGATION =====
-    public stepIndicator!: Locator;                               // Current step indicator
-    public progressBar!: Locator;                                 // Progress bar
-    public stepCounter!: Locator;                                 // Step counter (e.g., "Step 3 of 8")
-    
-    // ===== STATUS MESSAGES AND TIMERS =====
-    public successMessage!: Locator;                              // Success message
-    public warningMessage!: Locator;                              // Warning message
-    public infoMessage!: Locator;                                 // Info message
-    
-    // ===== SECURITY AND NOTICES =====
-    public securityNotice!: Locator;                              // Security notice
-    public privacyNotice!: Locator;                               // Privacy notice
-    public termsNotice!: Locator;                                 // Terms and conditions notice
-    
-    // ===== PAGE LAYOUT AND UI ELEMENTS =====
-    public pageLayout!: Locator;                                  // Main page layout container
-    public pageContent!: Locator;                                 // Page content area
-    public pageWrapper!: Locator;                                 // Page wrapper
-    public formContainer!: Locator;                               // Form container
-    public sidebar!: Locator;                                     // Sidebar navigation
-    public mainContent!: Locator;                                 // Main content area
-    
-    // ===== FORM VALIDATION ELEMENTS =====
-    public requiredFieldIndicator!: Locator;                      // Required field indicator (*)
-    public fieldValidationIcon!: Locator;                         // Field validation icon
-    public formValidationSummary!: Locator;                       // Form validation summary
-    
-    // ===== ACCESSIBILITY ELEMENTS =====
-    public skipLink!: Locator;                                    // Skip to main content link
-    public accessibilityToggle!: Locator;                         // Accessibility toggle
-    public highContrastToggle!: Locator;                          // High contrast toggle
+    public phoneNumberInvalidError!: Locator;                     // ID: "text:has-text('Please enter a valid mobile number')" | Text: "Please enter a valid mobile number"
+    // TRIGGER: Type invalid phone number like "0000000000" and blur field
+    // ERROR TEXT: "Please enter a valid mobile number"
 
     constructor(page: Page) {
         this.page = page;
         this.initializeAllLocators();
     }
 
-    /**
-     * 🔧 Initialize all locators for the phone number page
-     */
     private initializeAllLocators(): void {
-        this.initializeButtonElements();
-        this.initializeInputElements();
-        this.initializeTooltipAndTextElements();
-        this.initializeErrorMessageElements();
-        this.initializeNavigationElements();
-        this.initializeContentElements();
-        this.initializeProgressElements();
-        this.initializeStatusElements();
-        this.initializeSecurityElements();
-        this.initializeLayoutElements();
-        this.initializeValidationElements();
-        this.initializeAccessibilityElements();
+        this.initializeCoreElements();
+        this.initializePageContent();
+        this.initializeErrorElements();
     }
 
-    /**
-     * 🔘 Initialize button elements
-     */
-    private initializeButtonElements(): void {
-        this.continueButton = this.page.getByRole('button', { name: 'Continue' });
-        this.backButton = this.page.locator('#back, button[id="back"]');
-        this.saveButton = this.page.locator('button:has-text("Save")');
-        this.cancelButton = this.page.locator('button:has-text("Cancel")');
+    private initializeCoreElements(): void {
+        // Core form elements - Updated to match actual HTML structure from recording
+        this.countryCodeButton = this.page.locator("[data-testid='PHONE_NUMBER-button-trigger']");
+        this.phoneNumberInput = this.page.locator("[data-testid='PHONE_NUMBER-international-phone-num']");
+        this.countrySearchInput = this.page.locator("textbox[name='Search...']");
+        this.unitedStatesOption = this.page.locator("button[name='🇺🇸 United States (+1)']");
     }
 
-    /**
-     * 📝 Initialize input elements
-     */
-    private initializeInputElements(): void {
-        this.phoneNumberInput = this.page.locator('#PHONE_NUMBER, input[id="PHONE_NUMBER"]');
-        this.countryCodeSelect = this.page.locator('select, [role="combobox"]');
-        
-        // Floating label elements
-        this.phoneNumberFloatingLabel = this.page.locator('#PHONE_NUMBER-floating-label #LiliFloatingWrapper');
-        this.phoneNumberClearButton = this.page.locator('#PHONE_NUMBER-floating-label #ClearInput');
+    private initializePageContent(): void {
+        // Page content elements
+        this.pageHeading = this.page.locator("heading[name='Your mobile number']");
+        this.pageSubheading = this.page.locator("text:has-text('Your account will be protected using Two-Factor Authentication with your mobile number.')");
     }
 
-    /**
-     * 💬 Initialize tooltip and text elements
-     */
-    private initializeTooltipAndTextElements(): void {
-        this.pageHeading = this.page.locator('#stepPageHeader, h5[id="stepPageHeader"]');
-        this.pageSubheading = this.page.locator('#stepPageContent, div[id="stepPageContent"]');
-        this.phoneNumberLabel = this.page.locator('label[for="PHONE_NUMBER"], label:has-text("Mobile number")');
-        this.helpText = this.page.locator('p:has-text("help"), div:has-text("instructions")');
-    }
-
-    /**
-     * ⚠️ Initialize error message elements
-     */
-    private initializeErrorMessageElements(): void {
-        this.phoneNumberError = this.page.locator('[data-testid*="phoneNumber-error"], .error:has-text("Mobile number")');
-        this.generalError = this.page.locator('.error, .alert-error, [role="alert"]');
-        
-        // Error containers
-        this.phoneNumberErrorContainer = this.page.locator('#PHONE_NUMBER-error-container');
-        
-        // Specific error messages
-        this.phoneNumberRequiredError = this.page.locator('text=Mobile number is required');
-        this.phoneNumberInvalidError = this.page.locator('text=Please enter a valid mobile number');
-        this.phoneNumberFormatError = this.page.locator('text=Please enter a valid US number');
-    }
-
-    /**
-     * 🧭 Initialize navigation elements
-     */
-    private initializeNavigationElements(): void {
-        this.liliLogo = this.page.locator('img[alt="Lili Logo"]').first();
-        this.pageTitle = this.page.locator('#stepPageHeader, h5[id="stepPageHeader"]');
-        this.breadcrumb = this.page.locator('nav[aria-label="breadcrumb"], .breadcrumb');
-    }
-
-    /**
-     * 📄 Initialize content elements
-     */
-    private initializeContentElements(): void {
-        this.progressSteps = this.page.locator('.progress-steps, .step-navigation');
-        this.contactStep = this.page.locator('text=Contact');
-        this.phoneNumberStep = this.page.locator('text=Phone Number');
-        this.identityStep = this.page.locator('text=Identity');
-        this.homeAddressStep = this.page.locator('text=Home Address');
-        this.businessDetailsStep = this.page.locator('text=Business Details');
-        this.ownersCenterStep = this.page.locator('text=Owners Center');
-        this.choosePlanStep = this.page.locator('text=Choose a Plan');
-        this.confirmationStep = this.page.locator('text=Confirmation');
-        this.personalDetailsStep = this.page.locator('text=Personal Details');
-    }
-
-    /**
-     * 📊 Initialize progress elements
-     */
-    private initializeProgressElements(): void {
-        this.stepIndicator = this.page.locator('.step-indicator, .current-step');
-        this.progressBar = this.page.locator('.progress-bar, .progress');
-        this.stepCounter = this.page.locator('.step-counter, .step-count');
-    }
-
-    /**
-     * ⏰ Initialize status elements
-     */
-    private initializeStatusElements(): void {
-        this.successMessage = this.page.locator('.success, .alert-success, [role="status"]');
-        this.warningMessage = this.page.locator('.warning, .alert-warning');
-        this.infoMessage = this.page.locator('.info, .alert-info');
-    }
-
-    /**
-     * 🔒 Initialize security elements
-     */
-    private initializeSecurityElements(): void {
-        this.securityNotice = this.page.locator('text=security, text=secure');
-        this.privacyNotice = this.page.locator('text=privacy, text=confidential');
-        this.termsNotice = this.page.locator('text=terms, text=conditions');
-    }
-
-    /**
-     * 🎨 Initialize layout elements
-     */
-    private initializeLayoutElements(): void {
-        this.pageLayout = this.page.locator('#page-layout, div[id="page-layout"]');
-        this.pageContent = this.page.locator('#page-content, div[id="page-content"]');
-        this.pageWrapper = this.page.locator('#page-wrapper, div[id="page-wrapper"]');
-        this.formContainer = this.page.locator('form, .form-container');
-        this.sidebar = this.page.locator('.sidebar, .side-nav');
-        this.mainContent = this.page.locator('.main-content, .main');
-    }
-
-    /**
-     * ✅ Initialize validation elements
-     */
-    private initializeValidationElements(): void {
-        this.requiredFieldIndicator = this.page.locator('.required, [aria-required="true"]');
-        this.fieldValidationIcon = this.page.locator('.validation-icon, .field-icon');
-        this.formValidationSummary = this.page.locator('.validation-summary, .form-errors');
-    }
-
-    /**
-     * ♿ Initialize accessibility elements
-     */
-    private initializeAccessibilityElements(): void {
-        this.skipLink = this.page.locator('a:has-text("Skip"), .skip-link');
-        this.accessibilityToggle = this.page.locator('.accessibility-toggle, [aria-label*="accessibility"]');
-        this.highContrastToggle = this.page.locator('.high-contrast, [aria-label*="contrast"]');
+    private initializeErrorElements(): void {
+        // Error messages - Updated to match actual HTML structure from recording
+        this.phoneNumberError = this.page.locator("text:has-text('Please enter a valid mobile number')");
+        this.phoneNumberInvalidError = this.page.locator("text:has-text('Please enter a valid mobile number')");
     }
 
     // ===== PAGE VERIFICATION METHODS =====
 
-    /**
-     * 🔍 Check if phone number page is loaded
-     */
     async isPhonePageLoaded(): Promise<boolean> {
         try {
             const url = this.page.url();
             const heading = await this.pageHeading.isVisible();
             return url.includes('/phone') && heading;
         } catch (error) {
+            console.error('Error checking if phone page is loaded:', error);
+            return false;
+        }
+    }
+
+    async waitForPhonePageToLoad(): Promise<void> {
+        try {
+            await this.page.waitForURL('**/phone**');
+            await this.pageHeading.waitFor({ state: 'visible' });
+        } catch (error) {
+            console.error('Error waiting for phone page to load:', error);
+        }
+    }
+
+    // ===== PHONE NUMBER METHODS =====
+
+    async fillPhoneNumber(phoneNumber: string): Promise<void> {
+        try {
+            console.log(`📝 Filling phone number: ${phoneNumber}`);
+            
+            // Wait for the input to be visible
+            await this.phoneNumberInput.waitFor({ state: 'visible' });
+            
+            // Click on the input field
+            await this.phoneNumberInput.click();
+            
+            // Clear any existing value
+            await this.phoneNumberInput.fill('');
+            
+            // Type the new value
+            await this.phoneNumberInput.type(phoneNumber);
+            
+            // Wait for the value to be set
+            await this.page.waitForTimeout(500);
+            
+            // Verify the value was set
+            const currentValue = await this.phoneNumberInput.inputValue();
+            console.log(`✅ Phone number set to: ${currentValue}`);
+            
+        } catch (error) {
+            console.error('Error filling phone number:', error);
+            throw error;
+        }
+    }
+
+    async selectCountryCode(countryName: string = 'United States'): Promise<void> {
+        try {
+            console.log(`🌍 Selecting country code: ${countryName}`);
+            
+            // Click on the country code button
+            await this.countryCodeButton.click();
+            
+            // Wait for the search input to be visible
+            await this.countrySearchInput.waitFor({ state: 'visible' });
+            
+            // Type the country name
+            await this.countrySearchInput.fill('uni');
+            
+            // Wait for the United States option to be visible
+            await this.unitedStatesOption.waitFor({ state: 'visible' });
+            
+            // Click on the United States option
+            await this.unitedStatesOption.click();
+            
+            // Wait for the selection to be made
+            await this.page.waitForTimeout(500);
+            
+            console.log(`✅ Country code selected: ${countryName}`);
+            
+        } catch (error) {
+            console.error('Error selecting country code:', error);
+            throw error;
+        }
+    }
+
+    async fillPhoneForm(data: {
+        phoneNumber?: string;
+        countryCode?: string;
+    }): Promise<void> {
+        try {
+            if (data.countryCode) {
+                console.log(`📝 Setting country code: ${data.countryCode}`);
+                await this.selectCountryCode(data.countryCode);
+            }
+            if (data.phoneNumber) {
+                console.log(`📝 Filling phone number: ${data.phoneNumber}`);
+                await this.fillPhoneNumber(data.phoneNumber);
+            }
+        } catch (error) {
+            console.error('Error filling phone form:', error);
+            throw error;
+        }
+    }
+
+    // ===== ERROR TRIGGERING METHODS =====
+
+    /**
+     * Trigger phone number required error by focusing and unfocusing the field
+     */
+    async triggerPhoneNumberRequiredError(): Promise<boolean> {
+        try {
+            console.log('🔍 Triggering phone number required error...');
+            
+            // Clear phone number field
+            await this.phoneNumberInput.fill('');
+            
+            // Focus and unfocus to trigger blur validation
+            await this.phoneNumberInput.click();
+            await this.phoneNumberInput.blur();
+            
+            // Wait for error to appear
+            const errorAppeared = await this.waitForErrorToAppear(this.phoneNumberError, 3000);
+            
+            if (errorAppeared) {
+                const errorText = await this.getPhoneNumberErrorText();
+                console.log(`✅ Phone number required error triggered: "${errorText}"`);
+                return true;
+            } else {
+                console.log('❌ Phone number required error did not appear');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error triggering phone number required error:', error);
             return false;
         }
     }
 
     /**
-     * ⏳ Wait for phone number page to load
+     * Trigger phone number invalid error by typing invalid phone number
      */
-    async waitForPhonePageToLoad(): Promise<void> {
-        await this.page.waitForURL('**/phone**');
-        await this.pageHeading.waitFor({ state: 'visible' });
+    async triggerPhoneNumberInvalidError(): Promise<boolean> {
+        try {
+            console.log('🔍 Triggering phone number invalid error...');
+            
+            // Type invalid phone number like "0000000000"
+            await this.phoneNumberInput.fill('0000000000');
+            await this.phoneNumberInput.blur();
+            
+            // Wait for error to appear
+            const errorAppeared = await this.waitForErrorToAppear(this.phoneNumberInvalidError, 3000);
+            
+            if (errorAppeared) {
+                const errorText = await this.getPhoneNumberErrorText();
+                console.log(`✅ Phone number invalid error triggered: "${errorText}"`);
+                return true;
+            } else {
+                console.log('❌ Phone number invalid error did not appear');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error triggering phone number invalid error:', error);
+            return false;
+        }
     }
 
-    // ===== FORM INTERACTION METHODS =====
+    // ===== ERROR TEXT GETTERS =====
 
-    /**
-     * 📝 Fill phone number form
-     */
-    async fillPhoneNumberForm(data: {
-        phoneNumber?: string;
-        countryCode?: string;
-    }): Promise<void> {
-        if (data.phoneNumber) await this.phoneNumberInput.fill(data.phoneNumber);
-        if (data.countryCode) await this.countryCodeSelect.selectOption(data.countryCode);
+    async getPhoneNumberErrorText(): Promise<string> {
+        try {
+            if (await this.phoneNumberError.isVisible()) {
+                return await this.phoneNumberError.textContent() || '';
+            }
+            return '';
+        } catch (error) {
+            console.error('Error getting phone number error text:', error);
+            return '';
+        }
     }
 
-    /**
-     * 🔘 Click continue button
-     */
-    async clickContinueButton(): Promise<void> {
-        await this.continueButton.click();
+    // ===== UTILITY METHODS =====
+
+    async waitForErrorToAppear(errorLocator: Locator, timeout: number = 5000): Promise<boolean> {
+        try {
+            await errorLocator.waitFor({ state: 'visible', timeout });
+            return true;
+        } catch (error) {
+            console.log(`Error did not appear within ${timeout}ms`);
+            return false;
+        }
     }
 
-    /**
-     * ⬅️ Click back button
-     */
-    async clickBackButton(): Promise<void> {
-        await this.backButton.click();
+    async waitForErrorToDisappear(errorLocator: Locator, timeout: number = 5000): Promise<boolean> {
+        try {
+            await errorLocator.waitFor({ state: 'hidden', timeout });
+            return true;
+        } catch (error) {
+            console.log(`Error did not disappear within ${timeout}ms`);
+            return false;
+        }
     }
 
-    // ===== VALIDATION METHODS =====
-
-    /**
-     * ✅ Check if continue button is enabled
-     */
-    async isContinueButtonEnabled(): Promise<boolean> {
-        return await this.continueButton.isEnabled();
+    async clearAllFieldsAndErrors(): Promise<void> {
+        try {
+            console.log('🧹 Clearing all phone fields and errors...');
+            
+            // Clear phone number field
+            await this.phoneNumberInput.fill('');
+            
+            // Wait for any errors to disappear
+            await this.page.waitForTimeout(1000);
+            
+            console.log('✅ All phone fields and errors cleared');
+        } catch (error) {
+            console.error('Error clearing all phone fields and errors:', error);
+        }
     }
 
-    /**
-     * 📋 Get form validation errors
-     */
-    async getFormValidationErrors(): Promise<string[]> {
-        const errors: string[] = [];
+    // ===== PAGE OBJECT METHODS =====
+
+    async verifyPageElements(): Promise<boolean> {
+        console.log('🔍 Verifying Phone page elements...');
         
-        const errorElements = [
-            this.phoneNumberError,
-            this.generalError
+        const elements = [
+            { name: 'Country Code Button', locator: this.countryCodeButton, required: true },
+            { name: 'Phone Number Input', locator: this.phoneNumberInput, required: true },
+            { name: 'Page Heading', locator: this.pageHeading, required: true }
         ];
 
-        for (const errorElement of errorElements) {
-            if (await errorElement.isVisible()) {
-                const errorText = await errorElement.textContent();
-                if (errorText) errors.push(errorText);
+        let allVisible = true;
+        for (const element of elements) {
+            const isVisible = await element.locator.isVisible();
+            console.log(`📋 ${element.name}: ${isVisible ? '✅ Visible' : '❌ Not visible'}`);
+            
+            if (element.required && !isVisible) {
+                allVisible = false;
             }
         }
 
-        return errors;
+        console.log(`🎯 Phone page elements verification: ${allVisible ? '✅ PASSED' : '❌ FAILED'}`);
+        return allVisible;
     }
 
-    /**
-     * 📝 Get page title
-     */
-    async getPageTitle(): Promise<string> {
-        return await this.page.title();
-    }
-
-    /**
-     * 🎯 Get current step information
-     */
-    async getCurrentStepInfo(): Promise<string> {
+    async isFormComplete(): Promise<boolean> {
+        console.log('🔍 Checking if Phone form is complete...');
+        
         try {
-            if (await this.stepCounter.isVisible()) {
-                return await this.stepCounter.textContent() || '';
-            }
-            return '';
+            const phoneValue = await this.phoneNumberInput.inputValue();
+            
+            const isPhoneFilled = Boolean(phoneValue && phoneValue.trim() !== '');
+            
+            console.log(`📝 Phone filled: ${isPhoneFilled ? '✅' : '❌'} (${phoneValue ? 'has value' : 'empty'})`);
+            console.log(`🎯 Form complete: ${isPhoneFilled ? '✅ YES' : '❌ NO'}`);
+            
+            return isPhoneFilled;
         } catch (error) {
-            return '';
-        }
-    }
-
-
-    /**
-     * 🧹 Clear phone number field using clear button
-     */
-    async clearPhoneNumberField(): Promise<void> {
-        await this.phoneNumberClearButton.click();
-    }
-
-    /**
-     * ✅ Check if specific error message is visible
-     */
-    async isErrorVisible(errorLocator: Locator): Promise<boolean> {
-        try {
-            return await errorLocator.isVisible();
-        } catch (error) {
+            console.log(`⚠️ Error checking form completion: ${error instanceof Error ? error.message : String(error)}`);
             return false;
         }
     }

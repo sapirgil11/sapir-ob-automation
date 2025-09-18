@@ -1,21 +1,37 @@
 import { Page, Locator } from '@playwright/test';
 
+/**
+ * 🎯 BUSINESS ADDRESS PAGE OBJECT - Production Elements Only
+ * 
+ * This page object contains only the elements that are actually used in the real Lili application,
+ * based on the UI automation project at /Users/sapir.abargil/Downloads/ui-automation-master
+ * 
+ * Production Elements:
+ * - businessLine1 (address field)
+ * - businessLine2 (apartment/suite field)
+ * - businessCity (city field)
+ * - business-address-state (state dropdown)
+ * - businessPostalCode (ZIP code field)
+ * - business-address-checkbox (same as personal checkbox)
+ * - elCta (continue button)
+ */
 export class BusinessAddress {
     private page: Page;
-    // ===== BUTTON IDs AND SELECTORS =====
-    public continueButton: Locator;                                // ID: "#formSubmitButton" | Text: "Continue"
-    private backButton: Locator;                                   // ID: "#back-button" | Text: "Back"
-    private saveButton: Locator;                                   // ID: "#save-button" | Text: "Save"
-    private cancelButton: Locator;                                 // ID: "#cancel-button" | Text: "Cancel"
 
-    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
-    private sameAsPrimaryCheckbox: Locator;                        // ID: "#same-as-primary" | Text: "Same as primary address"
-    private sameAsPrimaryLabel: Locator;                           // ID: "#same-as-primary-label" | Text: "Use the same address as my primary address"
-    private line1Input: Locator;                                   // ID: "#line1" | Placeholder: "Enter your business street address"
-    private apartmentInput: Locator;                               // ID: "#apartment" | Placeholder: "Apt, suite, unit (optional)"
-    private cityInput: Locator;                                    // ID: "#city" | Placeholder: "Enter your business city"
-    private stateSelect: Locator;                                  // ID: "#state" | Placeholder: "Select your business state"
-    private zipInput: Locator;                                     // ID: "#zip" | Placeholder: "Enter your business ZIP code"
+    // ===== CORE INPUT FIELDS (PRODUCTION IDs) =====
+    
+    // --Form Input Fields--
+    public businessLine1Input!: Locator;                              // ID: "#businessLine1" | Placeholder: "Enter your business street address"
+    public businessLine2Input!: Locator;                              // ID: "#businessLine2" | Placeholder: "Apt, suite, unit (optional)"
+    public businessCityInput!: Locator;                              // ID: "#businessCity" | Placeholder: "Enter your business city"
+    public businessStateSelect!: Locator;                            // ID: "#business-address-state" | Placeholder: "Select your business state"
+    public businessPostalCodeInput!: Locator;                        // ID: "#businessPostalCode" | Placeholder: "Enter your business ZIP code"
+    public continueButton!: Locator;                                 // ID: "#elCta" | Text: "Continue"
+    
+    // ===== CHECKBOX ELEMENTS =====
+    
+    // --Same As Personal Checkbox--
+    public sameAsPersonalCheckbox!: Locator;                          // ID: "#business-address-checkbox" | Text: "Same as personal address"
 
     // ===== PAGE TEXTS AND CONTENT =====
     private pageHeading: Locator;                                  // ID: "#page-heading" | Text: "Business Address"

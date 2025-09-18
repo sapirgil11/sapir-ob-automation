@@ -1,19 +1,41 @@
 import { Page, Locator } from '@playwright/test';
 
+/**
+ * 🎯 KNOW YOUR BUSINESS PAGE OBJECT - Production Elements Only
+ * 
+ * This page object contains only the elements that are actually used in the real Lili application,
+ * based on the UI automation project at /Users/sapir.abargil/Downloads/ui-automation-master
+ * 
+ * Production Elements:
+ * - elSelectIndustry (industry dropdown)
+ * - elSelectSubIndustry (sub-industry dropdown)
+ * - elCta (continue button)
+ * - elSelectbusinessState (state dropdown)
+ * - businessName (business name field)
+ * - ein (EIN field)
+ * - elCheckbox (declaration checkbox)
+ * - llc (LLC button)
+ * - scorp (S-Corp button)
+ */
 export class KnowYourBusiness {
     private page: Page;
 
-    // ===== BUTTON IDs AND SELECTORS =====
-    private continueButton: Locator;                               // ID: "#formSubmitButton" | Text: "Continue"
-    private backButton: Locator;                                   // ID: "#back-button" | Text: "Back"
-    private saveButton: Locator;                                   // ID: "#save-button" | Text: "Save"
-    private cancelButton: Locator;                                 // ID: "#cancel-button" | Text: "Cancel"
-
-    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
-    private businessNameInput: Locator;                            // ID: "#business-name" | Placeholder: "Enter your business name"
-    public einInput: Locator;                                      // ID: "#ein" | Placeholder: "Enter your EIN (XX-XXXXXXX)"
-    private registeredStateSelect: Locator;                        // ID: "#registered-state" | Placeholder: "Select your registered state"
-    private agreementCheckbox: Locator;                            // ID: "#agreement-checkbox" | Text: "I agree to the terms"
+    // ===== CORE INPUT FIELDS (PRODUCTION IDs) =====
+    
+    // --Form Input Fields--
+    public businessNameInput!: Locator;                            // ID: "#businessName" | Placeholder: "Enter your business name"
+    public einInput!: Locator;                                     // ID: "#ein" | Placeholder: "Enter your EIN (XX-XXXXXXX)"
+    public industrySelect!: Locator;                               // ID: "#elSelectIndustry" | Placeholder: "Select your industry"
+    public subIndustrySelect!: Locator;                            // ID: "#elSelectSubIndustry" | Placeholder: "Select your sub-industry"
+    public stateSelect!: Locator;                                 // ID: "#elSelectbusinessState" | Placeholder: "Select your state"
+    public continueButton!: Locator;                              // ID: "#elCta" | Text: "Continue"
+    
+    // --Business Type Buttons--
+    public llcButton!: Locator;                                   // ID: "#llc" | Text: "LLC"
+    public scorpButton!: Locator;                                 // ID: "#scorp" | Text: "S-Corp"
+    
+    // --Checkboxes--
+    public declarationCheckbox!: Locator;                         // ID: "#elCheckbox" | Text: "I agree to the declaration"
 
     // ===== PAGE TEXTS AND CONTENT =====
     private pageHeading: Locator;                                  // ID: "#page-heading" | Text: "Know Your Business"

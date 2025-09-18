@@ -1,34 +1,47 @@
 import { Locator, Page } from '@playwright/test';
 
 /**
- * 🆔 IDENTITY PAGE OBJECT
+ * 🎯 IDENTITY PAGE OBJECT - Production Elements Only
  * 
- * This page object contains all identity verification page elements organized by category:
- * - Header and Navigation Elements
- * - Main Content and Headings  
- * - Form and Input Elements (SSN, Date of Birth)
- * - Progress Steps and Navigation
- * - Validation Messages and Errors
- * - Buttons and Actions
- * - Page Layout and UI Elements
+ * This page object contains only the elements that are actually used in the real Lili application,
+ * based on the UI automation project at /Users/sapir.abargil/Downloads/ui-automation-master
  * 
- * All selectors are based on the actual identity page structure.
+ * Production Elements:
+ * - ssn (SSN field)
+ * - birthDate (date of birth field)
+ * - lock (SSN visibility toggle)
+ * - elCta (continue button)
+ * - non_us (non-US resident tab)
+ * - elSelectState (nationality dropdown)
+ * - nonUs_birthDate (non-US birth date field)
+ * - passport (passport number field)
+ * - expirationDate (expiration date field)
+ * - nationalIdentifier (national insurance number field)
+ * - not-us-resident-attestation-checkbox (attestation checkbox)
+ * - privacy-data-consent-checkbox (privacy consent checkbox)
  */
 export class Identity {
     private page: Page;
 
-    // ===== IDENTITY PAGE ELEMENTS =====
+    // ===== CORE INPUT FIELDS (PRODUCTION IDs) =====
     
-    // ===== BUTTON IDs AND SELECTORS =====
-    public continueButton!: Locator;                              // ID: "#continue-button" | Text: "Continue"
-    public backButton!: Locator;                                  // ID: "#back-button" | Text: "Back"
-    public saveButton!: Locator;                                  // ID: "#save-button" | Text: "Save"
-    public cancelButton!: Locator;                                // ID: "#cancel-button" | Text: "Cancel"
-    
-    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
+    // --US Resident Fields--
     public ssnInput!: Locator;                                    // ID: "#ssn" | Placeholder: "Enter your SSN"
-    public dateOfBirthInput!: Locator;                            // ID: "#date-of-birth" | Placeholder: "MM/DD/YYYY"
-    public ssnToggleVisibilityButton!: Locator;                   // ID: "#ssn-toggle" | Text: "Show/Hide"
+    public birthDateInput!: Locator;                              // ID: "#birthDate" | Placeholder: "MM/DD/YYYY"
+    public ssnToggleButton!: Locator;                             // ID: "#lock" | Text: "Show/Hide SSN"
+    public continueButton!: Locator;                              // ID: "#elCta" | Text: "Continue"
+    
+    // --Non-US Resident Fields--
+    public nonUsResidentTab!: Locator;                            // ID: "#non_us" | Text: "Non-US Resident"
+    public nationalitySelect!: Locator;                          // ID: "#elSelectState" | Placeholder: "Select your nationality"
+    public nonUsBirthDateInput!: Locator;                         // ID: "#nonUs_birthDate" | Placeholder: "MM/DD/YYYY"
+    public passportInput!: Locator;                               // ID: "#passport" | Placeholder: "Enter passport number"
+    public expirationDateInput!: Locator;                         // ID: "#expirationDate" | Placeholder: "MM/DD/YYYY"
+    public nationalIdentifierInput!: Locator;                     // ID: "#nationalIdentifier" | Placeholder: "Enter national identifier"
+    
+    // --Checkboxes--
+    public attestationCheckbox!: Locator;                         // ID: "#not-us-resident-attestation-checkbox"
+    public privacyConsentCheckbox!: Locator;                     // ID: "#privacy-data-consent-checkbox"
     
     // ===== FLOATING LABEL ELEMENTS =====
     public ssnFloatingLabel!: Locator;                            // SSN floating label wrapper

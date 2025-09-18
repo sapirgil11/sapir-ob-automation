@@ -1,35 +1,47 @@
 import { Locator, Page } from '@playwright/test';
 
 /**
- * 📋 PLAN SELECTION PAGE OBJECT - Based on Playwright Recording
+ * 🎯 PLAN SELECTION PAGE OBJECT - Production Elements Only
  * 
- * This page object contains all plan selection page elements organized by category:
- * - Header and Navigation Elements
- * - Main Content and Headings  
- * - Plan Options and Selection
- * - Form and Input Elements
- * - Progress Steps and Navigation
- * - Status Messages and Pricing
- * - Page Layout and UI Elements
+ * This page object contains only the elements that are actually used in the real Lili application,
+ * based on the UI automation project at /Users/sapir.abargil/Downloads/ui-automation-master
  * 
- * All selectors are based on the actual recording data from the plan selection page.
+ * Production Elements:
+ * - elNavBackDesktop (back button)
+ * - btn-select-plan (select plan button)
+ * - btn_plan_basic (basic plan button)
+ * - btn_plan_pro (pro plan button)
+ * - btn_plan_smart (smart plan button)
+ * - btn_plan_premium (premium plan button)
+ * - stay-monthly (stay monthly option)
+ * - promoTrigger (coupon code trigger)
+ * - elCta (apply button)
  */
 export class PlanSelection {
     private page: Page;
 
-    // ===== PLAN SELECTION PAGE ELEMENTS =====
+    // ===== CORE INPUT FIELDS (PRODUCTION IDs) =====
     
-    // ===== BUTTON IDs AND SELECTORS =====
-    public continueButton!: Locator;                               // ID: "#continue-button" | Text: "Continue"
-    public backButton!: Locator;                                   // ID: "#back-button" | Text: "Back"
-    public selectPlanButton!: Locator;                             // ID: "#select-plan-button" | Text: "Select Plan"
-    public cancelButton!: Locator;                                 // ID: "#cancel-button" | Text: "Cancel"
+    // --Navigation Buttons--
+    public backButton!: Locator;                                   // ID: "#elNavBackDesktop" | Text: "Back"
+    public selectPlanButton!: Locator;                             // ID: "[data-testid='btn-select-plan']" | Text: "Select Plan"
     
-    // ===== PLAN OPTION SELECTORS =====
-    public basicPlanCard!: Locator;                                // ID: "#basic-plan-card" | Basic plan option
-    public proPlanCard!: Locator;                                  // ID: "#pro-plan-card" | Pro plan option
-    public premiumPlanCard!: Locator;                              // ID: "#premium-plan-card" | Premium plan option
-    public selectedPlanIndicator!: Locator;                        // ID: "#selected-plan-indicator" | Selected plan indicator
+    // --Plan Selection Buttons--
+    public basicPlanButton!: Locator;                              // ID: "[data-testid='btn_plan_basic']" | Text: "Basic Plan"
+    public proPlanButton!: Locator;                               // ID: "[data-testid='btn_plan_pro']" | Text: "Pro Plan"
+    public smartPlanButton!: Locator;                             // ID: "[data-testid='btn_plan_smart']" | Text: "Smart Plan"
+    public premiumPlanButton!: Locator;                           // ID: "[data-testid='btn_plan_premium']" | Text: "Premium Plan"
+    
+    // --Billing Options--
+    public stayMonthlyOption!: Locator;                           // ID: "#stay-monthly" | Text: "Stay Monthly"
+    
+    // --Coupon Code Elements--
+    public couponCodeTrigger!: Locator;                           // ID: "#promoTrigger" | Text: "I have a coupon code"
+    public promoCodeInput!: Locator;                              // ID: "input[placeholder='Enter your Promo Code']" | Placeholder: "Enter your Promo Code"
+    public applyButton!: Locator;                                 // ID: "#elCta" | Text: "Apply"
+    public promoCodeError!: Locator;                              // CLASS: ".inline-error" | Text: "Promo code error"
+    public closePopupButton!: Locator;                            // CLASS: ".close-popup-icon-left" | Text: "Close"
+    public codeAppliedMessage!: Locator;                          // CLASS: ".applied-code-wrapper" | Text: "Code applied"
     
     // ===== PLAN DETAILS AND PRICING =====
     public planName!: Locator;                                     // ID: "#plan-name" | Selected plan name

@@ -1,21 +1,45 @@
 import { Page, Locator } from '@playwright/test';
 
+/**
+ * 🎯 OWNERS CENTER PAGE OBJECT - Production Elements Only
+ * 
+ * This page object contains only the elements that are actually used in the real Lili application,
+ * based on the UI automation project at /Users/sapir.abargil/Downloads/ui-automation-master
+ * 
+ * Production Elements:
+ * - elPSingleUbo (single UBO button)
+ * - elBtnAddDetails (add UBO button)
+ * - elBtnAddOwner (add another owner button)
+ * - elCheckbox (accept checkbox)
+ * - elBtnListComplete (owner list complete button)
+ * - elPOwnerFullName (primary owner full name)
+ * - ownerDetails_0 (second owner full name)
+ * - ownershipPercent (ownership percentage field)
+ * - myRange (ownership percentage slider)
+ */
 export class OwnersCenter {
     private page: Page;
-    // ===== BUTTON IDs AND SELECTORS =====
-    public continueButton: Locator;                                // ID: "#formSubmitButton" | Text: "Continue"
-    private backButton: Locator;                                   // ID: "#back-button" | Text: "Back"
-    private saveButton: Locator;                                   // ID: "#save-button" | Text: "Save"
-    private cancelButton: Locator;                                 // ID: "#cancel-button" | Text: "Cancel"
-    private addOwnerButton: Locator;                               // ID: "#add-owner-button" | Text: "Add Owner"
 
-    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
-    private ownerNameInput: Locator;                               // ID: "#owner-name" | Placeholder: "Enter owner's full name"
-    private ownerPercentageInput: Locator;                         // ID: "#owner-percentage" | Placeholder: "Enter ownership percentage"
-    private onlyUboCheckbox: Locator;                              // ID: "#only-ubo" | Text: "I am the only UBO"
-    private onlyUboLabel: Locator;                                 // ID: "#only-ubo-label" | Text: "I am the only Ultimate Beneficial Owner"
-    private multiOwnerConsentCheckbox: Locator;                    // ID: "#multi-owner-consent" | Text: "I consent to multi-owner verification"
-    private multiOwnerConsentLabel: Locator;                       // ID: "#multi-owner-consent-label" | Text: "I consent to multi-owner verification process"
+    // ===== CORE INPUT FIELDS (PRODUCTION IDs) =====
+    
+    // --UBO Management Buttons--
+    public singleUboButton!: Locator;                             // ID: "#elPSingleUbo" | Text: "I am the only UBO"
+    public addUboButton!: Locator;                                 // ID: "#elBtnAddDetails" | Text: "Add UBO"
+    public addAnotherOwnerButton!: Locator;                        // ID: "#elBtnAddOwner" | Text: "Add Another Owner"
+    public ownerListCompleteButton!: Locator;                     // ID: "#elBtnListComplete" | Text: "Owner List Complete"
+    
+    // --Owner Information--
+    public primaryOwnerFullName!: Locator;                         // ID: "#elPOwnerFullName" | Text: "Primary Owner Full Name"
+    public secondOwnerFullName!: Locator;                          // ID: "#ownerDetails_0" | Text: "Second Owner Full Name"
+    public ownershipPercentageInput!: Locator;                     // ID: "#ownershipPercent" | Placeholder: "Enter ownership percentage"
+    public ownershipPercentageSlider!: Locator;                   // ID: "#myRange" | Slider for ownership percentage
+    
+    // --Checkboxes--
+    public acceptCheckbox!: Locator;                               // ID: "#elCheckbox" | Text: "I accept the terms"
+    
+    // --Error Messages--
+    public ownerPercentError!: Locator;                            // CLASS: ".percent-error" | Text: "Ownership percentage error"
+    public uboDisclaimerMessage!: Locator;                         // CLASS: ".disclaimer" | Text: "UBO disclaimer message"
 
     // ===== PAGE TEXTS AND CONTENT =====
     private pageHeading: Locator;                                  // ID: "#page-heading" | Text: "Owners Center"

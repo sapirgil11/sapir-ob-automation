@@ -1,42 +1,23 @@
 import { Locator, Page } from '@playwright/test';
 
 /**
- * 🏭 INDUSTRY PAGE OBJECT
+ * 🎯 INDUSTRY PAGE OBJECT - Production Elements Only
  * 
- * This page object contains all industry page elements organized by category:
- * - Header and Navigation Elements
- * - Main Content and Headings  
- * - Industry Selection Dropdowns
- * - Progress Steps and Navigation
- * - Validation Messages and Errors
- * - Buttons and Actions
- * - Page Layout and UI Elements
+ * This page object contains only the elements that are actually used in the real Lili application,
+ * based on the UI automation project at /Users/sapir.abargil/Downloads/ui-automation-master
  * 
- * Based on the structure discovered: 2 select elements (Industry + Sub Industry)
+ * Production Elements:
+ * - businessDescription (description textarea)
+ * - elCta (continue button)
  */
 export class Industry {
     private page: Page;
 
-    // ===== INDUSTRY PAGE ELEMENTS =====
+    // ===== CORE INPUT FIELDS (PRODUCTION IDs) =====
     
-    // ===== BUTTON IDs AND SELECTORS =====
-    public backButton!: Locator;                                    // ID: "#back-button" | Text: "Back"
-    public continueButton!: Locator;                                // ID: "#continue-button" | Text: "Continue"
-    public saveButton!: Locator;                                    // ID: "#save-button" | Text: "Save"
-    public cancelButton!: Locator;                                  // ID: "#cancel-button" | Text: "Cancel"
-    
-    // ===== PAGE TEXTS AND CONTENT =====
-    public pageHeading!: Locator;                                   // ID: "#page-heading" | Text: "Tell us about your business"
-    public mainDescription!: Locator;                               // ID: "#main-description" | Text: "Please select the industry that best describes your business."
-    public industryLabel!: Locator;                                 // ID: "#industry-label" | Text: "Industry"
-    public subIndustryLabel!: Locator;                              // ID: "#sub-industry-label" | Text: "Sub industry"
-    public progressText!: Locator;                                  // ID: "#progress-text" | Text: "Step 8 of 12"
-    public requiredFieldText!: Locator;                             // ID: "#required-text" | Text: "* Required fields"
-    public helpText!: Locator;                                      // ID: "#help-text" | Text: "This helps us provide relevant services for your industry"
-    
-    // ===== INPUT FIELD IDs AND PLACEHOLDERS =====
-    public industrySelect!: Locator;                                // ID: "#industry-select" | Placeholder: "Select your industry"
-    public subIndustrySelect!: Locator;                             // ID: "#sub-industry-select" | Placeholder: "Select your sub-industry"
+    // --Form Input Fields--
+    public businessDescriptionInput!: Locator;                      // ID: "#businessDescription" | Placeholder: "Describe your business"
+    public continueButton!: Locator;                                // ID: "#elCta" | Text: "Continue"
     
     // ===== INDUSTRY OPTIONS (will be populated dynamically) =====
     public industryOptions!: Locator;                               // All industry options

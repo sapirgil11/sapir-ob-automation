@@ -9,44 +9,80 @@ import { Locator, Page } from '@playwright/test';
  * Production Elements:
  * - firstName input field
  * - lastName input field
- * - continue button (elCta)
- * - error messages (firstNameMessage, lastNameMessage)
+ * - continue button (formSubmitButton)
+ * - error messages (FIRST_NAME-error-container, LAST_NAME-error-container)
  * - referral field
  */
 export class PersonalDetails {
     private page: Page;
 
-    // ===== CORE PRODUCTION ELEMENTS =====
+    // ===== CORE INPUT FIELDS (PRODUCTION IDs) =====
     
     // --Form Input Fields--
-    public firstNameInput!: Locator;                              // ID: "#firstName" | Placeholder: "Enter your first name"
-    public lastNameInput!: Locator;                               // ID: "#lastName" | Placeholder: "Enter your last name"
-    
-    // --Action Buttons--
-    public continueButton!: Locator;                              // ID: "#elCta" | Text: "Continue"
-    
-    // --Error Messages--
-    public firstNameError!: Locator;                              // ID: "#firstNameMessage"
-    public lastNameError!: Locator;                               // ID: "#lastNameMessage"
-    
-    // --Additional Fields--
+    public firstNameInput!: Locator;                              // ID: "#FIRST_NAME" | Placeholder: "Enter your first name"
+    public lastNameInput!: Locator;                               // ID: "#LAST_NAME" | Placeholder: "Enter your last name"
+    public continueButton!: Locator;                              // ID: "#formSubmitButton" | Text: "Continue"
     public referralField!: Locator;                               // ID: "#referral"
+    
+    // ===== CLEAR FIELD BUTTONS =====
+    
+    // --Clear Buttons--
+    public firstNameClearButton!: Locator;                        // ID: "#FIRST_NAME-floating-label #ClearInput"
+    public lastNameClearButton!: Locator;                         // ID: "#LAST_NAME-floating-label #ClearInput"
+    
+    // ===== PLACEHOLDER TEXT & LABELS =====
     
     // --Page Content Elements--
     public pageHeading!: Locator;                                 // ID: "#stepPageHeader" | Text: "Your personal details"
-    public pageSubheading!: Locator;                              // ID: "#stepPageContent" | Text: "Tell us about yourself"
+    public pageSubheading!: Locator;                              // ID: "#stepPageContent" | Text: "Please enter your name as it appears in legal documents."
     public firstNameLabel!: Locator;                              // Label for first name field
     public lastNameLabel!: Locator;                               // Label for last name field
     
-    // --Floating Label Elements--
-    public firstNameFloatingLabel!: Locator;                      // First name floating label wrapper
-    public lastNameFloatingLabel!: Locator;                       // Last name floating label wrapper
-    public firstNameClearButton!: Locator;                        // First name clear button
-    public lastNameClearButton!: Locator;                         // Last name clear button
+    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
+    
+    // --First Name Errors--
+    public firstNameError!: Locator;                              // ID: "#FIRST_NAME-error-container p"
+    // TRIGGER: Focus and unfocus the first name field (blur event)
+    // ERROR TEXT: "First name is required"
+    
+    public firstNameMinLengthError!: Locator;                    // ID: "#FIRST_NAME-min-length-error"
+    // TRIGGER: Type single character like "A" and blur field
+    // ERROR TEXT: "First name must be at least two letters"
+    
+    public firstNameLettersOnlyError!: Locator;                  // ID: "#FIRST_NAME-letters-only-error"
+    // TRIGGER: Type mixed characters like "A2a" and blur field
+    // ERROR TEXT: "First name must contain letters only"
+    
+    public firstNameMaxLengthError!: Locator;                    // ID: "#FIRST_NAME-max-length-error"
+    // TRIGGER: Type more than 30 characters like "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" and blur field
+    // ERROR TEXT: "First name must be at most 30 letters"
+    
+    // --Last Name Errors--
+    public lastNameError!: Locator;                               // ID: "#LAST_NAME-error-container p"
+    // TRIGGER: Focus and unfocus the last name field (blur event)
+    // ERROR TEXT: "Last name is required"
+    
+    public lastNameMinLengthError!: Locator;                     // ID: "#LAST_NAME-min-length-error"
+    // TRIGGER: Type single character like "A" and blur field
+    // ERROR TEXT: "Last name must be at least two letters"
+    
+    public lastNameLettersOnlyError!: Locator;                   // ID: "#LAST_NAME-letters-only-error"
+    // TRIGGER: Type mixed characters like "A2a" and blur field
+    // ERROR TEXT: "Last name must contain letters only"
+    
+    public lastNameMaxLengthError!: Locator;                     // ID: "#LAST_NAME-max-length-error"
+    // TRIGGER: Type more than 30 characters like "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" and blur field
+    // ERROR TEXT: "Last name must be at most 30 letters"
     
     // --Error Containers--
-    public firstNameErrorContainer!: Locator;                     // First name error container
-    public lastNameErrorContainer!: Locator;                      // Last name error container
+    public firstNameErrorContainer!: Locator;                     // ID: "#FIRST_NAME-error-container"
+    public lastNameErrorContainer!: Locator;                      // ID: "#LAST_NAME-error-container"
+    
+    // ===== FLOATING LABEL ELEMENTS =====
+    
+    // --Floating Label Wrappers--
+    public firstNameFloatingLabel!: Locator;                      // ID: "#FIRST_NAME-floating-label"
+    public lastNameFloatingLabel!: Locator;                       // ID: "#LAST_NAME-floating-label"
 
     constructor(page: Page) {
         this.page = page;
@@ -55,8 +91,10 @@ export class PersonalDetails {
 
     private initializeAllLocators(): void {
         this.initializeCoreElements();
+        this.initializeClearButtons();
+        this.initializePlaceholderText();
         this.initializeErrorElements();
-        this.initializeContentElements();
+        this.initializeFloatingLabels();
     }
 
     private initializeCoreElements(): void {
@@ -65,12 +103,20 @@ export class PersonalDetails {
         this.lastNameInput = this.page.locator('#LAST_NAME, input[id="LAST_NAME"]');
         this.continueButton = this.page.locator('#formSubmitButton, button[id="formSubmitButton"]');
         this.referralField = this.page.locator('#referral, input[id="referral"]');
-        
-        // Floating label elements - Updated to match actual HTML structure
-        this.firstNameFloatingLabel = this.page.locator('#FIRST_NAME-floating-label, .floating-label:has(#FIRST_NAME)');
-        this.lastNameFloatingLabel = this.page.locator('#LAST_NAME-floating-label, .floating-label:has(#LAST_NAME)');
+    }
+
+    private initializeClearButtons(): void {
+        // Clear buttons - Updated to match actual HTML structure
         this.firstNameClearButton = this.page.locator('#FIRST_NAME-floating-label #ClearInput, #FIRST_NAME + button');
         this.lastNameClearButton = this.page.locator('#LAST_NAME-floating-label #ClearInput, #LAST_NAME + button');
+    }
+
+    private initializePlaceholderText(): void {
+        // Page content elements
+        this.pageHeading = this.page.locator('#stepPageHeader, h5[id="stepPageHeader"]');
+        this.pageSubheading = this.page.locator('#stepPageContent, div[id="stepPageContent"]');
+        this.firstNameLabel = this.page.locator('label[for="FIRST_NAME"], label:has-text("First name")');
+        this.lastNameLabel = this.page.locator('label[for="LAST_NAME"], label:has-text("Last name")');
     }
 
     private initializeErrorElements(): void {
@@ -78,17 +124,25 @@ export class PersonalDetails {
         this.firstNameError = this.page.locator('#FIRST_NAME-error-container p, .error:has-text("First name")');
         this.lastNameError = this.page.locator('#LAST_NAME-error-container p, .error:has-text("Last name")');
         
+        // First name specific errors
+        this.firstNameMinLengthError = this.page.locator('#FIRST_NAME-error-container p:has-text("at least two letters"), .error:has-text("at least two letters")');
+        this.firstNameLettersOnlyError = this.page.locator('#FIRST_NAME-error-container p:has-text("letters only"), .error:has-text("letters only")');
+        this.firstNameMaxLengthError = this.page.locator('#FIRST_NAME-error-container p:has-text("at most 30 letters"), .error:has-text("at most 30 letters")');
+        
+        // Last name specific errors
+        this.lastNameMinLengthError = this.page.locator('#LAST_NAME-error-container p:has-text("at least two letters"), .error:has-text("at least two letters")');
+        this.lastNameLettersOnlyError = this.page.locator('#LAST_NAME-error-container p:has-text("letters only"), .error:has-text("letters only")');
+        this.lastNameMaxLengthError = this.page.locator('#LAST_NAME-error-container p:has-text("at most 30 letters"), .error:has-text("at most 30 letters")');
+        
         // Error containers - Updated to match actual HTML structure
         this.firstNameErrorContainer = this.page.locator('#FIRST_NAME-error-container, .error-container:has(#FIRST_NAME-error-container)');
         this.lastNameErrorContainer = this.page.locator('#LAST_NAME-error-container, .error-container:has(#LAST_NAME-error-container)');
     }
 
-    private initializeContentElements(): void {
-        // Page content elements
-        this.pageHeading = this.page.locator('#stepPageHeader, h5[id="stepPageHeader"]');
-        this.pageSubheading = this.page.locator('#stepPageContent, div[id="stepPageContent"]');
-        this.firstNameLabel = this.page.locator('label[for="firstName"], label:has-text("First name")');
-        this.lastNameLabel = this.page.locator('label[for="lastName"], label:has-text("Last name")');
+    private initializeFloatingLabels(): void {
+        // Floating label elements - Updated to match actual HTML structure
+        this.firstNameFloatingLabel = this.page.locator('#FIRST_NAME-floating-label, .floating-label:has(#FIRST_NAME)');
+        this.lastNameFloatingLabel = this.page.locator('#LAST_NAME-floating-label, .floating-label:has(#LAST_NAME)');
     }
 
     // ===== PAGE VERIFICATION METHODS =====
@@ -476,6 +530,492 @@ export class PersonalDetails {
         } catch (error) {
             console.log(`Error did not disappear within ${timeout}ms`);
             return false;
+        }
+    }
+
+    // ===== ERROR TRIGGERING METHODS =====
+
+    /**
+     * Trigger first name required error by focusing and unfocusing the field
+     */
+    async triggerFirstNameRequiredError(): Promise<boolean> {
+        try {
+            console.log('🔍 Triggering first name required error...');
+            
+            // Clear first name field
+            await this.firstNameInput.fill('');
+            
+            // Focus and unfocus to trigger blur validation
+            await this.firstNameInput.click();
+            await this.firstNameInput.blur();
+            
+            // Wait for error to appear
+            const errorAppeared = await this.waitForErrorToAppear(this.firstNameError, 3000);
+            
+            if (errorAppeared) {
+                const errorText = await this.getFirstNameErrorText();
+                console.log(`✅ First name error triggered: "${errorText}"`);
+                return true;
+            } else {
+                console.log('❌ First name error did not appear');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error triggering first name required error:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Trigger first name min length error by typing single character
+     */
+    async triggerFirstNameMinLengthError(): Promise<boolean> {
+        try {
+            console.log('🔍 Triggering first name min length error...');
+            
+            // Type single character
+            await this.firstNameInput.fill('A');
+            await this.firstNameInput.blur();
+            
+            // Wait for error to appear
+            const errorAppeared = await this.waitForErrorToAppear(this.firstNameMinLengthError, 3000);
+            
+            if (errorAppeared) {
+                const errorText = await this.getFirstNameErrorText();
+                console.log(`✅ First name min length error triggered: "${errorText}"`);
+                return true;
+            } else {
+                console.log('❌ First name min length error did not appear');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error triggering first name min length error:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Trigger first name letters only error by typing mixed characters
+     */
+    async triggerFirstNameLettersOnlyError(): Promise<boolean> {
+        try {
+            console.log('🔍 Triggering first name letters only error...');
+            
+            // Type mixed characters
+            await this.firstNameInput.fill('A2a');
+            await this.firstNameInput.blur();
+            
+            // Wait for error to appear
+            const errorAppeared = await this.waitForErrorToAppear(this.firstNameLettersOnlyError, 3000);
+            
+            if (errorAppeared) {
+                const errorText = await this.getFirstNameErrorText();
+                console.log(`✅ First name letters only error triggered: "${errorText}"`);
+                return true;
+            } else {
+                console.log('❌ First name letters only error did not appear');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error triggering first name letters only error:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Trigger first name max length error by typing more than 30 characters
+     */
+    async triggerFirstNameMaxLengthError(): Promise<boolean> {
+        try {
+            console.log('🔍 Triggering first name max length error...');
+            
+            // Type more than 30 characters
+            await this.firstNameInput.fill('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+            await this.firstNameInput.blur();
+            
+            // Wait for error to appear
+            const errorAppeared = await this.waitForErrorToAppear(this.firstNameMaxLengthError, 3000);
+            
+            if (errorAppeared) {
+                const errorText = await this.getFirstNameErrorText();
+                console.log(`✅ First name max length error triggered: "${errorText}"`);
+                return true;
+            } else {
+                console.log('❌ First name max length error did not appear');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error triggering first name max length error:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Trigger last name required error by focusing and unfocusing the field
+     */
+    async triggerLastNameRequiredError(): Promise<boolean> {
+        try {
+            console.log('🔍 Triggering last name required error...');
+            
+            // Clear last name field
+            await this.lastNameInput.fill('');
+            
+            // Focus and unfocus to trigger blur validation
+            await this.lastNameInput.click();
+            await this.lastNameInput.blur();
+            
+            // Wait for error to appear
+            const errorAppeared = await this.waitForErrorToAppear(this.lastNameError, 3000);
+            
+            if (errorAppeared) {
+                const errorText = await this.getLastNameErrorText();
+                console.log(`✅ Last name error triggered: "${errorText}"`);
+                return true;
+            } else {
+                console.log('❌ Last name error did not appear');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error triggering last name required error:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Trigger last name min length error by typing single character
+     */
+    async triggerLastNameMinLengthError(): Promise<boolean> {
+        try {
+            console.log('🔍 Triggering last name min length error...');
+            
+            // Type single character
+            await this.lastNameInput.fill('A');
+            await this.lastNameInput.blur();
+            
+            // Wait for error to appear
+            const errorAppeared = await this.waitForErrorToAppear(this.lastNameMinLengthError, 3000);
+            
+            if (errorAppeared) {
+                const errorText = await this.getLastNameErrorText();
+                console.log(`✅ Last name min length error triggered: "${errorText}"`);
+                return true;
+            } else {
+                console.log('❌ Last name min length error did not appear');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error triggering last name min length error:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Trigger last name letters only error by typing mixed characters
+     */
+    async triggerLastNameLettersOnlyError(): Promise<boolean> {
+        try {
+            console.log('🔍 Triggering last name letters only error...');
+            
+            // Type mixed characters
+            await this.lastNameInput.fill('A2a');
+            await this.lastNameInput.blur();
+            
+            // Wait for error to appear
+            const errorAppeared = await this.waitForErrorToAppear(this.lastNameLettersOnlyError, 3000);
+            
+            if (errorAppeared) {
+                const errorText = await this.getLastNameErrorText();
+                console.log(`✅ Last name letters only error triggered: "${errorText}"`);
+                return true;
+            } else {
+                console.log('❌ Last name letters only error did not appear');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error triggering last name letters only error:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Trigger last name max length error by typing more than 30 characters
+     */
+    async triggerLastNameMaxLengthError(): Promise<boolean> {
+        try {
+            console.log('🔍 Triggering last name max length error...');
+            
+            // Type more than 30 characters
+            await this.lastNameInput.fill('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+            await this.lastNameInput.blur();
+            
+            // Wait for error to appear
+            const errorAppeared = await this.waitForErrorToAppear(this.lastNameMaxLengthError, 3000);
+            
+            if (errorAppeared) {
+                const errorText = await this.getLastNameErrorText();
+                console.log(`✅ Last name max length error triggered: "${errorText}"`);
+                return true;
+            } else {
+                console.log('❌ Last name max length error did not appear');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error triggering last name max length error:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Trigger both first name and last name required errors
+     */
+    async triggerBothRequiredErrors(): Promise<boolean> {
+        try {
+            console.log('🔍 Triggering both required errors...');
+            
+            // Clear both fields
+            await this.firstNameInput.fill('');
+            await this.lastNameInput.fill('');
+            
+            // Click continue button to trigger validation
+            await this.clickContinueButton();
+            
+            // Wait for both errors to appear
+            const firstNameErrorAppeared = await this.waitForErrorToAppear(this.firstNameError, 3000);
+            const lastNameErrorAppeared = await this.waitForErrorToAppear(this.lastNameError, 3000);
+            
+            if (firstNameErrorAppeared && lastNameErrorAppeared) {
+                const firstNameErrorText = await this.getFirstNameErrorText();
+                const lastNameErrorText = await this.getLastNameErrorText();
+                console.log(`✅ Both errors triggered: "${firstNameErrorText}" and "${lastNameErrorText}"`);
+                return true;
+            } else {
+                console.log('❌ Not all required errors appeared');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error triggering both required errors:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Clear all errors by filling valid data
+     */
+    async clearAllErrors(): Promise<void> {
+        try {
+            console.log('🧹 Clearing all errors...');
+            
+            // Fill with valid data
+            await this.fillFirstName('John');
+            await this.fillLastName('Doe');
+            
+            // Wait for errors to disappear
+            await this.waitForErrorToDisappear(this.firstNameError, 3000);
+            await this.waitForErrorToDisappear(this.lastNameError, 3000);
+            
+            console.log('✅ All errors cleared');
+        } catch (error) {
+            console.error('Error clearing all errors:', error);
+        }
+    }
+
+    /**
+     * Get all visible error messages
+     */
+    async getAllVisibleErrors(): Promise<{firstName: string, lastName: string}> {
+        try {
+            const firstNameError = await this.getFirstNameErrorText();
+            const lastNameError = await this.getLastNameErrorText();
+            
+            return {
+                firstName: firstNameError,
+                lastName: lastNameError
+            };
+        } catch (error) {
+            console.error('Error getting all visible errors:', error);
+            return { firstName: '', lastName: '' };
+        }
+    }
+
+    // ===== INLINE VALIDATION METHODS =====
+
+    /**
+     * Test inline validation: Empty input should trigger "First name is required"
+     */
+    async testEmptyFirstNameValidation(): Promise<boolean> {
+        try {
+            console.log('🔍 Testing empty first name validation...');
+            
+            // Clear first name field
+            await this.firstNameInput.fill('');
+            
+            // Click outside to trigger validation (blur event)
+            await this.firstNameInput.blur();
+            await this.page.waitForTimeout(1000);
+            
+            // Check if error appears
+            const hasError = await this.hasFirstNameError();
+            if (hasError) {
+                const errorText = await this.getFirstNameErrorText();
+                console.log(`✅ Empty first name error: "${errorText}"`);
+                return errorText.includes('required') || errorText.includes('First name is required');
+            } else {
+                console.log('❌ No error appeared for empty first name');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error testing empty first name validation:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Test inline validation: Numbers only should trigger "First name must contain letters only"
+     */
+    async testNumbersOnlyFirstNameValidation(): Promise<boolean> {
+        try {
+            console.log('🔍 Testing numbers-only first name validation...');
+            
+            // Fill with numbers only
+            await this.firstNameInput.fill('223');
+            
+            // Click outside to trigger validation (blur event)
+            await this.firstNameInput.blur();
+            await this.page.waitForTimeout(1000);
+            
+            // Check if error appears
+            const hasError = await this.hasFirstNameError();
+            if (hasError) {
+                const errorText = await this.getFirstNameErrorText();
+                console.log(`✅ Numbers-only first name error: "${errorText}"`);
+                return errorText.includes('letters only') || errorText.includes('must contain letters');
+            } else {
+                console.log('❌ No error appeared for numbers-only first name');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error testing numbers-only first name validation:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Test inline validation: Empty input should trigger "Last name is required"
+     */
+    async testEmptyLastNameValidation(): Promise<boolean> {
+        try {
+            console.log('🔍 Testing empty last name validation...');
+            
+            // Clear last name field
+            await this.lastNameInput.fill('');
+            
+            // Click outside to trigger validation (blur event)
+            await this.lastNameInput.blur();
+            await this.page.waitForTimeout(1000);
+            
+            // Check if error appears
+            const hasError = await this.hasLastNameError();
+            if (hasError) {
+                const errorText = await this.getLastNameErrorText();
+                console.log(`✅ Empty last name error: "${errorText}"`);
+                return errorText.includes('required') || errorText.includes('Last name is required');
+            } else {
+                console.log('❌ No error appeared for empty last name');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error testing empty last name validation:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Test inline validation: Numbers only should trigger "Last name must contain letters only"
+     */
+    async testNumbersOnlyLastNameValidation(): Promise<boolean> {
+        try {
+            console.log('🔍 Testing numbers-only last name validation...');
+            
+            // Fill with numbers only
+            await this.lastNameInput.fill('223');
+            
+            // Click outside to trigger validation (blur event)
+            await this.lastNameInput.blur();
+            await this.page.waitForTimeout(1000);
+            
+            // Check if error appears
+            const hasError = await this.hasLastNameError();
+            if (hasError) {
+                const errorText = await this.getLastNameErrorText();
+                console.log(`✅ Numbers-only last name error: "${errorText}"`);
+                return errorText.includes('letters only') || errorText.includes('must contain letters');
+            } else {
+                console.log('❌ No error appeared for numbers-only last name');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error testing numbers-only last name validation:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Test all inline validation scenarios
+     */
+    async testAllInlineValidations(): Promise<{
+        emptyFirstName: boolean;
+        numbersOnlyFirstName: boolean;
+        emptyLastName: boolean;
+        numbersOnlyLastName: boolean;
+    }> {
+        console.log('🔍 Testing all inline validation scenarios...');
+        
+        const results = {
+            emptyFirstName: false,
+            numbersOnlyFirstName: false,
+            emptyLastName: false,
+            numbersOnlyLastName: false
+        };
+
+        try {
+            // Test empty first name
+            results.emptyFirstName = await this.testEmptyFirstNameValidation();
+            
+            // Test numbers-only first name
+            results.numbersOnlyFirstName = await this.testNumbersOnlyFirstNameValidation();
+            
+            // Test empty last name
+            results.emptyLastName = await this.testEmptyLastNameValidation();
+            
+            // Test numbers-only last name
+            results.numbersOnlyLastName = await this.testNumbersOnlyLastNameValidation();
+            
+            console.log('📊 Inline validation results:', results);
+            return results;
+            
+        } catch (error) {
+            console.error('Error testing all inline validations:', error);
+            return results;
+        }
+    }
+
+    /**
+     * Clear all fields and errors for clean testing
+     */
+    async clearAllFieldsAndErrors(): Promise<void> {
+        try {
+            console.log('🧹 Clearing all fields and errors...');
+            
+            // Clear all fields
+            await this.firstNameInput.fill('');
+            await this.lastNameInput.fill('');
+            
+            // Wait for any errors to disappear
+            await this.page.waitForTimeout(1000);
+            
+            console.log('✅ All fields and errors cleared');
+        } catch (error) {
+            console.error('Error clearing all fields and errors:', error);
         }
     }
 }
