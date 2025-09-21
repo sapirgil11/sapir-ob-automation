@@ -1,327 +1,308 @@
-import { Locator, Page } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 
-/**
- * 🎯 PHONE PAGE OBJECT - Production Elements Only
- * 
- * This page object contains only the elements that are actually used in the real Lili application,
- * based on the UI automation project at /Users/sapir.abargil/Downloads/ui-automation-master
- * 
- * Production Elements:
- * - PHONE_NUMBER-button-trigger (country code selector)
- * - PHONE_NUMBER-international-phone-num (phone number input)
- * - Search textbox (country search)
- * - United States button
- */
 export class Phone {
     private page: Page;
 
-    // ===== CORE INPUT FIELDS (PRODUCTION IDs) =====
-    
-    // --Phone Number Elements--
-    public countryCodeButton!: Locator;                            // ID: "[data-testid='PHONE_NUMBER-button-trigger']" | Text: "Country Code"
-    public phoneNumberInput!: Locator;                             // ID: "[data-testid='PHONE_NUMBER-international-phone-num']" | Placeholder: "Enter your phone number"
-    public countrySearchInput!: Locator;                           // ID: "textbox[name='Search...']" | Placeholder: "Search..."
-    public unitedStatesOption!: Locator;                           // ID: "button[name='🇺🇸 United States (+1)']" | Text: "🇺🇸 United States (+1)"
-    
-    // ===== PAGE TEXTS AND CONTENT =====
-    public pageHeading!: Locator;                                 // ID: "heading[name='Your mobile number']" | Text: "Your mobile number"
-    public pageSubheading!: Locator;                              // ID: "text:has-text('Your account will be protected using Two-Factor Authentication with your mobile number.')" | Text: "Your account will be protected using Two-Factor Authentication with your mobile number."
-    
-    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
-    public phoneNumberError!: Locator;                            // ID: "text:has-text('Please enter a valid mobile number')" | Text: "Please enter a valid mobile number"
-    // TRIGGER: Focus and unfocus the phone number input field (blur event)
-    // ERROR TEXT: "Please enter a valid mobile number"
-    
-    public phoneNumberInvalidError!: Locator;                     // ID: "text:has-text('Please enter a valid mobile number')" | Text: "Please enter a valid mobile number"
-    // TRIGGER: Type invalid phone number like "0000000000" and blur field
-    // ERROR TEXT: "Please enter a valid mobile number"
+    // ========================================================================
+    // 📱 CORE ELEMENTS
+    // ========================================================================
+    public countryCodeButton!: Locator;
+    public countrySearchInput!: Locator;
+    public unitedStatesOption!: Locator;
+    public phoneNumberInput!: Locator;
+    public continueButton!: Locator;
+    public clearInputButton!: Locator;
+    public pageLayout!: Locator;
+
+    // ========================================================================
+    // 📄 PAGE CONTENT
+    // ========================================================================
+    public pageTitle!: Locator;
+    public pageSubheading!: Locator;
+
+    // ========================================================================
+    // ❌ ERROR MESSAGES
+    // ========================================================================
+    public phoneNumberError!: Locator;
+    public phoneNumberSuspiciousError!: Locator;
+    public phoneNumberExistsError!: Locator;
+    public phoneNumberInvalidApiError!: Locator;
 
     constructor(page: Page) {
         this.page = page;
-        this.initializeAllLocators();
+        this.initializeElements();
     }
 
-    private initializeAllLocators(): void {
+    private initializeElements(): void {
         this.initializeCoreElements();
         this.initializePageContent();
         this.initializeErrorElements();
     }
 
     private initializeCoreElements(): void {
-        // Core form elements - Updated to match actual HTML structure from recording
-        this.countryCodeButton = this.page.locator("[data-testid='PHONE_NUMBER-button-trigger']");
-        this.phoneNumberInput = this.page.locator("[data-testid='PHONE_NUMBER-international-phone-num']");
-        this.countrySearchInput = this.page.locator("textbox[name='Search...']");
-        this.unitedStatesOption = this.page.locator("button[name='🇺🇸 United States (+1)']");
+        // Core form elements
+        this.countryCodeButton = this.page.getByTestId('PHONE_NUMBER-button-trigger');
+        this.phoneNumberInput = this.page.getByTestId('PHONE_NUMBER-international-phone-num');
+        this.countrySearchInput = this.page.getByRole('textbox', { name: 'Search...' });
+        this.unitedStatesOption = this.page.getByRole('button', { name: '🇺🇸 United States (+1)' });
+        this.continueButton = this.page.getByRole('button', { name: 'Continue' });
+        this.clearInputButton = this.page.locator('#ClearInput');
+        this.pageLayout = this.page.locator('#page-layout');
     }
 
     private initializePageContent(): void {
         // Page content elements
-        this.pageHeading = this.page.locator("heading[name='Your mobile number']");
+        this.pageTitle = this.page.getByRole('heading', { name: 'Your mobile number' });
         this.pageSubheading = this.page.locator("text:has-text('Your account will be protected using Two-Factor Authentication with your mobile number.')");
     }
 
     private initializeErrorElements(): void {
-        // Error messages - Updated to match actual HTML structure from recording
-        this.phoneNumberError = this.page.locator("text:has-text('Please enter a valid mobile number')");
-        this.phoneNumberInvalidError = this.page.locator("text:has-text('Please enter a valid mobile number')");
+        // Error messages
+        this.phoneNumberError = this.page.getByText('Please enter a valid mobile');
+        this.phoneNumberSuspiciousError = this.page.getByText('Are you sure this is your');
+        this.phoneNumberExistsError = this.page.locator("text", { hasText: 'Currently, we aren\'t able to open an account for this number' });
+        this.phoneNumberInvalidApiError = this.page.locator("text=Are you sure this is your mobile phone number?");
     }
 
-    // ===== PAGE VERIFICATION METHODS =====
+    // ========================================================================
+    // 🔧 BASIC ACTIONS
+    // ========================================================================
 
-    async isPhonePageLoaded(): Promise<boolean> {
-        try {
-            const url = this.page.url();
-            const heading = await this.pageHeading.isVisible();
-            return url.includes('/phone') && heading;
-        } catch (error) {
-            console.error('Error checking if phone page is loaded:', error);
-            return false;
-        }
+    async clickCountryCodeButton(): Promise<void> {
+        await this.countryCodeButton.click();
     }
 
-    async waitForPhonePageToLoad(): Promise<void> {
-        try {
-            await this.page.waitForURL('**/phone**');
-            await this.pageHeading.waitFor({ state: 'visible' });
-        } catch (error) {
-            console.error('Error waiting for phone page to load:', error);
-        }
+    async fillCountrySearch(searchText: string): Promise<void> {
+        await this.countrySearchInput.click();
+        await this.countrySearchInput.fill(searchText);
     }
 
-    // ===== PHONE NUMBER METHODS =====
+    async clickUnitedStatesOption(): Promise<void> {
+        await this.unitedStatesOption.click();
+    }
 
     async fillPhoneNumber(phoneNumber: string): Promise<void> {
-        try {
-            console.log(`📝 Filling phone number: ${phoneNumber}`);
-            
-            // Wait for the input to be visible
-            await this.phoneNumberInput.waitFor({ state: 'visible' });
-            
-            // Click on the input field
-            await this.phoneNumberInput.click();
-            
-            // Clear any existing value
-            await this.phoneNumberInput.fill('');
-            
-            // Type the new value
-            await this.phoneNumberInput.type(phoneNumber);
-            
-            // Wait for the value to be set
-            await this.page.waitForTimeout(500);
-            
-            // Verify the value was set
-            const currentValue = await this.phoneNumberInput.inputValue();
-            console.log(`✅ Phone number set to: ${currentValue}`);
-            
-        } catch (error) {
-            console.error('Error filling phone number:', error);
-            throw error;
-        }
+        await this.phoneNumberInput.fill(phoneNumber);
     }
 
-    async selectCountryCode(countryName: string = 'United States'): Promise<void> {
-        try {
-            console.log(`🌍 Selecting country code: ${countryName}`);
-            
-            // Click on the country code button
-            await this.countryCodeButton.click();
-            
-            // Wait for the search input to be visible
-            await this.countrySearchInput.waitFor({ state: 'visible' });
-            
-            // Type the country name
-            await this.countrySearchInput.fill('uni');
-            
-            // Wait for the United States option to be visible
-            await this.unitedStatesOption.waitFor({ state: 'visible' });
-            
-            // Click on the United States option
-            await this.unitedStatesOption.click();
-            
-            // Wait for the selection to be made
-            await this.page.waitForTimeout(500);
-            
-            console.log(`✅ Country code selected: ${countryName}`);
-            
-        } catch (error) {
-            console.error('Error selecting country code:', error);
-            throw error;
-        }
+    async clearPhoneNumber(): Promise<void> {
+        await this.phoneNumberInput.clear();
     }
 
-    async fillPhoneForm(data: {
-        phoneNumber?: string;
-        countryCode?: string;
-    }): Promise<void> {
-        try {
-            if (data.countryCode) {
-                console.log(`📝 Setting country code: ${data.countryCode}`);
-                await this.selectCountryCode(data.countryCode);
-            }
-            if (data.phoneNumber) {
-                console.log(`📝 Filling phone number: ${data.phoneNumber}`);
-                await this.fillPhoneNumber(data.phoneNumber);
-            }
-        } catch (error) {
-            console.error('Error filling phone form:', error);
-            throw error;
-        }
+    async clickContinueButton(): Promise<void> {
+        await this.continueButton.click();
     }
 
-    // ===== ERROR TRIGGERING METHODS =====
+    // ========================================================================
+    // 🔍 VALIDATION METHODS
+    // ========================================================================
 
-    /**
-     * Trigger phone number required error by focusing and unfocusing the field
-     */
-    async triggerPhoneNumberRequiredError(): Promise<boolean> {
-        try {
-            console.log('🔍 Triggering phone number required error...');
-            
-            // Clear phone number field
-            await this.phoneNumberInput.fill('');
-            
-            // Focus and unfocus to trigger blur validation
-            await this.phoneNumberInput.click();
-            await this.phoneNumberInput.blur();
-            
-            // Wait for error to appear
-            const errorAppeared = await this.waitForErrorToAppear(this.phoneNumberError, 3000);
-            
-            if (errorAppeared) {
-                const errorText = await this.getPhoneNumberErrorText();
-                console.log(`✅ Phone number required error triggered: "${errorText}"`);
-                return true;
-            } else {
-                console.log('❌ Phone number required error did not appear');
-                return false;
-            }
-        } catch (error) {
-            console.error('Error triggering phone number required error:', error);
-            return false;
-        }
+    async isPhoneNumberErrorVisible(): Promise<boolean> {
+        return await this.phoneNumberError.isVisible();
     }
-
-    /**
-     * Trigger phone number invalid error by typing invalid phone number
-     */
-    async triggerPhoneNumberInvalidError(): Promise<boolean> {
-        try {
-            console.log('🔍 Triggering phone number invalid error...');
-            
-            // Type invalid phone number like "0000000000"
-            await this.phoneNumberInput.fill('0000000000');
-            await this.phoneNumberInput.blur();
-            
-            // Wait for error to appear
-            const errorAppeared = await this.waitForErrorToAppear(this.phoneNumberInvalidError, 3000);
-            
-            if (errorAppeared) {
-                const errorText = await this.getPhoneNumberErrorText();
-                console.log(`✅ Phone number invalid error triggered: "${errorText}"`);
-                return true;
-            } else {
-                console.log('❌ Phone number invalid error did not appear');
-                return false;
-            }
-        } catch (error) {
-            console.error('Error triggering phone number invalid error:', error);
-            return false;
-        }
-    }
-
-    // ===== ERROR TEXT GETTERS =====
 
     async getPhoneNumberErrorText(): Promise<string> {
-        try {
-            if (await this.phoneNumberError.isVisible()) {
-                return await this.phoneNumberError.textContent() || '';
-            }
-            return '';
-        } catch (error) {
-            console.error('Error getting phone number error text:', error);
-            return '';
-        }
+        return await this.phoneNumberError.textContent() || '';
     }
 
-    // ===== UTILITY METHODS =====
-
-    async waitForErrorToAppear(errorLocator: Locator, timeout: number = 5000): Promise<boolean> {
-        try {
-            await errorLocator.waitFor({ state: 'visible', timeout });
-            return true;
-        } catch (error) {
-            console.log(`Error did not appear within ${timeout}ms`);
-            return false;
-        }
+    async isPhoneSuspiciousErrorVisible(): Promise<boolean> {
+        return await this.phoneNumberSuspiciousError.isVisible();
     }
 
-    async waitForErrorToDisappear(errorLocator: Locator, timeout: number = 5000): Promise<boolean> {
-        try {
-            await errorLocator.waitFor({ state: 'hidden', timeout });
-            return true;
-        } catch (error) {
-            console.log(`Error did not disappear within ${timeout}ms`);
-            return false;
-        }
+    async getPhoneSuspiciousErrorText(): Promise<string> {
+        return await this.phoneNumberSuspiciousError.textContent() || '';
     }
 
-    async clearAllFieldsAndErrors(): Promise<void> {
-        try {
-            console.log('🧹 Clearing all phone fields and errors...');
-            
-            // Clear phone number field
-            await this.phoneNumberInput.fill('');
-            
-            // Wait for any errors to disappear
-            await this.page.waitForTimeout(1000);
-            
-            console.log('✅ All phone fields and errors cleared');
-        } catch (error) {
-            console.error('Error clearing all phone fields and errors:', error);
-        }
+    async isPhoneExistsErrorVisible(): Promise<boolean> {
+        return await this.phoneNumberExistsError.isVisible();
     }
 
-    // ===== PAGE OBJECT METHODS =====
-
-    async verifyPageElements(): Promise<boolean> {
-        console.log('🔍 Verifying Phone page elements...');
-        
-        const elements = [
-            { name: 'Country Code Button', locator: this.countryCodeButton, required: true },
-            { name: 'Phone Number Input', locator: this.phoneNumberInput, required: true },
-            { name: 'Page Heading', locator: this.pageHeading, required: true }
-        ];
-
-        let allVisible = true;
-        for (const element of elements) {
-            const isVisible = await element.locator.isVisible();
-            console.log(`📋 ${element.name}: ${isVisible ? '✅ Visible' : '❌ Not visible'}`);
-            
-            if (element.required && !isVisible) {
-                allVisible = false;
-            }
-        }
-
-        console.log(`🎯 Phone page elements verification: ${allVisible ? '✅ PASSED' : '❌ FAILED'}`);
-        return allVisible;
+    async getPhoneExistsErrorText(): Promise<string> {
+        return await this.phoneNumberExistsError.textContent() || '';
     }
 
-    async isFormComplete(): Promise<boolean> {
-        console.log('🔍 Checking if Phone form is complete...');
+    async isPhoneInvalidApiErrorVisible(): Promise<boolean> {
+        return await this.phoneNumberInvalidApiError.isVisible();
+    }
+
+    async getPhoneInvalidApiErrorText(): Promise<string> {
+        return await this.phoneNumberInvalidApiError.textContent() || '';
+    }
+
+    async isAnyBackendApiErrorVisible(): Promise<boolean> {
+        const existsError = await this.phoneNumberExistsError.isVisible();
+        const invalidApiError = await this.phoneNumberInvalidApiError.isVisible();
+        return existsError || invalidApiError;
+    }
+
+    async getPhoneNumberValue(): Promise<string> {
+        return await this.phoneNumberInput.inputValue();
+    }
+
+    // ========================================================================
+    // 🌍 COUNTRY DROPDOWN METHODS
+    // ========================================================================
+
+    async clickClearInputButton(): Promise<void> {
+        await this.clearInputButton.click();
+    }
+
+    async unfocusToTriggerValidation(): Promise<void> {
+        await this.pageLayout.click();
+    }
+
+    async captureAllCountries(): Promise<string[]> {
+        console.log('🌍 Capturing all countries in dropdown...');
+        const countries: string[] = [];
         
         try {
-            const phoneValue = await this.phoneNumberInput.inputValue();
+            // Open country dropdown with timeout
+            console.log('🔍 Step 1: Opening country dropdown...');
+            await this.countryCodeButton.click();
+            await this.page.waitForTimeout(3000);
             
-            const isPhoneFilled = Boolean(phoneValue && phoneValue.trim() !== '');
+            // Wait for API call to complete first
+            console.log('🌐 Step 2: Waiting for country API call...');
+            try {
+                await this.page.waitForResponse(response => 
+                    response.url().includes('/lili/api/v3/onboarding/country/') && 
+                    response.status() === 200,
+                    { timeout: 10000 }
+                );
+                console.log('✅ Country API call completed');
+            } catch (error) {
+                console.log('⚠️ Country API call timeout, continuing...');
+            }
             
-            console.log(`📝 Phone filled: ${isPhoneFilled ? '✅' : '❌'} (${phoneValue ? 'has value' : 'empty'})`);
-            console.log(`🎯 Form complete: ${isPhoneFilled ? '✅ YES' : '❌ NO'}`);
+            // Try to find country options using the correct pattern from development code
+            console.log('🔍 Step 3: Looking for country options...');
             
-            return isPhoneFilled;
+            // Based on development code, countries use pattern: PHONE_NUMBER-select-menu-item-{COUNTRY_CODE}
+            const countryCodes = ['US', 'CA', 'AR', 'AU', 'AT', 'BE', 'BR', 'CL', 'CN', 'CO', 'DK', 'FI', 'FR', 'DE', 'GR', 'IN', 'IE', 'IL', 'IT', 'MX', 'NL', 'NZ', 'NO', 'PT', 'ES', 'SE', 'GB', 'UY'];
+            
+            console.log(`🔍 Looking for ${countryCodes.length} country options...`);
+            
+            for (const countryCode of countryCodes) {
+                try {
+                    const countryOption = this.page.locator(`#PHONE_NUMBER-select-menu-item-${countryCode}`);
+                    const isVisible = await countryOption.isVisible({ timeout: 1000 });
+                    
+                    if (isVisible) {
+                        const text = await countryOption.textContent();
+                        if (text && text.trim()) {
+                            countries.push(text.trim());
+                            console.log(`📝 Found: ${text.trim()}`);
+                        }
+                    }
+                } catch (error) {
+                    // Country option not found, continue
+                }
+            }
+            
+            // If we didn't find any using the specific pattern, try alternative approaches
+            if (countries.length === 0) {
+                console.log('🔍 Trying alternative selectors...');
+                
+                // Try to find any elements containing country names
+                const countryNames = ['United States', 'Canada', 'Argentina', 'Australia', 'Brazil', 'Israel'];
+                
+                for (const countryName of countryNames) {
+                    try {
+                        const elements = this.page.locator(`*:has-text("${countryName}")`);
+                        const count = await elements.count();
+                        
+                        if (count > 0) {
+                            for (let i = 0; i < Math.min(3, count); i++) {
+                                const element = elements.nth(i);
+                                const text = await element.textContent();
+                                if (text && text.includes(countryName) && !countries.includes(text.trim())) {
+                                    countries.push(text.trim());
+                                    console.log(`📝 Found via text search: ${text.trim()}`);
+                                }
+                            }
+                        }
+                    } catch (error) {
+                        console.log(`❌ Error searching for "${countryName}": ${error}`);
+                    }
+                }
+            }
+            
+            // Try to find dropdown container and extract all options
+            if (countries.length === 0) {
+                console.log('🔍 Trying to find dropdown container...');
+                
+                const dropdownSelectors = [
+                    '[data-pc-section="list"]',
+                    '.p-dropdown-panel',
+                    '[role="listbox"]',
+                    '.country-list',
+                    '.dropdown-list',
+                    'div[class*="dropdown"]',
+                    'div[class*="list"]',
+                    'ul[class*="list"]'
+                ];
+                
+                for (const selector of dropdownSelectors) {
+                    try {
+                        const container = this.page.locator(selector);
+                        const isVisible = await container.isVisible({ timeout: 2000 });
+                        
+                        if (isVisible) {
+                            console.log(`✅ Found dropdown container: ${selector}`);
+                            
+                            // Look for options within this container
+                            const optionSelectors = [
+                                '[role="option"]',
+                                '.p-dropdown-item',
+                                'li',
+                                'div[class*="option"]',
+                                'button[class*="option"]'
+                            ];
+                            
+                            for (const optionSelector of optionSelectors) {
+                                try {
+                                    const options = container.locator(optionSelector);
+                                    const count = await options.count();
+                                    
+                                    if (count > 0) {
+                                        console.log(`📋 Found ${count} options with selector: ${optionSelector}`);
+                                        
+                                        for (let i = 0; i < Math.min(20, count); i++) {
+                                            try {
+                                                const option = options.nth(i);
+                                                const text = await option.textContent();
+                                                if (text && text.trim() && !countries.includes(text.trim())) {
+                                                    countries.push(text.trim());
+                                                    console.log(`📝 ${countries.length}. ${text.trim()}`);
+                                                }
+                                            } catch (error) {
+                                                console.log(`❌ Error reading option ${i}: ${error}`);
+                                            }
+                                        }
+                                        break;
+                                    }
+                                } catch (error) {
+                                    console.log(`❌ Error with option selector ${optionSelector}: ${error}`);
+                                }
+                            }
+                            break;
+                        }
+                    } catch (error) {
+                        console.log(`❌ Selector ${selector} failed: ${error}`);
+                    }
+                }
+            }
+            
+            console.log(`\n✅ CAPTURED ${countries.length} COUNTRIES:`);
+            countries.forEach((country, index) => {
+                console.log(`${index + 1}. ${country}`);
+            });
+            
+            return countries;
+            
         } catch (error) {
-            console.log(`⚠️ Error checking form completion: ${error instanceof Error ? error.message : String(error)}`);
-            return false;
+            console.log(`❌ Error capturing countries: ${error}`);
+            return countries;
         }
     }
 }
