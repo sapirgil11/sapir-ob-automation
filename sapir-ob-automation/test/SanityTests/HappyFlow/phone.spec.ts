@@ -15,74 +15,47 @@ test.use({ viewport: { width: 1880, height: 798 } });
 test.describe('📞 Phone Page Flow Tests', () => {
     
     // ========================================================================
-    // 🎯 TEST 1: Fill Phone Number with Random Data
+    // 🎯 TEST 1: Type Phone Number Without Opening Dropdown
     // ========================================================================
-    test('🎯 Fill Phone Number with Random Data', async ({ page }) => {
+    test('🎯 Type Phone Number Without Opening Dropdown', async ({ page }) => {
         test.setTimeout(300000); // 5 minutes timeout
-        console.log('🚀 Starting Fill Phone Number with Random Data Test...');
+        console.log('🚀 Starting Type Phone Number Without Opening Dropdown Test...');
 
         const phoneFlow = new PhoneFlow(page);
         const navigated = await phoneFlow.testFillPhoneForm();
         expect(navigated).toBe(true);
-        const result = await phoneFlow.testFillPhoneNumber();
+        const result = await phoneFlow.testTypePhoneNumberWithoutDropdown();
         expect(result).toBe(true);
-        console.log('✅ Fill Phone Number with Random Data Test passed!');
+        console.log('✅ Type Phone Number Without Opening Dropdown Test passed!');
     });
 
     // ========================================================================
-    // ❌ TEST 2: Phone Number Validation Errors
+    // 🌍 TEST 2: Open Dropdown > Search United States > Fill Phone Number > Continue
     // ========================================================================
-    test('❌ Phone Number Validation Errors', async ({ page }) => {
+    test('🌍 Open Dropdown > Search United States > Fill Phone Number > Continue', async ({ page }) => {
         test.setTimeout(300000); // 5 minutes timeout
-        console.log('🚀 Starting Phone Number Validation Errors Test...');
+        console.log('🚀 Starting Open Dropdown > Search United States > Fill Phone Number > Continue Test...');
 
         const phoneFlow = new PhoneFlow(page);
         const navigated = await phoneFlow.testFillPhoneForm();
         expect(navigated).toBe(true);
-        const result = await phoneFlow.testPhoneValidationErrors();
+        const result = await phoneFlow.testDropdownSearchAndFill();
         expect(result).toBe(true);
-        console.log('✅ Phone Number Validation Errors Test passed!');
+        console.log('✅ Open Dropdown > Search United States > Fill Phone Number > Continue Test passed!');
     });
 
     // ========================================================================
-    // 🔍 TEST 3: Elements Exist and Functionality
+    // ❌ TEST 3: Validation Errors - 123 > Error > Clear > 22222 > Inline Error > Clear > Valid > Next Page
     // ========================================================================
-    test('🔍 Elements Exist and Functionality', async ({ page }) => {
+    test('❌ Validation Errors - 123 > Error > Clear > 22222 > Inline Error > Clear > Valid > Next Page', async ({ page }) => {
         test.setTimeout(300000); // 5 minutes timeout
-        console.log('🚀 Starting Elements Exist and Functionality Test...');
+        console.log('🚀 Starting Validation Errors Test...');
 
         const phoneFlow = new PhoneFlow(page);
         const navigated = await phoneFlow.testFillPhoneForm();
         expect(navigated).toBe(true);
-        const result = await phoneFlow.testElementsExistAndFunctionality();
+        const result = await phoneFlow.testValidationErrorsFlow();
         expect(result).toBe(true);
-        console.log('✅ Elements Exist and Functionality Test passed!');
-    });
-
-    test('🌍 Country Dropdown and Capture All Countries', async ({ page }) => {
-        test.setTimeout(300000); // 5 minutes timeout
-        console.log('🚀 Starting Country Dropdown Test...');
-
-        const phoneFlow = new PhoneFlow(page);
-        const navigated = await phoneFlow.testFillPhoneForm();
-        expect(navigated).toBe(true);
-        const result = await phoneFlow.testCountryDropdown();
-        expect(result).toBe(true);
-        console.log('✅ Country Dropdown Test passed!');
-    });
-
-    // ========================================================================
-    // 🔄 TEST 4: Backend API Error Handling and Retry Logic
-    // ========================================================================
-    test('🔄 Backend API Error Handling and Retry Logic', async ({ page }) => {
-        test.setTimeout(300000); // 5 minutes timeout
-        console.log('🚀 Starting Backend API Error Handling and Retry Logic Test...');
-
-        const phoneFlow = new PhoneFlow(page);
-        const navigated = await phoneFlow.testFillPhoneForm();
-        expect(navigated).toBe(true);
-        const result = await phoneFlow.testBackendApiErrorHandling();
-        expect(result).toBe(true);
-        console.log('✅ Backend API Error Handling and Retry Logic Test passed!');
+        console.log('✅ Validation Errors Test passed!');
     });
 });

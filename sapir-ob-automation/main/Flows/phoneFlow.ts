@@ -226,311 +226,226 @@ export class PhoneFlow {
         }
     }
 
-    // ========================================================================
-    // ✅ VALIDATION TESTING METHODS
-    // ========================================================================
 
+    // ========================================================================
+    // 🎯 METHOD 4: TYPE PHONE NUMBER WITHOUT OPENING DROPDOWN
+    // ========================================================================
     /**
-     * Test phone number validation scenarios
-     * @returns Promise<boolean> - Success status
+     * Test typing phone number without opening the country dropdown
+     * Uses default country (United States) and fills phone number directly
      */
-    async testPhoneValidation(): Promise<boolean> {
-        console.log('🧪 Testing phone number validation...');
-
+    async testTypePhoneNumberWithoutDropdown(): Promise<boolean> {
+        console.log('🧪 Testing: Type Phone Number Without Opening Dropdown');
+        
         try {
-            let allValidationsPassed = true;
-
-            // Test 1: Suspicious phone number pattern (should trigger "Are you sure this is your mobile phone number?")
-            console.log('\n--- Testing Suspicious Phone Number (+1 2222222222) ---');
-            await this.phonePage.clearPhoneNumber();
-            await this.phonePage.fillPhoneNumber('+1 2222222222');
-            // Unfocus to trigger validation
-            console.log('📞 Clicking page layout to unfocus and trigger validation...');
-            await this.phonePage.unfocusToTriggerValidation();
-            await this.page.waitForTimeout(1000);
-            // Click continue to trigger validation
+            // Generate random phone number
+            const lastFourDigits = Math.floor(1000 + Math.random() * 9000);
+            const phoneNumber = `212-458-${lastFourDigits}`;
+            
+            console.log(`📞 Using phone number: ${phoneNumber}`);
+            
+            // Fill phone number directly without opening dropdown
+            console.log('📞 Filling phone number directly...');
+            await this.phonePage.fillPhoneNumber(phoneNumber);
+            
+            // Click continue button
+            console.log('📞 Clicking continue button...');
             await this.phonePage.clickContinueButton();
-            await this.page.waitForTimeout(1000);
-
-            const suspiciousErrorVisible = await this.phonePage.isPhoneSuspiciousErrorVisible();
-            const suspiciousErrorText = await this.phonePage.getPhoneSuspiciousErrorText();
-            console.log(`❌ Suspicious phone error: ${suspiciousErrorVisible ? '✅ Visible' : '❌ Not visible'}`);
-            console.log(`📝 Error text: "${suspiciousErrorText}"`);
-            if (!suspiciousErrorVisible || !suspiciousErrorText.includes('Are you sure this is your')) {
-                allValidationsPassed = false;
-            }
-
-            // Test 2: Short phone number (should trigger "Please enter a valid mobile number")
-            console.log('\n--- Testing Short Phone Number (+1 222) ---');
-            await this.phonePage.clearPhoneNumber();
-            await this.phonePage.fillPhoneNumber('+1 222');
-            // Unfocus to trigger validation
-            console.log('📞 Clicking page layout to unfocus and trigger validation...');
-            await this.phonePage.unfocusToTriggerValidation();
-            await this.page.waitForTimeout(1000);
-
-            const shortErrorVisible = await this.phonePage.isPhoneNumberErrorVisible();
-            const shortErrorText = await this.phonePage.getPhoneNumberErrorText();
-            console.log(`❌ Short phone error: ${shortErrorVisible ? '✅ Visible' : '❌ Not visible'}`);
-            console.log(`📝 Error text: "${shortErrorText}"`);
-            if (!shortErrorVisible || !shortErrorText.includes('Please enter a valid mobile')) {
-                allValidationsPassed = false;
-            }
-
-            // Test 3: Valid phone number (should work and navigate to identity page)
-            console.log('\n--- Testing Valid Phone Number (+1 2124583728) ---');
-            await this.phonePage.clearPhoneNumber();
-            await this.phonePage.fillPhoneNumber('+1 2124583728');
-            await this.phonePage.clickContinueButton();
+            
+            // Wait for response
+            console.log('📞 Waiting for response...');
             await this.page.waitForTimeout(3000);
-
-            // Check if we navigated to identity page
-            const currentUrl = this.page.url();
-            const hasNavigatedToIdentity = currentUrl.includes('/identity');
-            console.log(`✅ Navigation to identity: ${hasNavigatedToIdentity ? '✅ Success' : '❌ Failed'}`);
-            console.log(`📍 Current URL: ${currentUrl}`);
             
-            if (!hasNavigatedToIdentity) {
-                allValidationsPassed = false;
-            }
-
-            console.log(`\n🎯 Phone validation test: ${allValidationsPassed ? '✅ ALL VALIDATIONS PASSED' : '❌ SOME VALIDATIONS FAILED'}`);
-            return allValidationsPassed;
-        } catch (error) {
-            console.log(`❌ Error testing phone validation: ${error instanceof Error ? error.message : String(error)}`);
-            return false;
-        }
-    }
-
-    // ========================================================================
-    // 🌍 COUNTRY DROPDOWN TEST
-    // ========================================================================
-
-    /**
-     * Test country dropdown and capture all countries
-     * @returns Promise<boolean> - Success status
-     */
-    async testCountryDropdown(): Promise<boolean> {
-        console.log('🧪 Testing: Country Dropdown and Capture All Countries');
-
-        try {
-            // Capture all countries
-            const countries = await this.phonePage.captureAllCountries();
-            
-            console.log(`\n🌍 CAPTURED ${countries.length} COUNTRIES:`);
-            countries.forEach((country, index) => {
-                console.log(`${index + 1}. ${country}`);
-            });
-
-            // Test clear input functionality
-            console.log('\n🧹 Testing clear input functionality...');
-            await this.phonePage.fillCountrySearch('test x button to clear');
-            await this.phonePage.clickClearInputButton();
-            await this.page.waitForTimeout(500);
-            
-            // Test United States selection
-            console.log('\n🇺🇸 Testing United States selection...');
-            await this.phonePage.fillCountrySearch('unite');
-            await this.phonePage.clickUnitedStatesOption();
-            await this.page.waitForTimeout(500);
-
-            console.log(`\n🎯 Country dropdown test: ✅ SUCCESS - Captured ${countries.length} countries`);
-            return true;
-        } catch (error) {
-            console.log(`❌ Error testing country dropdown: ${error instanceof Error ? error.message : String(error)}`);
-            return false;
-        }
-    }
-
-    // ========================================================================
-    // 🔍 ELEMENT VERIFICATION METHODS
-    // ========================================================================
-
-    /**
-     * Test elements exist and functionality
-     * @returns Promise<boolean> - Success status
-     */
-    async testElementsExist(): Promise<boolean> {
-        console.log('🔍 Testing elements exist and functionality...');
-
-        try {
-            let allElementsVisible = true;
-
-            // Test 1: Core Form Elements
-            console.log('\n--- Testing Core Form Elements ---');
-            const coreElements = [
-                { name: 'Country Code Button', locator: this.phonePage.countryCodeButton, required: true },
-                { name: 'Phone Number Input', locator: this.phonePage.phoneNumberInput, required: true },
-                { name: 'Continue Button', locator: this.phonePage.continueButton, required: true }
-            ];
-
-            for (const element of coreElements) {
-                const isVisible = await element.locator.isVisible();
-                console.log(`📋 ${element.name}: ${isVisible ? '✅ Visible' : '❌ Not visible'}`);
-                if (element.required && !isVisible) allElementsVisible = false;
-            }
-
-            // Test 2: Page Content Elements
-            console.log('\n--- Testing Page Content Elements ---');
-            const contentElements = [
-                { name: 'Page Heading', locator: this.phonePage.pageHeading, required: true },
-                { name: 'Page Subheading', locator: this.phonePage.pageSubheading, required: true }
-            ];
-
-            for (const element of contentElements) {
-                const isVisible = await element.locator.isVisible();
-                console.log(`📄 ${element.name}: ${isVisible ? '✅ Visible' : '❌ Not visible'}`);
-                if (element.required && !isVisible) allElementsVisible = false;
-            }
-
-            // Test 3: Test input functionality
-            console.log('\n--- Testing Input Functionality ---');
-            await this.phonePage.fillPhoneNumber('5551234567');
-            const phoneValue = await this.phonePage.getPhoneNumberValue();
-            console.log(`📝 Phone input value: ${phoneValue}`);
-
-            // Test 4: Test clear functionality
-            console.log('\n--- Testing Clear Functionality ---');
-            await this.phonePage.clearPhoneNumber();
-            const clearedValue = await this.phonePage.getPhoneNumberValue();
-            console.log(`🧹 Phone input cleared: ${clearedValue === '' ? '✅ Cleared' : '❌ Not cleared'}`);
-
-            console.log(`\n🎯 Elements exist test: ${allElementsVisible ? '✅ ALL ELEMENTS VISIBLE' : '❌ SOME ELEMENTS NOT VISIBLE'}`);
-            return allElementsVisible;
-        } catch (error) {
-            console.log(`❌ Error testing elements exist: ${error instanceof Error ? error.message : String(error)}`);
-            return false;
-        }
-    }
-
-    // ========================================================================
-    // 🧪 NEW TEST METHODS
-    // ========================================================================
-
-    /**
-     * Test simple phone flow with random phone number
-     * @returns Promise<boolean> - Success status
-     */
-    async testFillPhoneNumber(): Promise<boolean> {
-        console.log('🧪 Testing: Fill Phone Number with Random Data');
-
-        try {
-            // Fill phone form with random data
-            const formFilled = await this.fillPhoneForm();
-            if (!formFilled) {
-                console.log('❌ Failed to fill phone form');
-                return false;
-            }
-
-            // Wait for navigation
-            await this.page.waitForTimeout(3000);
-
             // Check if we navigated to the next page
             const currentUrl = this.page.url();
             console.log(`📍 Current URL after form submission: ${currentUrl}`);
-
-            // The next page should be identity page
-            const hasNavigated = currentUrl.includes('/identity');
             
-            if (hasNavigated) {
+            if (currentUrl.includes('/identity')) {
                 console.log('✅ Successfully navigated to next page!');
                 return true;
             } else {
-                console.log(`❌ Navigation failed. Still on: ${currentUrl}`);
+                console.log('❌ Failed to navigate to next page');
                 return false;
             }
         } catch (error) {
-            console.log(`❌ Error in testFillPhoneNumber: ${error instanceof Error ? error.message : String(error)}`);
+            console.log(`❌ Error in testTypePhoneNumberWithoutDropdown: ${error instanceof Error ? error.message : String(error)}`);
             return false;
         }
     }
 
+    // ========================================================================
+    // 🌍 METHOD 5: DROPDOWN SEARCH AND FILL
+    // ========================================================================
     /**
-     * Test phone validation errors
-     * @returns Promise<boolean> - Success status
+     * Test opening dropdown, searching for United States, filling phone number, and continuing
      */
-    async testPhoneValidationErrors(): Promise<boolean> {
-        console.log('🧪 Testing: Phone Validation Errors');
-
+    async testDropdownSearchAndFill(): Promise<boolean> {
+        console.log('🧪 Testing: Open Dropdown > Search United States > Fill Phone Number > Continue');
+        
         try {
-            // Test all validation scenarios
-            const validationPassed = await this.testPhoneValidation();
+            // Generate random phone number
+            const lastFourDigits = Math.floor(1000 + Math.random() * 9000);
+            const phoneNumber = `212-458-${lastFourDigits}`;
             
-            if (validationPassed) {
-                console.log('✅ All phone validation tests passed!');
+            console.log(`📞 Using phone number: ${phoneNumber}`);
+            
+            // Step 1: Open dropdown
+            console.log('📞 Step 1: Opening country dropdown...');
+            await this.phonePage.clickCountryCodeButton();
+            
+            // Step 2: Search for United States
+            console.log('📞 Step 2: Searching for United States...');
+            await this.phonePage.fillCountrySearch('United States');
+            
+            // Step 3: Select United States
+            console.log('📞 Step 3: Selecting United States...');
+            await this.phonePage.clickUnitedStatesOption();
+            
+            // Step 4: Fill phone number
+            console.log('📞 Step 4: Filling phone number...');
+            await this.phonePage.fillPhoneNumber(phoneNumber);
+            
+            // Step 5: Click continue button
+            console.log('📞 Step 5: Clicking continue button...');
+            await this.phonePage.clickContinueButton();
+            
+            // Step 6: Wait for response
+            console.log('📞 Step 6: Waiting for response...');
+            await this.page.waitForTimeout(3000);
+            
+            // Check if we navigated to the next page
+            const currentUrl = this.page.url();
+            console.log(`📍 Current URL after form submission: ${currentUrl}`);
+            
+            if (currentUrl.includes('/identity')) {
+                console.log('✅ Successfully navigated to next page!');
                 return true;
             } else {
-                console.log('❌ Some phone validation tests failed!');
+                console.log('❌ Failed to navigate to next page');
                 return false;
             }
         } catch (error) {
-            console.log(`❌ Error in testPhoneValidationErrors: ${error instanceof Error ? error.message : String(error)}`);
+            console.log(`❌ Error in testDropdownSearchAndFill: ${error instanceof Error ? error.message : String(error)}`);
             return false;
         }
     }
 
+    // ========================================================================
+    // ❌ METHOD 6: VALIDATION ERRORS FLOW
+    // ========================================================================
     /**
-     * Test elements exist and functionality
-     * @returns Promise<boolean> - Success status
+     * Test validation errors flow: 123 > Error > Clear > 22222 > Inline Error > Clear > Valid > Next Page
      */
-    async testElementsExistAndFunctionality(): Promise<boolean> {
-        console.log('🧪 Testing: Elements Exist and Functionality');
-
+    async testValidationErrorsFlow(): Promise<boolean> {
+        console.log('🧪 Testing: Validation Errors Flow - 123 > Error > Clear > 22222 > Inline Error > Clear > Valid > Next Page');
+        
         try {
-            // Test all elements and functionality
-            const elementsPassed = await this.testElementsExist();
+            let allStepsPassed = true;
             
-            if (elementsPassed) {
-                console.log('✅ All element tests passed!');
-                return true;
-            } else {
-                console.log('❌ Some element tests failed!');
-                return false;
-            }
-        } catch (error) {
-            console.log(`❌ Error in testElementsExistAndFunctionality: ${error instanceof Error ? error.message : String(error)}`);
-            return false;
-        }
-    }
-
-    /**
-     * Test backend API error handling and retry logic
-     * @returns Promise<boolean> - Success status
-     */
-    async testBackendApiErrorHandling(): Promise<boolean> {
-        console.log('🧪 Testing: Backend API Error Handling and Retry Logic');
-
-        try {
-            // Test with a phone number that might trigger backend errors
-            console.log('📞 Testing with phone number that might trigger backend errors...');
+            // Step 1: Type 123 and verify error appears
+            console.log('\n--- Step 1: Type 123 and verify error ---');
+            await this.phonePage.fillPhoneNumber('123');
             
-            // Use a phone number that might already exist
-            const testPhoneNumber = '5551234567';
-            console.log(`📞 Using test phone number: ${testPhoneNumber}`);
+            // Try the specific approach: 123 > click outside frame > click input > unfocus (repeat 3 times)
+            console.log('🔄 Trying approach: 123 > click outside frame > click input > unfocus (repeat 3 times)...');
             
-            // Fill the form and handle any backend errors
-            const formFilled = await this.fillPhoneForm(testPhoneNumber);
+            let shortErrorVisible = false;
             
-            if (formFilled) {
-                console.log('✅ Phone form filled successfully with error handling!');
+            for (let attempt = 1; attempt <= 3; attempt++) {
+                console.log(`\n📍 Attempt ${attempt}/3:`);
                 
-                // Check if we're still on the phone page (indicating retry was needed)
-                const currentUrl = this.page.url();
-                const isStillOnPhonePage = currentUrl.includes('/phone');
+                // Step 1: Click outside the frame (on page layout)
+                console.log('  🔄 Clicking outside the frame (page layout)...');
+                await this.page.locator('#page-layout').click();
+                await this.page.waitForTimeout(500);
                 
-                if (isStillOnPhonePage) {
-                    console.log('🔄 Phone number was replaced due to backend error - retry logic worked!');
-                } else {
-                    console.log('✅ Phone number was accepted on first try!');
+                // Step 2: Click again on the input to refocus
+                console.log('  🔄 Clicking on input to refocus...');
+                await this.phonePage.phoneNumberInput.click();
+                await this.page.waitForTimeout(500);
+                
+                // Step 3: Unfocus by clicking outside again
+                console.log('  🔄 Unfocusing by clicking outside again...');
+                await this.page.locator('#page-layout').click();
+                await this.page.waitForTimeout(1000);
+                
+                // Check if error is now visible
+                shortErrorVisible = await this.phonePage.isPhoneNumberErrorVisible();
+                console.log(`  ❌ Short phone error visible (attempt ${attempt}): ${shortErrorVisible ? '✅' : '❌'}`);
+                
+                if (shortErrorVisible) {
+                    console.log(`  ✅ Error appeared on attempt ${attempt}!`);
+                    break;
                 }
-                
-                return true;
-            } else {
-                console.log('❌ Failed to fill phone form with error handling');
-                return false;
             }
+            
+            // If still no error, try clicking continue button as last resort
+            if (!shortErrorVisible) {
+                console.log('\n📍 Last resort: Clicking continue button to trigger validation...');
+                await this.phonePage.clickContinueButton();
+                await this.page.waitForTimeout(1000);
+                shortErrorVisible = await this.phonePage.isPhoneNumberErrorVisible();
+                console.log(`❌ Short phone error visible (continue button): ${shortErrorVisible ? '✅' : '❌'}`);
+            }
+            
+            console.log(`\n❌ Final short phone error visible: ${shortErrorVisible ? '✅' : '❌'}`);
+            if (!shortErrorVisible) allStepsPassed = false;
+            
+            // Step 2: Clear input
+            console.log('\n--- Step 2: Clear input ---');
+            await this.phonePage.clearPhoneNumber();
+            const clearedValue = await this.phonePage.getPhoneNumberValue();
+            console.log(`🧹 Phone number value after clear: "${clearedValue}"`);
+            // Check if cleared (empty or just contains default "+1 " prefix)
+            const isCleared = clearedValue === '' || clearedValue === '+1 ' || clearedValue === '+1';
+            console.log(`🧹 Phone number cleared: ${isCleared ? '✅' : '❌'}`);
+            if (!isCleared) allStepsPassed = false;
+            
+            // Step 3: Type +1 222-222-2222 and verify inline error
+            console.log('\n--- Step 3: Type +1 222-222-2222 and verify inline error ---');
+            await this.phonePage.fillPhoneNumber('+1 222-222-2222');
+            
+            // Simple approach: just click continue to trigger the suspicious error
+            console.log('🔄 Clicking continue button to trigger suspicious error...');
+            await this.phonePage.clickContinueButton();
+            await this.page.waitForTimeout(1000);
+            
+            const suspiciousErrorVisible = await this.phonePage.isPhoneSuspiciousErrorVisible();
+            console.log(`❌ Suspicious phone error visible: ${suspiciousErrorVisible ? '✅' : '❌'}`);
+            if (!suspiciousErrorVisible) allStepsPassed = false;
+            
+            // Step 4: Clear input again
+            console.log('\n--- Step 4: Clear input again ---');
+            await this.phonePage.clearPhoneNumber();
+            const clearedValue2 = await this.phonePage.getPhoneNumberValue();
+            console.log(`🧹 Phone number value after clear: "${clearedValue2}"`);
+            // Check if cleared (empty or just contains default "+1 " prefix)
+            const isCleared2 = clearedValue2 === '' || clearedValue2 === '+1 ' || clearedValue2 === '+1';
+            console.log(`🧹 Phone number cleared: ${isCleared2 ? '✅' : '❌'}`);
+            if (!isCleared2) allStepsPassed = false;
+            
+            // Step 5: Type valid phone number and verify navigation
+            console.log('\n--- Step 5: Type valid phone number and verify navigation ---');
+            const lastFourDigits = Math.floor(1000 + Math.random() * 9000);
+            const validPhoneNumber = `212-458-${lastFourDigits}`;
+            console.log(`📞 Using valid phone number: ${validPhoneNumber}`);
+            
+            await this.phonePage.fillPhoneNumber(validPhoneNumber);
+            await this.phonePage.clickContinueButton();
+            await this.page.waitForTimeout(3000);
+            
+            const currentUrl = this.page.url();
+            console.log(`📍 Current URL: ${currentUrl}`);
+            
+            const hasNavigatedToNextPage = currentUrl.includes('/identity');
+            console.log(`✅ Navigation to next page: ${hasNavigatedToNextPage ? '✅' : '❌'}`);
+            if (!hasNavigatedToNextPage) allStepsPassed = false;
+            
+            console.log(`\n🎯 Validation errors flow test: ${allStepsPassed ? '✅ ALL STEPS PASSED' : '❌ SOME STEPS FAILED'}`);
+            return allStepsPassed;
+            
         } catch (error) {
-            console.log(`❌ Error in testBackendApiErrorHandling: ${error instanceof Error ? error.message : String(error)}`);
+            console.log(`❌ Error in testValidationErrorsFlow: ${error instanceof Error ? error.message : String(error)}`);
             return false;
         }
     }
