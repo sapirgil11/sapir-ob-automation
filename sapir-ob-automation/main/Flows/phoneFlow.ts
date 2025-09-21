@@ -67,7 +67,8 @@ export class PhoneFlow {
 
             // Step 3: Handle email verification
             console.log('📱 Step 3: Handling email verification...');
-            await this.page.waitForTimeout(3000);
+            // Wait for email verification page to load
+            await this.page.waitForURL('**/email-verification**', { timeout: 10000 });
 
             // Extract MFA code from mailforspam
             const mfaExtractor = new MFACodeExtractor(this.page.context(), this.page);
@@ -84,7 +85,7 @@ export class PhoneFlow {
 
             // Step 4: Wait for navigation to personal details
             console.log('📱 Step 4: Waiting for navigation to personal details...');
-            await this.page.waitForTimeout(3000);
+            await this.page.waitForURL('**/personal-details**', { timeout: 10000 });
 
             // Fill personal details form
             console.log('📱 Step 5: Filling personal details form...');
@@ -100,7 +101,7 @@ export class PhoneFlow {
 
             // Step 5: Wait for navigation to phone page
             console.log('📱 Step 6: Waiting for navigation to phone page...');
-            await this.page.waitForTimeout(3000);
+            await this.page.waitForURL('**/phone**', { timeout: 10000 });
 
             const currentUrl = this.page.url();
             console.log(`📍 Current URL: ${currentUrl}`);
@@ -143,17 +144,14 @@ export class PhoneFlow {
             // Step 1: Click country code button
             console.log('📞 Step 1: Clicking country code button...');
             await this.phonePage.clickCountryCodeButton();
-            await this.page.waitForTimeout(1000);
 
             // Step 2: Search for United States
             console.log('📞 Step 2: Searching for United States...');
             await this.phonePage.fillCountrySearch('United States');
-            await this.page.waitForTimeout(1000);
 
             // Step 3: Select United States
             console.log('📞 Step 3: Selecting United States...');
             await this.phonePage.clickUnitedStatesOption();
-            await this.page.waitForTimeout(1000);
 
             // Step 4: Fill phone number
             console.log('📞 Step 4: Filling phone number...');

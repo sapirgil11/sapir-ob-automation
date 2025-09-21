@@ -188,7 +188,7 @@ export class PersonalDetails {
         }
     }
 
-    // Alternative method for filling form with better input handling
+    // Optimized method for filling first name - faster execution
     async fillFirstName(firstName: string): Promise<void> {
         try {
             console.log(`📝 Filling first name: ${firstName}`);
@@ -196,17 +196,8 @@ export class PersonalDetails {
             // Wait for the input to be visible
             await this.firstNameInput.waitFor({ state: 'visible' });
             
-            // Click on the input field
-            await this.firstNameInput.click();
-            
-            // Clear any existing value
-            await this.firstNameInput.fill('');
-            
-            // Type the new value
-            await this.firstNameInput.type(firstName);
-            
-            // Wait for the value to be set
-            await this.page.waitForTimeout(500);
+            // Clear and fill in one operation - much faster than type()
+            await this.firstNameInput.fill(firstName);
             
             // Verify the value was set
             const currentValue = await this.firstNameInput.inputValue();
@@ -218,6 +209,7 @@ export class PersonalDetails {
         }
     }
 
+    // Optimized method for filling last name - faster execution
     async fillLastName(lastName: string): Promise<void> {
         try {
             console.log(`📝 Filling last name: ${lastName}`);
@@ -225,17 +217,8 @@ export class PersonalDetails {
             // Wait for the input to be visible
             await this.lastNameInput.waitFor({ state: 'visible' });
             
-            // Click on the input field
-            await this.lastNameInput.click();
-            
-            // Clear any existing value
-            await this.lastNameInput.fill('');
-            
-            // Type the new value
-            await this.lastNameInput.type(lastName);
-            
-            // Wait for the value to be set
-            await this.page.waitForTimeout(500);
+            // Clear and fill in one operation - much faster than type()
+            await this.lastNameInput.fill(lastName);
             
             // Verify the value was set
             const currentValue = await this.lastNameInput.inputValue();
