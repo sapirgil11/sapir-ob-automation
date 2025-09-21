@@ -27,7 +27,7 @@ export class Identity {
     
     // --US Resident Fields--
     public ssnInput!: Locator;                                    // ID: "#ssn" | Placeholder: "Enter your SSN"
-    public birthDateInput!: Locator;                              // ID: "#birthDate" | Placeholder: "MM/DD/YYYY"
+    public dateOfBirthInput!: Locator;                            // ID: "#DATE_OF_BIRTH" | Placeholder: "MM/DD/YYYY"
     public ssnToggleButton!: Locator;                             // ID: "#lock" | Text: "Show/Hide SSN"
     public continueButton!: Locator;                              // ID: "#elCta" | Text: "Continue"
     

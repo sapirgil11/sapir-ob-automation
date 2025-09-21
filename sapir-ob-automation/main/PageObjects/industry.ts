@@ -23,6 +23,10 @@ export class Industry {
     public industryOptions!: Locator;                               // All industry options
     public subIndustryOptions!: Locator;                            // All sub-industry options
     
+    // ===== DROPDOWN TRIGGERS =====
+    public industryDropdownTrigger!: Locator;                       // ID: "#INDUSTRY #dropdown-item-" | Click to open industry dropdown
+    public subIndustryDropdownTrigger!: Locator;                    // ID: "#SUB_INDUSTRY #dropdown-item-" | Click to open sub-industry dropdown
+    
     // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
     public industryError!: Locator;                                 // ID: "#industry-error"
     // TRIGGER: Click "Continue" without selecting an industry
@@ -110,11 +114,17 @@ export class Industry {
      * 🏭 Initialize industry dropdown elements
      */
     private initializeDropdownElements(): void {
-        // Main industry dropdown - using the field ID from OnboardingFormFields.INDUSTRY
-        this.industrySelect = this.page.locator('#INDUSTRY, [data-testid="INDUSTRY"], [id*="industry"]').first();
+        // Main industry dropdown - using the actual element ID from recording
+        this.industrySelect = this.page.locator('#INDUSTRY');
         
-        // Sub industry dropdown - using the field ID from OnboardingFormFields.SUB_INDUSTRY
-        this.subIndustrySelect = this.page.locator('#SUB_INDUSTRY, [data-testid="SUB_INDUSTRY"], [id*="sub-industry"]').first();
+        // Sub industry dropdown - using the actual element ID from recording
+        this.subIndustrySelect = this.page.locator('#SUB_INDUSTRY');
+        
+        // Industry dropdown trigger - click to open dropdown
+        this.industryDropdownTrigger = this.page.locator('#INDUSTRY #dropdown-item-');
+        
+        // Sub-industry dropdown trigger - click to open dropdown
+        this.subIndustryDropdownTrigger = this.page.locator('#SUB_INDUSTRY #dropdown-item-');
         
         // Industry options - LiliDropdown items
         this.industryOptions = this.page.locator('[role="option"], .dropdown-item, [data-testid*="option"]');
@@ -166,8 +176,8 @@ export class Industry {
     async selectIndustry(industryText: string): Promise<void> {
         console.log(`🏭 Selecting industry: ${industryText}`);
         
-        // Click the industry dropdown to open it
-        await this.industrySelect.click();
+        // Click the industry dropdown trigger to open it
+        await this.industryDropdownTrigger.click();
         await this.page.waitForTimeout(1000);
         
         // Select the industry option by text
@@ -188,8 +198,8 @@ export class Industry {
     async selectSubIndustry(subIndustryText: string): Promise<void> {
         console.log(`🏭 Selecting sub-industry: ${subIndustryText}`);
         
-        // Click the sub-industry dropdown to open it
-        await this.subIndustrySelect.click();
+        // Click the sub-industry dropdown trigger to open it
+        await this.subIndustryDropdownTrigger.click();
         await this.page.waitForTimeout(1000);
         
         // Select the sub-industry option by text

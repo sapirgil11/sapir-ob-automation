@@ -17,11 +17,28 @@ export class BusinessType {
 
     // ===== CORE BUSINESS TYPE OPTIONS (PRODUCTION IDs) =====
     
-    // --Business Type Selection Options--
-    public sCorpOption!: Locator;                                  // ID: "#business_type_0" | Text: "S-Corp"
-    public partnershipOption!: Locator;                           // ID: "#business_type_1" | Text: "Partnership"
-    public llcOption!: Locator;                                   // ID: "#business_type_2" | Text: "LLC"
-    public soleProprietorOption!: Locator;                        // ID: "#business_type_3" | Text: "Sole Proprietor (SSN)"
+    // --Main Business Type Selection Options--
+    public corporationOption!: Locator;                           // ID: "#business-type-corporation" | Text: "Corporation (S-Corp/C-Corp)"
+    public partnershipOption!: Locator;                           // ID: "#business-type-partnership" | Text: "Partnership"
+    public llcOption!: Locator;                                   // ID: "#business-type-llc" | Text: "Limited Liability Company (LLC)"
+    public soleProprietorOption!: Locator;                        // ID: "#business-type-soleProprietorship" | Text: "Sole Proprietorship"
+    
+    // --Sub-Business Type Selection Options--
+    // LLC Sub-types
+    public singleMemberLLCOption!: Locator;                       // ID: "#business-sub-type-llc" | Text: "Single-Member LLC"
+    public multiMemberLLCOption!: Locator;                        // ID: "#business-sub-type-mmllc" | Text: "Multi-Member LLC"
+    
+    // Partnership Sub-types
+    public generalPartnershipOption!: Locator;                   // ID: "#business-sub-type-general_partnership" | Text: "General Partnership"
+    public limitedLiabilityPartnershipOption!: Locator;          // ID: "#business-sub-type-llp" | Text: "Limited Liability Partnership"
+    
+    // Corporation Sub-types
+    public sCorpOption!: Locator;                                // ID: "#business-sub-type-s_corp" | Text: "S-Corp"
+    public cCorpOption!: Locator;                                // ID: "#business-sub-type-c_corp" | Text: "C-Corp"
+    
+    // Sole Proprietorship Sub-types
+    public dbaOption!: Locator;                                   // ID: "#business-sub-type-dba" | Text: "Yes. I have a DBA"
+    public ssnOption!: Locator;                                   // ID: "#business-sub-type-ssn" | Text: "No. I don't have a DBA"
     
     // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
     
@@ -57,11 +74,28 @@ export class BusinessType {
     }
 
     private initializeCoreElements(): void {
-        // Core business type options - Updated to match actual HTML structure from Java file
-        this.sCorpOption = this.page.locator('#business_type_0, button[id="business_type_0"]');
-        this.partnershipOption = this.page.locator('#business_type_1, button[id="business_type_1"]');
-        this.llcOption = this.page.locator('#business_type_2, button[id="business_type_2"]');
-        this.soleProprietorOption = this.page.locator('#business_type_3, button[id="business_type_3"]');
+        // Main business type options - Updated to match actual HTML structure from recording
+        this.corporationOption = this.page.locator('#business-type-corporation');
+        this.partnershipOption = this.page.locator('#business-type-partnership');
+        this.llcOption = this.page.locator('#business-type-llc');
+        this.soleProprietorOption = this.page.locator('#business-type-soleProprietorship');
+        
+        // Sub-business type options
+        // LLC Sub-types
+        this.singleMemberLLCOption = this.page.locator('#business-sub-type-llc');
+        this.multiMemberLLCOption = this.page.locator('#business-sub-type-mmllc');
+        
+        // Partnership Sub-types
+        this.generalPartnershipOption = this.page.locator('#business-sub-type-general_partnership');
+        this.limitedLiabilityPartnershipOption = this.page.locator('#business-sub-type-llp');
+        
+        // Corporation Sub-types
+        this.sCorpOption = this.page.locator('#business-sub-type-s_corp');
+        this.cCorpOption = this.page.locator('#business-sub-type-c_corp');
+        
+        // Sole Proprietorship Sub-types
+        this.dbaOption = this.page.locator('#business-sub-type-dba');
+        this.ssnOption = this.page.locator('#business-sub-type-ssn');
     }
 
     private initializeErrorElements(): void {

@@ -21,12 +21,12 @@ export class HomeAddress {
     // ===== CORE INPUT FIELDS (PRODUCTION IDs) =====
     
     // --Form Input Fields--
-    public line1Input!: Locator;                                   // ID: "#line1" | Placeholder: "Enter your street address"
-    public line2Input!: Locator;                                   // ID: "#line2" | Placeholder: "Apt, suite, unit (optional)"
-    public cityInput!: Locator;                                   // ID: "#city" | Placeholder: "Enter your city"
-    public stateSelect!: Locator;                                 // ID: "#elSelectState" | Placeholder: "Select your state"
+    public streetAddressInput!: Locator;                          // ID: "#LINE1" | Placeholder: "Enter your street address"
+    public apartmentInput!: Locator;                              // ID: "#APARTMENT" | Placeholder: "Apt, suite, unit (optional)"
+    public cityInput!: Locator;                                   // ID: "#CITY" | Placeholder: "Enter your city"
+    public stateSelect!: Locator;                                 // ID: "#dropdown-item-" | Placeholder: "Select your state"
     public countrySelect!: Locator;                               // ID: "#elSelectCountry" | Placeholder: "Select your country"
-    public postalCodeInput!: Locator;                            // ID: "#postalCode" | Placeholder: "Enter your ZIP code"
+    public zipCodeInput!: Locator;                                // ID: "#ZIP" | Placeholder: "Enter your ZIP code"
     public continueButton!: Locator;                              // ID: "#elCta" | Text: "Continue"
     
     // ===== FLOATING LABEL ELEMENTS =====
