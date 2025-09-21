@@ -15,27 +15,27 @@ export class Welcome {
     // 📋 PAGE ELEMENTS
     // ========================================================================
     // Core form elements
-    public emailInput: Locator;
-    public passwordInput: Locator;
-    public getStartedButton: Locator;
-    public emailError: Locator;
-    public passwordError: Locator;
+    public emailInput!: Locator;
+    public passwordInput!: Locator;
+    public getStartedButton!: Locator;
+    public emailError!: Locator;
+    public passwordError!: Locator;
     
     // Headings
-    public welcomeHeading: Locator;
-    public businessGrowthHeading: Locator;
+    public welcomeHeading!: Locator;
+    public businessGrowthHeading!: Locator;
     
     // Legal links
-    public termsOfUseLink: Locator;
-    public privacyPolicyLink: Locator;
+    public termsOfUseLink!: Locator;
+    public privacyPolicyLink!: Locator;
     
     // Password related elements
-    public showHidePasswordButton: Locator;
-    public passwordRequirementsTooltip: Locator;
-    public minimumCharactersText: Locator;
-    public uppercaseLetterText: Locator;
-    public lowercaseLetterText: Locator;
-    public numberText: Locator;
+    public showHidePasswordButton!: Locator;
+    public passwordRequirementsTooltip!: Locator;
+    public minimumCharactersText!: Locator;
+    public uppercaseLetterText!: Locator;
+    public lowercaseLetterText!: Locator;
+    public numberText!: Locator;
 
     constructor(page: Page) {
         this.page = page;

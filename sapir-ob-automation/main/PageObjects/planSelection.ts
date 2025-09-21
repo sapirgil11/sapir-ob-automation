@@ -25,6 +25,7 @@ export class PlanSelection {
     // --Navigation Buttons--
     public backButton!: Locator;                                   // ID: "#elNavBackDesktop" | Text: "Back"
     public selectPlanButton!: Locator;                             // ID: "[data-testid='btn-select-plan']" | Text: "Select Plan"
+    public continueButton!: Locator;                               // ID: "#btn-try-business-build" | Text: "Try 30 Days For Free"
     
     // --Plan Selection Buttons--
     public basicPlanButton!: Locator;                              // ID: "[data-testid='btn_plan_basic']" | Text: "Basic Plan"
@@ -48,6 +49,12 @@ export class PlanSelection {
     public planPrice!: Locator;                                    // ID: "#plan-price" | Selected plan price
     public planDescription!: Locator;                              // ID: "#plan-description" | Plan description
     public planFeatures!: Locator;                                 // ID: "#plan-features" | Plan features list
+    
+    // ===== PLAN CARDS AND SELECTION =====
+    public basicPlanCard!: Locator;                                // Basic plan card container
+    public proPlanCard!: Locator;                                  // Pro plan card container
+    public premiumPlanCard!: Locator;                              // Premium plan card container
+    public selectedPlanIndicator!: Locator;                        // Selected plan indicator
     public monthlyPrice!: Locator;                                 // ID: "#monthly-price" | Monthly price display
     public annualPrice!: Locator;                                  // ID: "#annual-price" | Annual price display
     
