@@ -16,35 +16,31 @@ import { Locator, Page } from '@playwright/test';
 export class PersonalDetails {
     private page: Page;
 
-    // ===== CORE INPUT FIELDS (PRODUCTION IDs) =====
-    
-    // --Form Input Fields--
-    public firstNameInput!: Locator;                              // ID: "#FIRST_NAME" | Placeholder: "Enter your first name"
-    public lastNameInput!: Locator;                               // ID: "#LAST_NAME" | Placeholder: "Enter your last name"
+    // ========================================================================
+    // 📋 PAGE ELEMENTS
+    // ========================================================================
+    // Core form elements
+    public firstNameInput!: Locator;                              // ID: "#FIRST_NAME" | Placeholder: "First Name"
+    public lastNameInput!: Locator;                               // ID: "#LAST_NAME" | Placeholder: "Last Name"
     public continueButton!: Locator;                              // ID: "#formSubmitButton" | Text: "Continue"
     public referralField!: Locator;                               // ID: "#referral"
-    
-    // ===== CLEAR FIELD BUTTONS =====
-    
-    // --Clear Buttons--
+
+    // Clear buttons
     public firstNameClearButton!: Locator;                        // ID: "#FIRST_NAME-floating-label #ClearInput"
     public lastNameClearButton!: Locator;                         // ID: "#LAST_NAME-floating-label #ClearInput"
-    
-    // ===== PLACEHOLDER TEXT & LABELS =====
-    
-    // --Page Content Elements--
+
+    // Page content elements
     public pageHeading!: Locator;                                 // ID: "#stepPageHeader" | Text: "Your personal details"
     public pageSubheading!: Locator;                              // ID: "#stepPageContent" | Text: "Please enter your name as it appears in legal documents."
     public firstNameLabel!: Locator;                              // Label for first name field
     public lastNameLabel!: Locator;                               // Label for last name field
     
-    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
-    
+    // Error messages
     // --First Name Errors--
     public firstNameError!: Locator;                              // ID: "#FIRST_NAME-error-container p"
     // TRIGGER: Focus and unfocus the first name field (blur event)
     // ERROR TEXT: "First name is required"
-    
+
     public firstNameMinLengthError!: Locator;                    // ID: "#FIRST_NAME-min-length-error"
     // TRIGGER: Type single character like "A" and blur field
     // ERROR TEXT: "First name must be at least two letters"
@@ -77,9 +73,8 @@ export class PersonalDetails {
     // --Error Containers--
     public firstNameErrorContainer!: Locator;                     // ID: "#FIRST_NAME-error-container"
     public lastNameErrorContainer!: Locator;                      // ID: "#LAST_NAME-error-container"
-    
-    // ===== FLOATING LABEL ELEMENTS =====
-    
+
+
     // --Floating Label Wrappers--
     public firstNameFloatingLabel!: Locator;                      // ID: "#FIRST_NAME-floating-label"
     public lastNameFloatingLabel!: Locator;                       // ID: "#LAST_NAME-floating-label"
@@ -89,6 +84,9 @@ export class PersonalDetails {
         this.initializeAllLocators();
     }
 
+    // ========================================================================
+    // 🔧 INITIALIZATION METHODS
+    // ========================================================================
     private initializeAllLocators(): void {
         this.initializeCoreElements();
         this.initializeClearButtons();
@@ -145,8 +143,9 @@ export class PersonalDetails {
         this.lastNameFloatingLabel = this.page.locator('#LAST_NAME-floating-label, .floating-label:has(#LAST_NAME)');
     }
 
-    // ===== PAGE VERIFICATION METHODS =====
-
+    // ========================================================================
+    // 🔍 PAGE VERIFICATION METHODS
+    // ========================================================================
     async isPersonalDetailsPageLoaded(): Promise<boolean> {
         try {
             const url = this.page.url();
@@ -160,15 +159,16 @@ export class PersonalDetails {
 
     async waitForPersonalDetailsPageToLoad(): Promise<void> {
         try {
-            await this.page.waitForURL('**/personal-details**');
-            await this.pageHeading.waitFor({ state: 'visible' });
+        await this.page.waitForURL('**/personal-details**');
+        await this.pageHeading.waitFor({ state: 'visible' });
         } catch (error) {
             console.error('Error waiting for personal details page to load:', error);
         }
     }
 
-    // ===== FORM INTERACTION METHODS =====
-
+    // ========================================================================
+    // 🔧 FORM INTERACTION METHODS
+    // ========================================================================
     async fillPersonalDetailsForm(data: {
         firstName?: string;
         lastName?: string;
@@ -265,7 +265,7 @@ export class PersonalDetails {
             }
             
             // Click the button
-            await this.continueButton.click();
+        await this.continueButton.click();
             
             console.log('✅ Continue button clicked successfully');
             
@@ -286,11 +286,12 @@ export class PersonalDetails {
         }
     }
 
-    // ===== VALIDATION METHODS =====
-
+    // ========================================================================
+    // ✅ VALIDATION METHODS
+    // ========================================================================
     async isContinueButtonEnabled(): Promise<boolean> {
         try {
-            return await this.continueButton.isEnabled();
+        return await this.continueButton.isEnabled();
         } catch (error) {
             console.error('Error checking if continue button is enabled:', error);
             return false;
@@ -301,12 +302,12 @@ export class PersonalDetails {
         const errors: string[] = [];
         
         try {
-            const errorElements = [
+        const errorElements = [
                 { name: 'First Name Error', locator: this.firstNameError },
                 { name: 'Last Name Error', locator: this.lastNameError }
-            ];
+        ];
 
-            for (const errorElement of errorElements) {
+        for (const errorElement of errorElements) {
                 if (await errorElement.locator.isVisible()) {
                     const errorText = await errorElement.locator.textContent();
                     if (errorText && errorText.trim()) {
@@ -364,11 +365,12 @@ export class PersonalDetails {
         }
     }
 
-    // ===== UTILITY METHODS =====
-
+    // ========================================================================
+    // 🛠️ UTILITY METHODS
+    // ========================================================================
     async getPageTitle(): Promise<string> {
         try {
-            return await this.page.title();
+        return await this.page.title();
         } catch (error) {
             console.error('Error getting page title:', error);
             return '';
@@ -390,7 +392,7 @@ export class PersonalDetails {
     async clearFirstNameField(): Promise<void> {
         try {
             console.log('🧹 Clearing first name field...');
-            await this.firstNameClearButton.click();
+        await this.firstNameClearButton.click();
         } catch (error) {
             console.error('Error clearing first name field:', error);
             // Fallback to manual clear
@@ -401,7 +403,7 @@ export class PersonalDetails {
     async clearLastNameField(): Promise<void> {
         try {
             console.log('🧹 Clearing last name field...');
-            await this.lastNameClearButton.click();
+        await this.lastNameClearButton.click();
         } catch (error) {
             console.error('Error clearing last name field:', error);
             // Fallback to manual clear
@@ -427,7 +429,6 @@ export class PersonalDetails {
         }
     }
 
-    // ===== PAGE OBJECT METHODS =====
 
     async verifyPageElements(): Promise<boolean> {
         console.log('🔍 Verifying Personal Details page elements...');
@@ -502,8 +503,9 @@ export class PersonalDetails {
         }
     }
 
-    // ===== ERROR HANDLING METHODS =====
-
+    // ========================================================================
+    // ❌ ERROR HANDLING METHODS
+    // ========================================================================
     async isErrorVisible(errorLocator: Locator): Promise<boolean> {
         try {
             return await errorLocator.isVisible();
@@ -533,7 +535,6 @@ export class PersonalDetails {
         }
     }
 
-    // ===== ERROR TRIGGERING METHODS =====
 
     /**
      * Trigger first name required error by focusing and unfocusing the field
@@ -837,7 +838,6 @@ export class PersonalDetails {
         }
     }
 
-    // ===== INLINE VALIDATION METHODS =====
 
     /**
      * Test inline validation: Empty input should trigger "First name is required"

@@ -23,7 +23,7 @@ test.describe('📧 Email Verification Page Tests', () => {
 
         // Fill welcome form
         const welcomePage = new Welcome(page);
-        const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;
+        const randomEmail = `Filler${Math.floor(100000 + Math.random() * 900000)}@mailforspam.com`;
         console.log(`📧 Using email: ${randomEmail}`);
         
         await welcomePage.fillEmail(randomEmail);
@@ -57,6 +57,9 @@ test.describe('📧 Email Verification Page Tests', () => {
         return new EmailVerificationFlow(page);
     }
 
+    // ========================================================================
+    // 🎉 TEST 1: Type Correct MFA and Verify Navigation
+    // ========================================================================
     test('🎉 Email Verification - Type Correct MFA and Verify Navigation', async ({ page }) => {
         test.setTimeout(120000); // 2 minutes timeout
         console.log('🧪 Starting: Type Correct MFA and Verify Navigation Test');
@@ -70,6 +73,9 @@ test.describe('📧 Email Verification Page Tests', () => {
         console.log('✅ Type Correct MFA and Verify Navigation test completed successfully!');
     });
 
+    // ========================================================================
+    // ❌ TEST 2: Inline Errors
+    // ========================================================================
     test('❌ Email Verification - Inline Errors', async ({ page }) => {
         console.log('🧪 Starting: Inline Errors Test');
         
@@ -82,6 +88,9 @@ test.describe('📧 Email Verification Page Tests', () => {
         console.log('✅ Inline Errors test completed successfully!');
     });
 
+    // ========================================================================
+    // 🔍 TEST 3: Elements Exist
+    // ========================================================================
     test('🔍 Email Verification - Elements Exist', async ({ page }) => {
         test.setTimeout(120000); // 2 minutes timeout
         console.log('🧪 Starting: Elements Exist Test');
@@ -95,6 +104,9 @@ test.describe('📧 Email Verification Page Tests', () => {
         console.log('✅ Elements Exist test completed successfully!');
     });
 
+    // ========================================================================
+    // 🔄 TEST 4: Resend Code
+    // ========================================================================
     test('🔄 Email Verification - Resend Code', async ({ page }) => {
         test.setTimeout(180000); // 3 minutes timeout (includes 30 second wait)
         console.log('🧪 Starting: Resend Code Test');

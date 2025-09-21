@@ -24,7 +24,7 @@ test.describe('🆔 Identity Page Tests', () => {
         const identityPage = new Identity(page);
 
         // Fill welcome form and navigate
-        const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;
+        const randomEmail = `Filler${Math.floor(100000 + Math.random() * 900000)}@mailforspam.com`;
         await welcomePage.emailInput.fill(randomEmail);
         await welcomePage.passwordInput.fill('Password123!');
         await welcomePage.getStartedButton.click();
@@ -49,7 +49,7 @@ test.describe('🆔 Identity Page Tests', () => {
 
         // Wait for identity page and fill identity details
         await page.waitForURL('**/identity**');
-        const validSSN = `231-${Math.floor(10 + Math.random() * 90)}-${Math.floor(1000 + Math.random() * 9000)}`;
+        const validSSN = `231-${Math.floor(10 + Math.random() * 90)}-${Math.floor(100000 + Math.random() * 900000)}`;
         await identityPage.ssnInput.fill(validSSN);
         await identityPage.dateOfBirthInput.fill('01/01/1990');
         await identityPage.clickContinueButton();

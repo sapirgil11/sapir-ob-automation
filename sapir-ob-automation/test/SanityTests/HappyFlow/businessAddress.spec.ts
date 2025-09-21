@@ -40,7 +40,7 @@ test.describe('🏢 Business Address Page Tests', () => {
         const businessAddressPage = new BusinessAddress(page);
 
         // Fill email and password first
-        const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;
+        const randomEmail = `Filler${Math.floor(100000 + Math.random() * 900000)}@mailforspam.com`;
         console.log(`   📧 Using email: ${randomEmail}`);
         await welcomePage.emailInput.fill(randomEmail);
         await welcomePage.passwordInput.fill('Password123!');
@@ -80,7 +80,7 @@ test.describe('🏢 Business Address Page Tests', () => {
 
         console.log('   📞 Filling phone number...');
         // Generate random phone number to avoid conflicts between tests
-        const randomPhone = `+1 212 459${Math.floor(1000 + Math.random() * 9000)}`;
+        const randomPhone = `+1 212 459${Math.floor(100000 + Math.random() * 900000)}`;
         console.log(`   📱 Using phone number: ${randomPhone}`);
         await phonePage.phoneNumberInput.fill(randomPhone);
         await page.waitForTimeout(1000);
@@ -93,7 +93,7 @@ test.describe('🏢 Business Address Page Tests', () => {
         await page.waitForTimeout(2000);
 
         console.log('   🆔 Filling identity information...');
-        await identityPage.ssnInput.fill(`231-${Math.floor(10 + Math.random() * 90)}-${Math.floor(1000 + Math.random() * 9000)}`);
+        await identityPage.ssnInput.fill(`231-${Math.floor(10 + Math.random() * 90)}-${Math.floor(100000 + Math.random() * 900000)}`);
         await identityPage.dateOfBirthInput.fill('01/01/1991');
         await identityPage.continueButton.click();
 

@@ -11,7 +11,9 @@ import { Page, Locator } from '@playwright/test';
 export class Welcome {
     private page: Page;
     
-    // ===== PAGE ELEMENTS =====
+    // ========================================================================
+    // 📋 PAGE ELEMENTS
+    // ========================================================================
     // Core form elements
     public emailInput: Locator;
     public passwordInput: Locator;
@@ -67,8 +69,9 @@ export class Welcome {
         this.numberText = this.page.getByText('At least 1 number');
     }
 
-    // ===== BASIC ACTIONS =====
-
+    // ========================================================================
+    // 🔧 BASIC ACTIONS
+    // ========================================================================
     /**
      * Fill email input
      */
@@ -90,6 +93,9 @@ export class Welcome {
         await this.getStartedButton.click();
     }
 
+    // ========================================================================
+    // 📊 GETTER METHODS
+    // ========================================================================
     /**
      * Get email input value
      */
@@ -104,6 +110,9 @@ export class Welcome {
         return await this.passwordInput.inputValue();
     }
 
+    // ========================================================================
+    // ❌ ERROR HANDLING
+    // ========================================================================
     /**
      * Check if email error is visible
      */
@@ -138,8 +147,9 @@ export class Welcome {
             return null;
     }
 
-    // ===== ADDITIONAL ELEMENT ACTIONS =====
-
+    // ========================================================================
+    // 🎯 ADDITIONAL ELEMENT ACTIONS
+    // ========================================================================
     /**
      * Click show/hide password button
      */

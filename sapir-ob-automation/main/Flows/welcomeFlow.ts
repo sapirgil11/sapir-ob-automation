@@ -17,8 +17,9 @@ export class WelcomeFlow {
         this.welcomePage = new Welcome(page);
     }
 
-    // ===== METHOD 1: TEST TYPE EMAIL AND PASSWORD =====
-
+    // ========================================================================
+    // 🎯 METHOD 1: TEST TYPE EMAIL AND PASSWORD
+    // ========================================================================
     /**
      * Test typing email and password - verify user moves to next page
      */
@@ -27,7 +28,7 @@ export class WelcomeFlow {
         
         try {
             // Fill with valid email and password
-            const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;
+            const randomEmail = `Filler${Math.floor(100000 + Math.random() * 900000)}@mailforspam.com`;
             console.log(`📧 Filling email: ${randomEmail}`);
             await this.welcomePage.fillEmail(randomEmail);
             
@@ -58,8 +59,9 @@ export class WelcomeFlow {
         }
     }
 
-    // ===== METHOD 2: TEST INLINE ERRORS =====
-
+    // ========================================================================
+    // ❌ METHOD 2: TEST INLINE ERRORS
+    // ========================================================================
     /**
      * Test inline errors - focus inputs, unfocus, verify error texts + button disabled
      */
@@ -117,8 +119,9 @@ export class WelcomeFlow {
         }
     }
 
-    // ===== METHOD 3: TEST ELEMENTS EXIST =====
-
+    // ========================================================================
+    // 🔍 METHOD 3: TEST ELEMENTS EXIST
+    // ========================================================================
     /**
      * Test elements exist - verify visibility of elements like tooltips, links, etc.
      */
@@ -207,4 +210,5 @@ export class WelcomeFlow {
             return false;
         }
     }
+    // ========================================================================
 }

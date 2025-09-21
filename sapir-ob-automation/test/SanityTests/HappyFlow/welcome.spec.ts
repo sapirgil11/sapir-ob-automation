@@ -6,7 +6,9 @@ test.use({ viewport: { width: 1880, height: 798 } });
 
 test.describe('📱 Welcome Page Tests', () => {
     
-    // ===== TEST 1: TYPE EMAIL AND PASSWORD =====
+    // ========================================================================
+    // 🎉 TEST 1: Type Email and Password (Verify Navigation)
+    // ========================================================================
     test('🎉 Welcome Page - Type Email and Password (Verify Navigation)', async ({ page }) => {
         test.setTimeout(120000); // 2 minutes timeout
 
@@ -27,7 +29,9 @@ test.describe('📱 Welcome Page Tests', () => {
         console.log('✅ Type Email and Password test completed successfully!');
     });
 
-    // ===== TEST 2: INLINE ERRORS =====
+    // ========================================================================
+    // ❌ TEST 2: Inline Errors (Focus, Unfocus, Verify Errors)
+    // ========================================================================
     test('❌ Welcome Page - Inline Errors (Focus, Unfocus, Verify Errors)', async ({ page }) => {
         test.setTimeout(120000); // 2 minutes timeout
 
@@ -48,7 +52,9 @@ test.describe('📱 Welcome Page Tests', () => {
         console.log('✅ Inline Errors test completed successfully!');
     });
 
-    // ===== TEST 3: ELEMENTS EXIST =====
+    // ========================================================================
+    // 🔍 TEST 3: Elements Exist (Verify Visibility of UI Elements)
+    // ========================================================================
     test('🔍 Welcome Page - Elements Exist (Verify Visibility of UI Elements)', async ({ page }) => {
         test.setTimeout(120000); // 2 minutes timeout
 

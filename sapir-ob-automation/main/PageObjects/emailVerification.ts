@@ -11,7 +11,9 @@ import { Page, Locator } from '@playwright/test';
 export class EmailVerification {
     private page: Page;
     
-    // ===== PAGE ELEMENTS =====
+    // ========================================================================
+    // 📋 PAGE ELEMENTS
+    // ========================================================================
     // Core form elements
     public verificationCodeInput!: Locator;
     public resendCodeButton!: Locator;
@@ -59,8 +61,9 @@ export class EmailVerification {
         this.resendCodeToast = this.page.locator('div.flex.flex-grow-1.text-\\[13px\\].leading-\\[18px\\].font-metricR.text-text-main-primary');
     }
 
-    // ===== BASIC ACTIONS =====
-
+    // ========================================================================
+    // 🔧 BASIC ACTIONS
+    // ========================================================================
     /**
      * Fill verification code input
      */
@@ -76,12 +79,27 @@ export class EmailVerification {
     }
 
     /**
+     * Click verify button (submit the form)
+     */
+    async clickVerifyButton(): Promise<void> {
+        // The verify button is typically a submit button or the form submission
+        // We'll use the Enter key on the input field as that's common for OTP forms
+        await this.verificationCodeInput.press('Enter');
+    }
+
+    // ========================================================================
+    // 📊 GETTER METHODS
+    // ========================================================================
+    /**
      * Get verification code input value
      */
     async getVerificationCodeValue(): Promise<string> {
         return await this.verificationCodeInput.inputValue();
     }
 
+    // ========================================================================
+    // ❌ ERROR HANDLING
+    // ========================================================================
     /**
      * Check if error container is visible
      */
@@ -111,15 +129,6 @@ export class EmailVerification {
      */
     async clearVerificationCode(): Promise<void> {
         await this.verificationCodeInput.fill('');
-    }
-
-    /**
-     * Click verify button (submit the form)
-     */
-    async clickVerifyButton(): Promise<void> {
-        // The verify button is typically a submit button or the form submission
-        // We'll use the Enter key on the input field as that's common for OTP forms
-        await this.verificationCodeInput.press('Enter');
     }
 
     /**

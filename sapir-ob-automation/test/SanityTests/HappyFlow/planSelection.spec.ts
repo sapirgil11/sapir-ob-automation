@@ -42,7 +42,7 @@ test.describe('📋 Plan Selection Page Tests', () => {
         const planSelectionPage = new PlanSelection(page);
 
         // Fill welcome form and navigate
-        const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;
+        const randomEmail = `Filler${Math.floor(100000 + Math.random() * 900000)}@mailforspam.com`;
         await welcomePage.emailInput.fill(randomEmail);
         await welcomePage.passwordInput.fill('Password123!');
         await welcomePage.getStartedButton.click();
@@ -71,7 +71,7 @@ test.describe('📋 Plan Selection Page Tests', () => {
         // Handle identity
         await page.waitForURL('**/identity**');
         console.log(`🔐 Filling identity page...`);
-        const validSSN = `231-${Math.floor(10 + Math.random() * 90)}-${Math.floor(1000 + Math.random() * 9000)}`;
+        const validSSN = `231-${Math.floor(10 + Math.random() * 90)}-${Math.floor(100000 + Math.random() * 900000)}`;
         console.log(`📝 Filling SSN: ${validSSN}`);
         await identityPage.ssnInput.fill(validSSN);
         console.log(`📝 Filling birth date: 01/01/1990`);

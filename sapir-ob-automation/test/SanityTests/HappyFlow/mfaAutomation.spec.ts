@@ -18,7 +18,7 @@ test.describe('MFA Automation Tests', () => {
         const verificationPage = new EmailVerification(page);
 
         // Fill welcome form and navigate
-        const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;
+        const randomEmail = `Filler${Math.floor(100000 + Math.random() * 900000)}@mailforspam.com`;
         await welcomePage.emailInput.fill(randomEmail);
         await welcomePage.passwordInput.fill('Password123!');
         await welcomePage.getStartedButton.click();

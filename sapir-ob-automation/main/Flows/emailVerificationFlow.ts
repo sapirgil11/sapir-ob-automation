@@ -19,8 +19,9 @@ export class EmailVerificationFlow {
         this.emailVerificationPage = new EmailVerification(page);
     }
 
-    // ===== METHOD 1: HAPPY FLOW =====
-
+    // ========================================================================
+    // 🎯 METHOD 1: HAPPY FLOW
+    // ========================================================================
     /**
      * Test happy flow - extract MFA code from mailforspam, type it, and verify navigation to personal details
      */
@@ -90,8 +91,9 @@ export class EmailVerificationFlow {
         }
     }
 
-    // ===== METHOD 2: INLINE ERRORS =====
-
+    // ========================================================================
+    // ❌ METHOD 2: INLINE ERRORS
+    // ========================================================================
     /**
      * Test inline errors - type invalid 6 digits and verify error messages
      */
@@ -145,8 +147,9 @@ export class EmailVerificationFlow {
         }
     }
 
-    // ===== METHOD 3: ELEMENTS EXIST =====
-
+    // ========================================================================
+    // 🔍 METHOD 3: ELEMENTS EXIST
+    // ========================================================================
     /**
      * Test elements exist - verify title, subtitle, and other UI elements
      */
@@ -207,8 +210,9 @@ export class EmailVerificationFlow {
         }
     }
 
-    // ===== METHOD 4: RESEND CODE TEST =====
-
+    // ========================================================================
+    // 🔄 METHOD 4: RESEND CODE TEST
+    // ========================================================================
     /**
      * Test resend code functionality
      * 1. Type invalid 6 digits code
