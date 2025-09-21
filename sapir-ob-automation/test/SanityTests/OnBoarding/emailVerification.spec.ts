@@ -1,5 +1,6 @@
-import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
-import { EmailVerificationPage } from '../../../main/PageObjects/emailVerification';
+
+import { NetworkDebugger } from '../../../main/Extensions/networkDebugger';import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
+import { EmailVerification } from '../../../main/PageObjects/emailVerification';
 import { Welcome } from '../../../main/PageObjects/welcome';
 
 // Enforce 1920x1080 resolution for all tests in this file
@@ -8,7 +9,7 @@ test.use({ viewport: { width: 1880, height: 798 } });
 test.describe('🔐 Verification Page Tests', () => {
     
     // Helper function to do full onboarding flow up to verification page
-    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<EmailVerificationPage> {
+    async function doFullOnboardingFlow(page: Page, context: BrowserContext, browser: Browser): Promise<EmailVerification> {
         console.log('🚀 Starting Full Onboarding Flow to Verification Page...');
 
         // ===== STEP 1: WELCOME PAGE =====
@@ -19,7 +20,7 @@ test.describe('🔐 Verification Page Tests', () => {
 
         // Initialize page objects
         const welcomePage = new Welcome(page);
-        const verificationPage = new EmailVerificationPage(page);
+        const verificationPage = new EmailVerification(page);
 
         // Fill email and password first
         const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;

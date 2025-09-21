@@ -1,5 +1,6 @@
-import { test, expect } from '@playwright/test';
-import { EmailVerificationPage } from '../../../main/PageObjects/emailVerification';
+
+import { NetworkDebugger } from '../../../main/Extensions/networkDebugger';import { test, expect } from '@playwright/test';
+import { EmailVerification } from '../../../main/PageObjects/emailVerification';
 import { Welcome } from '../../../main/PageObjects/welcome';
 import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
@@ -14,7 +15,7 @@ test.describe('MFA Automation Tests', () => {
         await page.waitForLoadState('domcontentloaded');
 
         const welcomePage = new Welcome(page);
-        const verificationPage = new EmailVerificationPage(page);
+        const verificationPage = new EmailVerification(page);
 
         // Fill welcome form and navigate
         const randomEmail = `Filler${Math.floor(1000 + Math.random() * 9000)}@mailforspam.com`;
@@ -29,7 +30,7 @@ test.describe('MFA Automation Tests', () => {
         const emailPrefix = randomEmail.split('@')[0];
         const mfaExtractor = new MFACodeExtractor(context, page);
         const mfaCode = await mfaExtractor.extractMFACode(emailPrefix);
-        await verificationPage.enterVerificationCode(mfaCode);
+        await verificationPage.fillVerificationCode(mfaCode);
 
         // Verify navigation to next page
         await page.waitForURL('**/personal-details**', { timeout: 10000 });

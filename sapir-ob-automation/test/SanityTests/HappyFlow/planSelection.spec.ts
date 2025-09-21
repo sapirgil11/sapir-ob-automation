@@ -1,7 +1,9 @@
+
 import { test, expect } from '@playwright/test';
+import { NetworkDebugger } from '../../../main/Extensions/networkDebugger';
 import { PlanSelection } from '../../../main/PageObjects/planSelection';
 import { Welcome } from '../../../main/PageObjects/welcome';
-import { EmailVerificationPage } from '../../../main/PageObjects/emailVerification';
+import { EmailVerification } from '../../../main/PageObjects/emailVerification';
 import { PersonalDetails } from '../../../main/PageObjects/personalDetails';
 import { Phone } from '../../../main/PageObjects/phone';
 import { Identity } from '../../../main/PageObjects/identity';
@@ -19,12 +21,15 @@ test.describe('📋 Plan Selection Page Tests', () => {
     test('📋 Plan Selection Page - Complete Plan Selection Flow', async ({ page, context }) => {
         test.setTimeout(480000); // 8 minutes timeout
 
+        // Setup network debugging
+        const { networkDebugger, getStats, printSummary, analyzePage } = NetworkDebugger.setupForTest(page);
+
         // Navigate to Welcome page
         await page.goto('https://lili-onboarding-integ.lili.co/welcome');
         await page.waitForLoadState('domcontentloaded');
 
         const welcomePage = new Welcome(page);
-        const verificationPage = new EmailVerificationPage(page);
+        const verificationPage = new EmailVerification(page);
         const personalDetailsPage = new PersonalDetails(page);
         const phonePage = new Phone(page);
         const identityPage = new Identity(page);
@@ -49,7 +54,7 @@ test.describe('📋 Plan Selection Page Tests', () => {
         const mfaExtractor = new MFACodeExtractor(context, page);
         const mfaCode = await mfaExtractor.extractMFACode(emailPrefix);
         console.log(`✅ MFA code extracted: ${mfaCode}`);
-        await verificationPage.enterVerificationCode(mfaCode);
+        await verificationPage.fillVerificationCode(mfaCode);
         console.log(`✅ MFA code entered successfully`);
 
         // Handle personal details

@@ -1,7 +1,8 @@
-import { test, expect } from '@playwright/test';
+
+import { NetworkDebugger } from '../../../main/Extensions/networkDebugger';import { test, expect } from '@playwright/test';
 import { PersonalDetails } from '../../../main/PageObjects/personalDetails';
 import { Welcome } from '../../../main/PageObjects/welcome';
-import { EmailVerificationPage } from '../../../main/PageObjects/emailVerification';
+import { EmailVerification } from '../../../main/PageObjects/emailVerification';
 import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
 test.use({ viewport: { width: 1880, height: 798 } });
@@ -15,7 +16,7 @@ test.describe('👤 Personal Details Page Tests', () => {
         await page.waitForLoadState('domcontentloaded');
 
         const welcomePage = new Welcome(page);
-        const verificationPage = new EmailVerificationPage(page);
+        const verificationPage = new EmailVerification(page);
         const personalDetailsPage = new PersonalDetails(page);
 
         // Fill welcome form and navigate
@@ -31,7 +32,7 @@ test.describe('👤 Personal Details Page Tests', () => {
         const mfaCode = await mfaExtractor.extractMFACode(emailPrefix);
 
         // Enter MFA code and navigate to personal details
-        await verificationPage.enterVerificationCode(mfaCode);
+        await verificationPage.fillVerificationCode(mfaCode);
         await page.waitForURL('**/personal-details**');
 
         // Fill personal details form directly

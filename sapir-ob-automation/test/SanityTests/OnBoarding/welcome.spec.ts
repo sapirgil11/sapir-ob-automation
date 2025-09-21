@@ -1,4 +1,5 @@
-import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
+
+import { NetworkDebugger } from '../../../main/Extensions/networkDebugger';import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
 import { Welcome } from '../../../main/PageObjects/welcome';
 
 // Enforce 1920x1080 resolution for all tests in this file

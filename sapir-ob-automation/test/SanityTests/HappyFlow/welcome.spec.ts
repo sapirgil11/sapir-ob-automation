@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { WelcomeFlow } from '../../../main/Flows/welcomeFlow';
+import { NetworkDebugger } from '../../../main/Extensions/networkDebugger';
 
 test.use({ viewport: { width: 1880, height: 798 } });
 
@@ -8,6 +9,9 @@ test.describe('📱 Welcome Page Tests', () => {
     // ===== TEST 1: TYPE EMAIL AND PASSWORD =====
     test('🎉 Welcome Page - Type Email and Password (Verify Navigation)', async ({ page }) => {
         test.setTimeout(120000); // 2 minutes timeout
+
+        // Setup network debugging
+        const { networkDebugger, getStats, printSummary, analyzePage } = NetworkDebugger.setupForTest(page);
 
         // Navigate to Welcome page
         await page.goto('https://lili-onboarding-integ.lili.co/welcome');
@@ -27,6 +31,9 @@ test.describe('📱 Welcome Page Tests', () => {
     test('❌ Welcome Page - Inline Errors (Focus, Unfocus, Verify Errors)', async ({ page }) => {
         test.setTimeout(120000); // 2 minutes timeout
 
+        // Setup network debugging
+        const { networkDebugger, getStats, printSummary, analyzePage } = NetworkDebugger.setupForTest(page);
+
         // Navigate to Welcome page
         await page.goto('https://lili-onboarding-integ.lili.co/welcome');
         await page.waitForLoadState('domcontentloaded');
@@ -44,6 +51,9 @@ test.describe('📱 Welcome Page Tests', () => {
     // ===== TEST 3: ELEMENTS EXIST =====
     test('🔍 Welcome Page - Elements Exist (Verify Visibility of UI Elements)', async ({ page }) => {
         test.setTimeout(120000); // 2 minutes timeout
+
+        // Setup network debugging
+        const { networkDebugger, getStats, printSummary, analyzePage } = NetworkDebugger.setupForTest(page);
 
         // Navigate to Welcome page
         await page.goto('https://lili-onboarding-integ.lili.co/welcome');

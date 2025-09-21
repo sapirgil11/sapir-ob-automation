@@ -1,7 +1,8 @@
-import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
+
+import { NetworkDebugger } from '../../../main/Extensions/networkDebugger';import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
 import { BusinessAddress } from '../../../main/PageObjects/businessAddress';
 import { Welcome } from '../../../main/PageObjects/welcome';
-import { EmailVerificationPage } from '../../../main/PageObjects/emailVerification';
+import { EmailVerification } from '../../../main/PageObjects/emailVerification';
 import { PersonalDetails } from '../../../main/PageObjects/personalDetails';
 import { Phone } from '../../../main/PageObjects/phone';
 import { Identity } from '../../../main/PageObjects/identity';
@@ -28,7 +29,7 @@ test.describe('🏢 Business Address Page Tests', () => {
 
         // Initialize page objects
         const welcomePage = new Welcome(page);
-        const verificationPage = new EmailVerificationPage(page);
+        const verificationPage = new EmailVerification(page);
         const personalDetailsPage = new PersonalDetails(page);
         const phonePage = new Phone(page);
         const identityPage = new Identity(page);
@@ -61,7 +62,7 @@ test.describe('🏢 Business Address Page Tests', () => {
 
         // ===== STEP 4: PERSONAL DETAILS =====
         console.log('👤 Step 4: Personal Details...');
-        await verificationPage.enterVerificationCode(mfaCode);
+        await verificationPage.fillVerificationCode(mfaCode);
         console.log('   ✅ MFA code entered, waiting for personal details page...');
         await page.waitForURL('**/personal-details**');
         await page.waitForTimeout(2000);

@@ -1,7 +1,8 @@
-import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
+
+import { NetworkDebugger } from '../../../main/Extensions/networkDebugger';import { test, expect, Page, BrowserContext, Browser } from '@playwright/test';
 import { PersonalDetails } from '../../../main/PageObjects/personalDetails';
 import { Welcome } from '../../../main/PageObjects/welcome';
-import { EmailVerificationPage } from '../../../main/PageObjects/emailVerification';
+import { EmailVerification } from '../../../main/PageObjects/emailVerification';
 import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
 // Enforce 1920x1080 resolution for all tests in this file
@@ -21,7 +22,7 @@ test.describe('👤 Personal Details Page Tests', () => {
 
         // Initialize page objects
         const welcomePage = new Welcome(page);
-        const verificationPage = new EmailVerificationPage(page);
+        const verificationPage = new EmailVerification(page);
         const personalDetailsPage = new PersonalDetails(page);
 
         // Fill email and password first
@@ -47,7 +48,7 @@ test.describe('👤 Personal Details Page Tests', () => {
 
         // ===== STEP 4: PERSONAL DETAILS PAGE =====
         console.log('👤 Step 4: Personal Details Page...');
-        await verificationPage.enterVerificationCode(mfaCode);
+        await verificationPage.fillVerificationCode(mfaCode);
                 console.log('   ✅ MFA code entered, waiting for personal details page...');
         await page.waitForURL('**/personal-details**');
         await page.waitForTimeout(2000);

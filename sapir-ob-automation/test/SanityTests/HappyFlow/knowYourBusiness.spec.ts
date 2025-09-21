@@ -1,7 +1,8 @@
-import { test, expect } from '@playwright/test';
+
+import { NetworkDebugger } from '../../../main/Extensions/networkDebugger';import { test, expect } from '@playwright/test';
 import { KnowYourBusiness } from '../../../main/PageObjects/knowYourBusiness';
 import { Welcome } from '../../../main/PageObjects/welcome';
-import { EmailVerificationPage } from '../../../main/PageObjects/emailVerification';
+import { EmailVerification } from '../../../main/PageObjects/emailVerification';
 import { PersonalDetails } from '../../../main/PageObjects/personalDetails';
 import { Phone } from '../../../main/PageObjects/phone';
 import { Identity } from '../../../main/PageObjects/identity';
@@ -21,7 +22,7 @@ test.describe('🏢 Know Your Business Page Tests', () => {
         await page.waitForLoadState('domcontentloaded');
 
         const welcomePage = new Welcome(page);
-        const verificationPage = new EmailVerificationPage(page);
+        const verificationPage = new EmailVerification(page);
         const personalDetailsPage = new PersonalDetails(page);
         const phonePage = new Phone(page);
         const identityPage = new Identity(page);
@@ -41,7 +42,7 @@ test.describe('🏢 Know Your Business Page Tests', () => {
         const emailPrefix = randomEmail.split('@')[0];
         const mfaExtractor = new MFACodeExtractor(context, page);
         const mfaCode = await mfaExtractor.extractMFACode(emailPrefix);
-        await verificationPage.enterVerificationCode(mfaCode);
+        await verificationPage.fillVerificationCode(mfaCode);
 
         // Handle personal details
         await page.waitForURL('**/personal-details**');

@@ -109,16 +109,43 @@ export class MFACodeExtractor {
         try {
             // Try multiple approaches to find and extract the MFA code
             
-            // Approach 1: Look for verification code email link
-            const verificationLink = page.locator('a:has-text("One-time verification code")');
-            if (await verificationLink.count() > 0) {
-                console.log('   🔍 Found verification code email, clicking to open...');
-                await verificationLink.click();
-                await page.waitForTimeout(1000);
+            // Approach 1: Look for verification code email links and click the LATEST one
+            const verificationLinks = page.locator('a:has-text("One-time verification code")');
+            const linkCount = await verificationLinks.count();
+            
+            if (linkCount > 0) {
+                console.log(`   🔍 Found ${linkCount} verification code email(s), clicking the LATEST one...`);
                 
-                // Try to extract code from the opened email
-                const code = await this.extractCodeFromPage(page);
-                if (code) return code;
+                // Get all verification links and their parent rows to find the latest one
+                const emailRows = page.locator('tr').filter({ has: page.locator('a:has-text("One-time verification code")') });
+                const rowCount = await emailRows.count();
+                
+                if (rowCount > 0) {
+                    // Click on the FIRST row (most recent email is at the top)
+                    console.log(`   📧 Clicking on the first (most recent) email row...`);
+                    const firstRow = emailRows.first();
+                    const linkInFirstRow = firstRow.locator('a:has-text("One-time verification code")');
+                    await linkInFirstRow.click();
+                    await page.waitForTimeout(2000); // Wait a bit longer for email to load
+                    
+                    // Try to extract code from the opened email
+                    const code = await this.extractCodeFromPage(page);
+                    if (code) {
+                        console.log(`   ✅ Successfully extracted code from latest email: ${code}`);
+                        return code;
+                    }
+                } else {
+                    // Fallback: click on the first verification link
+                    console.log(`   📧 Fallback: Clicking on first verification link...`);
+                    await verificationLinks.first().click();
+                    await page.waitForTimeout(2000);
+                    
+                    const code = await this.extractCodeFromPage(page);
+                    if (code) {
+                        console.log(`   ✅ Successfully extracted code from latest email: ${code}`);
+                        return code;
+                    }
+                }
             }
             
             // Approach 2: Look for email content directly on the page

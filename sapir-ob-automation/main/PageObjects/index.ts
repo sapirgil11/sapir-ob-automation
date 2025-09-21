@@ -1,6 +1,6 @@
 // Export Page Objects
 export { Welcome } from './welcome';
-export { EmailVerificationPage } from './emailVerificationPage';
+export { EmailVerification } from './emailVerification';
 export { BusinessAddress } from './businessAddress';
 export { BusinessType } from './businessType';
 export { HomeAddress } from './homeAddress';

@@ -1,7 +1,8 @@
-import { test, expect } from '@playwright/test';
+
+import { NetworkDebugger } from '../../../main/Extensions/networkDebugger';import { test, expect } from '@playwright/test';
 import { Phone } from '../../../main/PageObjects/phone';
 import { Welcome } from '../../../main/PageObjects/welcome';
-import { EmailVerificationPage } from '../../../main/PageObjects/emailVerification';
+import { EmailVerification } from '../../../main/PageObjects/emailVerification';
 import { PersonalDetails } from '../../../main/PageObjects/personalDetails';
 import { MFACodeExtractor } from '../../../main/Extensions/getMFA';
 
@@ -16,7 +17,7 @@ test.describe('📞 Phone Page Tests', () => {
         await page.waitForLoadState('domcontentloaded');
 
         const welcomePage = new Welcome(page);
-        const verificationPage = new EmailVerificationPage(page);
+        const verificationPage = new EmailVerification(page);
         const personalDetailsPage = new PersonalDetails(page);
         const phonePage = new Phone(page);
 
@@ -31,7 +32,7 @@ test.describe('📞 Phone Page Tests', () => {
         const emailPrefix = randomEmail.split('@')[0];
         const mfaExtractor = new MFACodeExtractor(context, page);
         const mfaCode = await mfaExtractor.extractMFACode(emailPrefix);
-        await verificationPage.enterVerificationCode(mfaCode);
+        await verificationPage.fillVerificationCode(mfaCode);
 
         // Handle personal details
         await page.waitForURL('**/personal-details**');
@@ -80,7 +81,7 @@ test.describe('📞 Phone Page Tests', () => {
                         // Handle verification again
                         await page.waitForURL('**/email-verification**');
                         const newMfaCode = await mfaExtractor.extractMFACode(emailPrefix);
-                        await verificationPage.enterVerificationCode(newMfaCode);
+                        await verificationPage.fillVerificationCode(newMfaCode);
                         
                         // Handle personal details again
                         await page.waitForURL('**/personal-details**');
