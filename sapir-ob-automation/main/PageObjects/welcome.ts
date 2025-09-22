@@ -18,16 +18,8 @@ export class Welcome {
     public emailInput!: Locator;
     public passwordInput!: Locator;
     public getStartedButton!: Locator;
-    public emailError!: Locator;
-    public passwordError!: Locator;
     
-    // Headings
-    public welcomeHeading!: Locator;
-    public businessGrowthHeading!: Locator;
-    
-    // Legal links
-    public termsOfUseLink!: Locator;
-    public privacyPolicyLink!: Locator;
+    // Note: Error, heading, and legal link locators removed as they were unused
     
     // Password related elements
     public showHidePasswordButton!: Locator;
@@ -48,17 +40,7 @@ export class Welcome {
         this.passwordInput = this.page.locator('#PASSWORD');
         this.getStartedButton = this.page.getByRole('button', { name: 'GET STARTED' });
         
-        // Error elements
-        this.emailError = this.page.locator('#EMAIL-error-container');
-        this.passwordError = this.page.locator('#PASSWORD-error-container');
-        
-        // Headings
-        this.welcomeHeading = this.page.getByRole('heading', { name: 'Welcome to Lili,' });
-        this.businessGrowthHeading = this.page.getByRole('heading', { name: 'Powering your business growth' });
-        
-        // Legal links
-        this.termsOfUseLink = this.page.getByRole('link', { name: 'Terms of Use' });
-        this.privacyPolicyLink = this.page.getByRole('link', { name: 'Privacy Policy' });
+        // Note: Error, heading, and legal link locators removed as they were unused
         
         // Password related elements
         this.showHidePasswordButton = this.page.locator('#showHidePassword-PASSWORD');
@@ -113,68 +95,10 @@ export class Welcome {
     // ========================================================================
     // ❌ ERROR HANDLING
     // ========================================================================
-    /**
-     * Check if email error is visible
-     */
-    async isEmailErrorVisible(): Promise<boolean> {
-        return await this.emailError.isVisible();
-    }
-
-    /**
-     * Check if password error is visible
-     */
-    async isPasswordErrorVisible(): Promise<boolean> {
-        return await this.passwordError.isVisible();
-    }
-
-    /**
-     * Get email error text
-     */
-    async getEmailErrorText(): Promise<string | null> {
-        if (await this.isEmailErrorVisible()) {
-            return await this.emailError.textContent();
-        }
-            return null;
-    }
-
-    /**
-     * Get password error text
-     */
-    async getPasswordErrorText(): Promise<string | null> {
-        if (await this.isPasswordErrorVisible()) {
-            return await this.passwordError.textContent();
-        }
-            return null;
-    }
+    // Note: Error handling methods removed as they were unused
 
     // ========================================================================
     // 🎯 ADDITIONAL ELEMENT ACTIONS
     // ========================================================================
-    /**
-     * Click show/hide password button
-     */
-    async clickShowHidePassword(): Promise<void> {
-        await this.showHidePasswordButton.click();
-    }
-
-    /**
-     * Click Terms of Use link
-     */
-    async clickTermsOfUse(): Promise<void> {
-        await this.termsOfUseLink.click();
-    }
-
-    /**
-     * Click Privacy Policy link
-     */
-    async clickPrivacyPolicy(): Promise<void> {
-        await this.privacyPolicyLink.click();
-    }
-
-    /**
-     * Check if element is visible
-     */
-    async isElementVisible(locator: Locator): Promise<boolean> {
-        return await locator.isVisible();
-    }
+    // Note: Additional element action methods removed as they were unused
 }

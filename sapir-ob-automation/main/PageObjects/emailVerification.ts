@@ -71,12 +71,7 @@ export class EmailVerification {
         await this.verificationCodeInput.fill(code);
     }
 
-    /**
-     * Click resend code button
-     */
-    async clickResendCode(): Promise<void> {
-        await this.resendCodeButton.click();
-    }
+    // Note: clickResendCode method removed as it was unused
 
     /**
      * Click verify button (submit the form)
@@ -117,12 +112,7 @@ export class EmailVerification {
         return null;
     }
 
-    /**
-     * Check if resend button is enabled
-     */
-    async isResendButtonEnabled(): Promise<boolean> {
-        return await this.resendCodeButton.isEnabled();
-    }
+    // Note: isResendButtonEnabled method removed as it was unused
 
     /**
      * Clear verification code input
