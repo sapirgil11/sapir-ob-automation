@@ -99,6 +99,96 @@ export class Phone {
     }
 
     // ========================================================================
+    // 🔍 ERROR DETECTION METHODS
+    // ========================================================================
+
+    /**
+     * 🔍 Check if phone number error is visible
+     */
+    async hasPhoneNumberError(): Promise<boolean> {
+        try {
+            return await this.phoneNumberError.isVisible({ timeout: 2000 });
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * 🔍 Check if "Currently, we aren't able to open an account for this number" error is visible
+     */
+    async hasAccountNotAvailableError(): Promise<boolean> {
+        try {
+            return await this.phoneNumberExistsError.isVisible({ timeout: 2000 });
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * 🔍 Check if "Are you sure this is your mobile phone number?" error is visible (inline)
+     */
+    async hasSuspiciousNumberError(): Promise<boolean> {
+        try {
+            return await this.phoneNumberSuspiciousError.isVisible({ timeout: 2000 });
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * 🔍 Check if "Are you sure this is your mobile phone number?" error is visible (backend API)
+     */
+    async hasBackendSuspiciousNumberError(): Promise<boolean> {
+        try {
+            return await this.phoneNumberInvalidApiError.isVisible({ timeout: 2000 });
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * 🔍 Check if any phone number error is visible (both inline and backend)
+     */
+    async hasAnyPhoneError(): Promise<boolean> {
+        const hasError = await this.hasPhoneNumberError();
+        const hasAccountError = await this.hasAccountNotAvailableError();
+        const hasSuspiciousError = await this.hasSuspiciousNumberError();
+        const hasBackendSuspiciousError = await this.hasBackendSuspiciousNumberError();
+        
+        return hasError || hasAccountError || hasSuspiciousError || hasBackendSuspiciousError;
+    }
+
+    /**
+     * 🔍 Get the specific error message text
+     */
+    async getErrorMessage(): Promise<string> {
+        try {
+            if (await this.hasAccountNotAvailableError()) {
+                return 'Account not available for this number';
+            } else if (await this.hasSuspiciousNumberError()) {
+                return 'Suspicious phone number (inline)';
+            } else if (await this.hasBackendSuspiciousNumberError()) {
+                return 'Suspicious phone number (backend)';
+            } else if (await this.hasPhoneNumberError()) {
+                return await this.phoneNumberError.textContent() || 'Phone number error';
+            }
+            return 'No error detected';
+        } catch {
+            return 'Error detection failed';
+        }
+    }
+
+    /**
+     * 🔍 Check if any backend error is visible (after clicking Continue)
+     */
+    async hasAnyBackendError(): Promise<boolean> {
+        const hasAccountError = await this.hasAccountNotAvailableError();
+        const hasBackendSuspiciousError = await this.hasBackendSuspiciousNumberError();
+        
+        return hasAccountError || hasBackendSuspiciousError;
+    }
+
+    // ========================================================================
     // 🔍 VALIDATION METHODS
     // ========================================================================
 

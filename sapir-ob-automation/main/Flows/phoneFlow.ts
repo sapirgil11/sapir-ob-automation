@@ -153,70 +153,9 @@ export class PhoneFlow {
             console.log('📞 Step 3: Selecting United States...');
             await this.phonePage.clickUnitedStatesOption();
 
-            // Step 4: Fill phone number
-            console.log('📞 Step 4: Filling phone number...');
-            await this.phonePage.fillPhoneNumber(phoneNumber);
-
-            // Step 5: Click continue button
-            console.log('📞 Step 5: Clicking continue button...');
-            const continueButtonVisible = await this.phonePage.continueButton.isVisible();
-            console.log(`📋 Continue button visible: ${continueButtonVisible ? '✅ Yes' : '❌ No'}`);
-            await this.phonePage.clickContinueButton();
-
-            // Step 6: Wait for response and handle backend API errors
-            console.log('📞 Step 6: Waiting for response...');
-            await this.page.waitForTimeout(3000);
-
-            // Check for backend API errors
-            const hasBackendError = await this.phonePage.isAnyBackendApiErrorVisible();
-            
-            if (hasBackendError) {
-                console.log('⚠️ Backend API error detected, checking error type...');
-                
-                // Check for phone exists error (code 4350)
-                const existsError = await this.phonePage.isPhoneExistsErrorVisible();
-                if (existsError) {
-                    const existsErrorText = await this.phonePage.getPhoneExistsErrorText();
-                    console.log(`❌ Phone exists error: ${existsErrorText}`);
-                    console.log('🔄 Generating new phone number and trying again...');
-                    
-                    // Generate a new random phone number
-                    const newAreaCode = Math.floor(200 + Math.random() * 800);
-                    const newExchange = Math.floor(200 + Math.random() * 800);
-                    const newNumber = Math.floor(1000 + Math.random() * 9000);
-                    const newPhoneNumber = `${newAreaCode}${newExchange}${newNumber}`;
-                    
-                    console.log(`📞 New phone number: ${newPhoneNumber}`);
-                    
-                    // Clear and fill with new number
-                    await this.phonePage.clearPhoneNumber();
-                    await this.phonePage.fillPhoneNumber(newPhoneNumber);
-                    await this.phonePage.clickContinueButton();
-                    await this.page.waitForTimeout(3000);
-                }
-                
-                // Check for invalid phone error (code 4010)
-                const invalidApiError = await this.phonePage.isPhoneInvalidApiErrorVisible();
-                if (invalidApiError) {
-                    const invalidErrorText = await this.phonePage.getPhoneInvalidApiErrorText();
-                    console.log(`❌ Phone invalid API error: ${invalidErrorText}`);
-                    console.log('🔄 Generating new phone number and trying again...');
-                    
-                    // Generate a new random phone number
-                    const newAreaCode = Math.floor(200 + Math.random() * 800);
-                    const newExchange = Math.floor(200 + Math.random() * 800);
-                    const newNumber = Math.floor(1000 + Math.random() * 9000);
-                    const newPhoneNumber = `${newAreaCode}${newExchange}${newNumber}`;
-                    
-                    console.log(`📞 New phone number: ${newPhoneNumber}`);
-                    
-                    // Clear and fill with new number
-                    await this.phonePage.clearPhoneNumber();
-                    await this.phonePage.fillPhoneNumber(newPhoneNumber);
-                    await this.phonePage.clickContinueButton();
-                    await this.page.waitForTimeout(3000);
-                }
-            }
+            // Step 4: Fill phone number with enhanced retry logic
+            console.log('📞 Step 4: Filling phone number with retry logic...');
+            await this.fillPhoneNumberWithRetry(phoneNumber);
 
             console.log('✅ Phone form filled successfully!');
             return true;
@@ -224,6 +163,74 @@ export class PhoneFlow {
             console.log(`❌ Error filling phone form: ${error instanceof Error ? error.message : String(error)}`);
             return false;
         }
+    }
+
+    /**
+     * 📞 Fill phone number with automatic retry on errors
+     */
+    async fillPhoneNumberWithRetry(phoneNumber: string): Promise<void> {
+        const maxRetries = 3;
+        let currentPhoneNumber = phoneNumber;
+        
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            console.log(`📞 Attempt ${attempt}/${maxRetries}: Using phone number ${currentPhoneNumber}`);
+            
+            // Clear and fill phone number
+            await this.phonePage.clearPhoneNumber();
+            await this.phonePage.fillPhoneNumber(currentPhoneNumber);
+            
+            // Check for inline errors before clicking continue
+            console.log('📞 Checking for inline errors...');
+            const hasInlineError = await this.phonePage.hasSuspiciousNumberError();
+            if (hasInlineError) {
+                console.log('⚠️ Inline error detected, generating new number...');
+                currentPhoneNumber = this.generateRandomPhoneNumber();
+                console.log(`🔄 New phone number: ${currentPhoneNumber}`);
+                continue;
+            }
+            
+            // Click continue button
+            console.log('📞 Clicking continue button...');
+            const continueButtonVisible = await this.phonePage.continueButton.isVisible();
+            console.log(`📋 Continue button visible: ${continueButtonVisible ? '✅ Yes' : '❌ No'}`);
+            await this.phonePage.clickContinueButton();
+            
+            // Wait for response
+            console.log('📞 Waiting for response...');
+            await this.page.waitForTimeout(3000);
+            
+            // Check for backend errors (after clicking continue)
+            console.log('📞 Checking for backend errors...');
+            const hasBackendError = await this.phonePage.hasAnyBackendError();
+            
+            if (!hasBackendError) {
+                console.log('✅ Phone number accepted successfully!');
+                return;
+            }
+            
+            // Get specific error message
+            const errorMessage = await this.phonePage.getErrorMessage();
+            console.log(`⚠️ Backend error detected: ${errorMessage}`);
+            
+            if (attempt < maxRetries) {
+                // Generate new phone number for retry
+                currentPhoneNumber = this.generateRandomPhoneNumber();
+                console.log(`🔄 Retrying with new phone number: ${currentPhoneNumber}`);
+            } else {
+                console.log('❌ Max retries reached, continuing with current number...');
+            }
+        }
+    }
+
+    /**
+     * 📞 Generate a random phone number
+     */
+    private generateRandomPhoneNumber(): string {
+        // Generate phone number with pattern: 212-XXX-XXXX
+        const areaCode = Math.floor(200 + Math.random() * 800); // 200-999
+        const exchange = Math.floor(200 + Math.random() * 800); // 200-999
+        const number = Math.floor(1000 + Math.random() * 9000); // 1000-9999
+        return `${areaCode}-${exchange}-${number}`;
     }
 
 
@@ -244,17 +251,9 @@ export class PhoneFlow {
             
             console.log(`📞 Using phone number: ${phoneNumber}`);
             
-            // Fill phone number directly without opening dropdown
-            console.log('📞 Filling phone number directly...');
-            await this.phonePage.fillPhoneNumber(phoneNumber);
-            
-            // Click continue button
-            console.log('📞 Clicking continue button...');
-            await this.phonePage.clickContinueButton();
-            
-            // Wait for response
-            console.log('📞 Waiting for response...');
-            await this.page.waitForTimeout(3000);
+            // Fill phone number directly without opening dropdown using retry logic
+            console.log('📞 Filling phone number directly with retry logic...');
+            await this.fillPhoneNumberWithRetry(phoneNumber);
             
             // Check if we navigated to the next page
             const currentUrl = this.page.url();
@@ -301,17 +300,9 @@ export class PhoneFlow {
             console.log('📞 Step 3: Selecting United States...');
             await this.phonePage.clickUnitedStatesOption();
             
-            // Step 4: Fill phone number
-            console.log('📞 Step 4: Filling phone number...');
-            await this.phonePage.fillPhoneNumber(phoneNumber);
-            
-            // Step 5: Click continue button
-            console.log('📞 Step 5: Clicking continue button...');
-            await this.phonePage.clickContinueButton();
-            
-            // Step 6: Wait for response
-            console.log('📞 Step 6: Waiting for response...');
-            await this.page.waitForTimeout(3000);
+            // Step 4: Fill phone number with retry logic
+            console.log('📞 Step 4: Filling phone number with retry logic...');
+            await this.fillPhoneNumberWithRetry(phoneNumber);
             
             // Check if we navigated to the next page
             const currentUrl = this.page.url();
@@ -430,9 +421,7 @@ export class PhoneFlow {
             const validPhoneNumber = `212-458-${lastFourDigits}`;
             console.log(`📞 Using valid phone number: ${validPhoneNumber}`);
             
-            await this.phonePage.fillPhoneNumber(validPhoneNumber);
-            await this.phonePage.clickContinueButton();
-            await this.page.waitForTimeout(3000);
+            await this.fillPhoneNumberWithRetry(validPhoneNumber);
             
             const currentUrl = this.page.url();
             console.log(`📍 Current URL: ${currentUrl}`);

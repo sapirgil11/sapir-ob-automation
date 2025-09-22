@@ -4,6 +4,7 @@ import { Welcome } from '../PageObjects/welcome';
 import { EmailVerification } from '../PageObjects/emailVerification';
 import { PersonalDetails } from '../PageObjects/personalDetails';
 import { Phone } from '../PageObjects/phone';
+import { PhoneFlow } from './phoneFlow';
 import { Identity } from '../PageObjects/identity';
 import { HomeAddress } from '../PageObjects/homeAddress';
 import { HomeAddressFlow } from './homeAddressFlow';
@@ -98,15 +99,17 @@ export class BusinessTypeFlow {
             await this.personalDetailsPage.fillLastName(randomLastName);
             await this.personalDetailsPage.clickContinueButton();
 
-            // Step 5: Fill phone
-            console.log('🏢 Step 5: Filling phone form...');
+            // Step 5: Fill phone with retry logic
+            console.log('🏢 Step 5: Filling phone form with retry logic...');
             await this.page.waitForURL('**/phone**', { timeout: 30000 });
             
             // Generate random phone number
             const phoneNumber = `212-${Math.floor(100 + Math.random() * 900)}-${Math.floor(1000 + Math.random() * 9000)}`;
             console.log(`📞 Using phone number: ${phoneNumber}`);
-            await this.phonePage.fillPhoneNumber(phoneNumber);
-            await this.phonePage.clickContinueButton();
+            
+            // Use PhoneFlow for retry logic
+            const phoneFlow = new PhoneFlow(this.page);
+            await phoneFlow.fillPhoneNumberWithRetry(phoneNumber);
 
             // Step 6: Fill identity
             console.log('🏢 Step 6: Filling identity form...');

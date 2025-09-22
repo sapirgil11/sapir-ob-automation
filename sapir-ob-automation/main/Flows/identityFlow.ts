@@ -4,6 +4,7 @@ import { Welcome } from '../PageObjects/welcome';
 import { EmailVerification } from '../PageObjects/emailVerification';
 import { PersonalDetails } from '../PageObjects/personalDetails';
 import { Phone } from '../PageObjects/phone';
+import { PhoneFlow } from './phoneFlow';
 import { MFACodeExtractor } from '../Extensions/getMFA';
 
 /**
@@ -106,14 +107,15 @@ export class IdentityFlow {
             console.log('🆔 Step 6: Waiting for navigation to phone page...');
             await this.page.waitForURL('**/phone**', { timeout: 10000 });
 
-            // Fill phone form
-            console.log('🆔 Step 7: Filling phone form...');
+            // Fill phone form with retry logic
+            console.log('🆔 Step 7: Filling phone form with retry logic...');
             const lastFourDigits = Math.floor(1000 + Math.random() * 9000);
             const phoneNumber = `212-458-${lastFourDigits}`;
             console.log(`📞 Using phone number: ${phoneNumber}`);
             
-            await this.phonePage.fillPhoneNumber(phoneNumber);
-            await this.phonePage.clickContinueButton();
+            // Use PhoneFlow for retry logic
+            const phoneFlow = new PhoneFlow(this.page);
+            await phoneFlow.fillPhoneNumberWithRetry(phoneNumber);
 
             // Step 6: Wait for navigation to identity page
             console.log('🆔 Step 7: Waiting for navigation to identity page...');

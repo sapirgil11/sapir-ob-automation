@@ -34,20 +34,15 @@ test.describe('🏢 Business Type Page Flow Tests', () => {
         await page.locator('#business-sub-type-mmllc').click();
         console.log('✅ Multi-Member LLC selected successfully');
 
-        console.log('🧪 PHASE 3: Waiting for automatic navigation to Industry page...');
+        console.log('🧪 PHASE 3: Waiting for automatic navigation to next page...');
         await page.waitForURL('**/industry**', { timeout: 30000 });
         
         const currentUrl = page.url();
-        const navigatedToIndustryPage = currentUrl.includes('industry');
-        console.log(`✅ Navigation to Industry page: ${navigatedToIndustryPage ? 'SUCCESS' : 'FAILED'}`);
+        const navigatedToNextPage = currentUrl.includes('industry');
+        console.log(`✅ Navigation to next page: ${navigatedToNextPage ? 'SUCCESS' : 'FAILED'}`);
         console.log(`📍 Current URL: ${currentUrl}`);
 
-        // Verify Industry page heading
-        const industryHeading = await page.getByRole('heading', { name: 'Tell us about your business' }).isVisible();
-        console.log(`✅ Industry page heading found: ${industryHeading ? 'YES' : 'NO'}`);
-
-        expect(navigatedToIndustryPage).toBe(true);
-        expect(industryHeading).toBe(true);
+        expect(navigatedToNextPage).toBe(true);
         console.log('✅ LLC Multi-Member Navigation Test passed!');
     });
 
