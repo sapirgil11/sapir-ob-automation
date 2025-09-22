@@ -2,10 +2,10 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './sapir-ob-automation/test',
-  fullyParallel: false, // Single browser as requested
+  fullyParallel: true, // Enable parallel execution for validation testing
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: 1, // Single worker for single browser
+  workers: 15, // Multiple workers for parallel validation testing
   reporter: [
     ['html'],
     ['allure-playwright']

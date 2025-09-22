@@ -5,3 +5,4 @@ export { PersonalDetailsFlow } from './personalDetailsFlow';
 export { PhoneFlow } from './phoneFlow';
 export { IdentityFlow } from './identityFlow';
 export { HomeAddressFlow } from './homeAddressFlow';
+export { BusinessTypeFlow } from './businessTypeFlow';

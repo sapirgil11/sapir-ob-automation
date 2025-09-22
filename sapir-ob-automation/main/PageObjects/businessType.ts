@@ -1,291 +1,223 @@
 import { Locator, Page } from '@playwright/test';
 
-/**
- * 🎯 BUSINESS TYPE PAGE OBJECT - Production Elements Only
- * 
- * This page object contains only the elements that are actually used in the real Lili application,
- * based on the UI automation project at /Users/sapir.abargil/Downloads/ui-automation-master
- * 
- * Production Elements:
- * - business_type_0 (S-Corp)
- * - business_type_1 (Partnership)
- * - business_type_2 (LLC)
- * - business_type_3 (SSN/Sole Proprietor)
- */
+// ============================================================================
+// 🏢 BUSINESS TYPE PAGE OBJECT - Clean and Focused
+// ============================================================================
+// This page object contains only the essential elements needed for testing,
+// following the same clean pattern as other refactored page objects.
+// Based on the development project structure with correct IDs and titles.
+// ============================================================================
+
 export class BusinessType {
     private page: Page;
 
-    // ===== CORE BUSINESS TYPE OPTIONS (PRODUCTION IDs) =====
+    // ========================================================================
+    // 🎯 CORE BUSINESS TYPE OPTIONS
+    // ========================================================================
+    public corporationOption!: Locator;                           // Corporation (S-Corp/C-Corp)
+    public partnershipOption!: Locator;                          // Partnership
+    public llcOption!: Locator;                                  // Limited Liability Company (LLC)
+    public soleProprietorOption!: Locator;                       // Sole Proprietorship
     
-    // --Main Business Type Selection Options--
-    public corporationOption!: Locator;                           // ID: "#business-type-corporation" | Text: "Corporation (S-Corp/C-Corp)"
-    public partnershipOption!: Locator;                           // ID: "#business-type-partnership" | Text: "Partnership"
-    public llcOption!: Locator;                                   // ID: "#business-type-llc" | Text: "Limited Liability Company (LLC)"
-    public soleProprietorOption!: Locator;                        // ID: "#business-type-soleProprietorship" | Text: "Sole Proprietorship"
+    // ========================================================================
+    // 🎯 SUBTYPE OPTIONS
+    // ========================================================================
+    // Corporation Subtypes
+    public sCorpOption!: Locator;                                // S-Corp
+    public cCorpOption!: Locator;                                // C-Corp
     
-    // --Sub-Business Type Selection Options--
-    // LLC Sub-types
-    public singleMemberLLCOption!: Locator;                       // ID: "#business-sub-type-llc" | Text: "Single-Member LLC"
-    public multiMemberLLCOption!: Locator;                        // ID: "#business-sub-type-mmllc" | Text: "Multi-Member LLC"
+    // Partnership Subtypes
+    public generalPartnershipOption!: Locator;                   // General Partnership
+    public limitedLiabilityPartnershipOption!: Locator;          // Limited Liability Partnership
     
-    // Partnership Sub-types
-    public generalPartnershipOption!: Locator;                   // ID: "#business-sub-type-general_partnership" | Text: "General Partnership"
-    public limitedLiabilityPartnershipOption!: Locator;          // ID: "#business-sub-type-llp" | Text: "Limited Liability Partnership"
+    // LLC Subtypes
+    public singleMemberLLCOption!: Locator;                     // Single-Member LLC
+    public multiMemberLLCOption!: Locator;                       // Multi-Member LLC
     
-    // Corporation Sub-types
-    public sCorpOption!: Locator;                                // ID: "#business-sub-type-s_corp" | Text: "S-Corp"
-    public cCorpOption!: Locator;                                // ID: "#business-sub-type-c_corp" | Text: "C-Corp"
+    // Sole Proprietor Subtypes
+    public dbaOption!: Locator;                                  // Yes. I have a DBA
+    public noDbaOption!: Locator;                                // No. I don't have a DBA
     
-    // Sole Proprietorship Sub-types
-    public dbaOption!: Locator;                                   // ID: "#business-sub-type-dba" | Text: "Yes. I have a DBA"
-    public ssnOption!: Locator;                                   // ID: "#business-sub-type-ssn" | Text: "No. I don't have a DBA"
-    
-    // ===== ERROR MESSAGES AND HOW TO TRIGGER THEM =====
-    
-    // --Business Type Selection Errors--
-    public businessTypeError!: Locator;                            // ID: "#business-type-error"
-    // TRIGGER: Try to continue without selecting any business type
-    // ERROR TEXT: "Please select a business type"
-
-    public invalidBusinessTypeError!: Locator;                    // ID: "#business-type-invalid-error"
-    // TRIGGER: Select invalid business type option
-    // ERROR TEXT: "Please select a valid business type"
-    
-    // ===== PAGE CONTENT ELEMENTS =====
-    
-    // --Page Headers--
-    public pageHeading!: Locator;                                 // ID: "#page-heading" | Text: "What type of business do you have?"
-    public pageSubheading!: Locator;                              // ID: "#page-subtitle" | Text: "Select the option that best describes your business"
-    
-    // --Progress and Help Text--
-    public progressText!: Locator;                                 // ID: "#progress-text" | Text: "Step 3 of 12"
-    public requiredFieldText!: Locator;                            // ID: "#required-text" | Text: "* Required fields"
-    public helpText!: Locator;                                    // ID: "#help-text" | Text: "This helps us determine the right account type for your business"
+    // ========================================================================
+    // 🎯 PAGE ELEMENTS
+    // ========================================================================
+    public pageHeading!: Locator;                                // "Select your business type"
+    public continueButton!: Locator;                             // Continue button
+    public backButton!: Locator;                                 // Back button
 
     constructor(page: Page) {
         this.page = page;
-        this.initializeAllLocators();
+        this.initializeElements();
     }
 
-    private initializeAllLocators(): void {
-        this.initializeCoreElements();
-        this.initializeErrorElements();
-        this.initializeContentElements();
-    }
-
-    private initializeCoreElements(): void {
-        // Main business type options - Updated to match actual HTML structure from recording
+    /**
+     * 🔧 Initialize all locators for the business type page
+     */
+    private initializeElements(): void {
+        // Main business type options - Using correct IDs from development project
         this.corporationOption = this.page.locator('#business-type-corporation');
         this.partnershipOption = this.page.locator('#business-type-partnership');
         this.llcOption = this.page.locator('#business-type-llc');
         this.soleProprietorOption = this.page.locator('#business-type-soleProprietorship');
         
-        // Sub-business type options
-        // LLC Sub-types
-        this.singleMemberLLCOption = this.page.locator('#business-sub-type-llc');
-        this.multiMemberLLCOption = this.page.locator('#business-sub-type-mmllc');
-        
-        // Partnership Sub-types
-        this.generalPartnershipOption = this.page.locator('#business-sub-type-general_partnership');
-        this.limitedLiabilityPartnershipOption = this.page.locator('#business-sub-type-llp');
-        
-        // Corporation Sub-types
+        // Corporation subtypes - Using correct IDs from development project
         this.sCorpOption = this.page.locator('#business-sub-type-s_corp');
         this.cCorpOption = this.page.locator('#business-sub-type-c_corp');
         
-        // Sole Proprietorship Sub-types
+        // Partnership subtypes - Using correct IDs from actual HTML
+        this.generalPartnershipOption = this.page.locator('#business-sub-type-general_partnership');
+        this.limitedLiabilityPartnershipOption = this.page.locator('#business-sub-type-llp');
+        
+        // LLC subtypes - Using correct IDs from actual HTML
+        this.singleMemberLLCOption = this.page.locator('#business-sub-type-llc');
+        this.multiMemberLLCOption = this.page.locator('#business-sub-type-mmllc');
+        
+        // Sole Proprietor subtypes - Using correct IDs from development project
         this.dbaOption = this.page.locator('#business-sub-type-dba');
-        this.ssnOption = this.page.locator('#business-sub-type-ssn');
+        this.noDbaOption = this.page.locator('#business-sub-type-ssn');
+        
+        // Page elements - Using correct selectors from development project
+        this.pageHeading = this.page.getByRole('heading', { name: 'Select your business type' });
+        this.continueButton = this.page.getByRole('button', { name: 'Continue' });
+        this.backButton = this.page.getByRole('button', { name: 'Back' });
     }
 
-    private initializeErrorElements(): void {
-        // Error messages - Updated to match actual HTML structure
-        this.businessTypeError = this.page.locator('#business-type-error, .error:has-text("business type")');
-        this.invalidBusinessTypeError = this.page.locator('#business-type-invalid-error, .error:has-text("valid business type")');
-    }
-
-    private initializeContentElements(): void {
-        // Page content elements
-        this.pageHeading = this.page.locator('#page-heading, h1[id="page-heading"]');
-        this.pageSubheading = this.page.locator('#page-subtitle, p[id="page-subtitle"]');
-        this.progressText = this.page.locator('#progress-text, span[id="progress-text"]');
-        this.requiredFieldText = this.page.locator('#required-text, span[id="required-text"]');
-        this.helpText = this.page.locator('#help-text, p[id="help-text"]');
-    }
-
-    // ===== PAGE VERIFICATION METHODS =====
-
-    async isBusinessTypePageLoaded(): Promise<boolean> {
-        try {
-            const url = this.page.url();
-            const heading = await this.pageHeading.isVisible();
-            return url.includes('/business-type') && heading;
-        } catch (error) {
-            console.error('Error checking if business type page is loaded:', error);
-            return false;
-        }
-    }
-
-    async waitForBusinessTypePageToLoad(): Promise<void> {
-        try {
-            await this.page.waitForURL('**/business-type**');
-            await this.pageHeading.waitFor({ state: 'visible' });
-        } catch (error) {
-            console.error('Error waiting for business type page to load:', error);
-        }
-    }
-
-    // ===== BUSINESS TYPE SELECTION METHODS =====
-
-    async selectSCorp(): Promise<void> {
-        try {
-            console.log('🏢 Selecting S-Corp business type...');
-            await this.sCorpOption.waitFor({ state: 'visible' });
-            await this.sCorpOption.click();
-            console.log('✅ S-Corp selected successfully');
-        } catch (error) {
-            console.error('Error selecting S-Corp:', error);
-            throw error;
-        }
-    }
-
-    async selectPartnership(): Promise<void> {
-        try {
-            console.log('🏢 Selecting Partnership business type...');
-            await this.partnershipOption.waitFor({ state: 'visible' });
-        await this.partnershipOption.click();
-            console.log('✅ Partnership selected successfully');
-        } catch (error) {
-            console.error('Error selecting Partnership:', error);
-            throw error;
-        }
-    }
-
-    async selectLLC(): Promise<void> {
-        try {
-            console.log('🏢 Selecting LLC business type...');
-            await this.llcOption.waitFor({ state: 'visible' });
-            await this.llcOption.click();
-            console.log('✅ LLC selected successfully');
-        } catch (error) {
-            console.error('Error selecting LLC:', error);
-            throw error;
-        }
-    }
-
-    async selectSoleProprietor(): Promise<void> {
-        try {
-            console.log('🏢 Selecting Sole Proprietor business type...');
-            await this.soleProprietorOption.waitFor({ state: 'visible' });
-            await this.soleProprietorOption.click();
-            console.log('✅ Sole Proprietor selected successfully');
-        } catch (error) {
-            console.error('Error selecting Sole Proprietor:', error);
-            throw error;
-        }
-    }
-
-    // ===== ERROR TRIGGERING METHODS =====
+    // ========================================================================
+    // 📝 MAIN BUSINESS TYPE SELECTION METHODS
+    // ========================================================================
 
     /**
-     * Trigger business type required error by trying to continue without selection
+     * 📝 Select Corporation business type
      */
-    async triggerBusinessTypeRequiredError(): Promise<boolean> {
-        try {
-            console.log('🔍 Triggering business type required error...');
-            
-            // Try to continue without selecting any business type
-            // This would typically be done by clicking a continue button
-            
-            // Wait for error to appear
-            const errorAppeared = await this.waitForErrorToAppear(this.businessTypeError, 3000);
-            
-            if (errorAppeared) {
-                const errorText = await this.getBusinessTypeErrorText();
-                console.log(`✅ Business type error triggered: "${errorText}"`);
-                return true;
-            } else {
-                console.log('❌ Business type error did not appear');
-                return false;
-            }
-        } catch (error) {
-            console.error('Error triggering business type required error:', error);
-            return false;
-        }
+    async selectCorporation(): Promise<void> {
+        console.log('🏢 Selecting Corporation business type...');
+        await this.corporationOption.click();
+        console.log('✅ Corporation selected successfully');
     }
 
-    // ===== ERROR TEXT GETTERS =====
-
-    async getBusinessTypeErrorText(): Promise<string> {
-        try {
-            if (await this.businessTypeError.isVisible()) {
-                return await this.businessTypeError.textContent() || '';
-            }
-            return '';
-        } catch (error) {
-            console.error('Error getting business type error text:', error);
-            return '';
-        }
+    /**
+     * 📝 Select Partnership business type
+     */
+    async selectPartnership(): Promise<void> {
+        console.log('🏢 Selecting Partnership business type...');
+        await this.partnershipOption.click();
+        console.log('✅ Partnership selected successfully');
     }
 
-    async getInvalidBusinessTypeErrorText(): Promise<string> {
-        try {
-            if (await this.invalidBusinessTypeError.isVisible()) {
-                return await this.invalidBusinessTypeError.textContent() || '';
-            }
-            return '';
-        } catch (error) {
-            console.error('Error getting invalid business type error text:', error);
-            return '';
-        }
+    /**
+     * 📝 Select LLC business type
+     */
+    async selectLLC(): Promise<void> {
+        console.log('🏢 Selecting LLC business type...');
+        await this.llcOption.click();
+        console.log('✅ LLC selected successfully');
     }
 
-    // ===== UTILITY METHODS =====
-
-    async waitForErrorToAppear(errorLocator: Locator, timeout: number = 5000): Promise<boolean> {
-        try {
-            await errorLocator.waitFor({ state: 'visible', timeout });
-            return true;
-        } catch (error) {
-            console.log(`Error did not appear within ${timeout}ms`);
-            return false;
-        }
+    /**
+     * 📝 Select Sole Proprietor business type
+     */
+    async selectSoleProprietor(): Promise<void> {
+        console.log('🏢 Selecting Sole Proprietor business type...');
+        await this.soleProprietorOption.click();
+        console.log('✅ Sole Proprietor selected successfully');
     }
 
-    async waitForErrorToDisappear(errorLocator: Locator, timeout: number = 5000): Promise<boolean> {
-        try {
-            await errorLocator.waitFor({ state: 'hidden', timeout });
-            return true;
-        } catch (error) {
-            console.log(`Error did not disappear within ${timeout}ms`);
-            return false;
-        }
+    // ========================================================================
+    // 🎯 SUBTYPE SELECTION METHODS
+    // ========================================================================
+
+    /**
+     * 🎯 Select S-Corp subtype
+     */
+    async selectSCorp(): Promise<void> {
+        console.log('🏢 Selecting S-Corp subtype...');
+        await this.sCorpOption.click();
+        console.log('✅ S-Corp selected successfully');
     }
 
-    // ===== PAGE OBJECT METHODS =====
-
-    async verifyPageElements(): Promise<boolean> {
-        console.log('🔍 Verifying Business Type page elements...');
-        
-        const elements = [
-            { name: 'S-Corp Option', locator: this.sCorpOption, required: true },
-            { name: 'Partnership Option', locator: this.partnershipOption, required: true },
-            { name: 'LLC Option', locator: this.llcOption, required: true },
-            { name: 'Sole Proprietor Option', locator: this.soleProprietorOption, required: true },
-            { name: 'Page Heading', locator: this.pageHeading, required: true }
-        ];
-
-        let allVisible = true;
-        for (const element of elements) {
-            const isVisible = await element.locator.isVisible();
-            console.log(`📋 ${element.name}: ${isVisible ? '✅ Visible' : '❌ Not visible'}`);
-            
-            if (element.required && !isVisible) {
-                allVisible = false;
-            }
-        }
-
-        console.log(`🎯 Business Type page elements verification: ${allVisible ? '✅ PASSED' : '❌ FAILED'}`);
-        return allVisible;
+    /**
+     * 🎯 Select C-Corp subtype
+     */
+    async selectCCorp(): Promise<void> {
+        console.log('🏢 Selecting C-Corp subtype...');
+        await this.cCorpOption.click();
+        console.log('✅ C-Corp selected successfully');
     }
+
+    /**
+     * 🎯 Select General Partnership subtype
+     */
+    async selectGeneralPartnership(): Promise<void> {
+        console.log('🏢 Selecting General Partnership subtype...');
+        await this.generalPartnershipOption.click();
+        console.log('✅ General Partnership selected successfully');
+    }
+
+    /**
+     * 🎯 Select Limited Liability Partnership subtype
+     */
+    async selectLimitedLiabilityPartnership(): Promise<void> {
+        console.log('🏢 Selecting Limited Liability Partnership subtype...');
+        await this.limitedLiabilityPartnershipOption.click();
+        console.log('✅ Limited Liability Partnership selected successfully');
+    }
+
+    /**
+     * 🎯 Select Single Member LLC subtype
+     */
+    async selectSingleMemberLLC(): Promise<void> {
+        console.log('🏢 Selecting Single Member LLC subtype...');
+        await this.singleMemberLLCOption.click();
+        console.log('✅ Single Member LLC selected successfully');
+    }
+
+    /**
+     * 🎯 Select Multi Member LLC subtype
+     */
+    async selectMultiMemberLLC(): Promise<void> {
+        console.log('🏢 Selecting Multi Member LLC subtype...');
+        await this.multiMemberLLCOption.click();
+        console.log('✅ Multi Member LLC selected successfully');
+    }
+
+    /**
+     * 🎯 Select DBA subtype
+     */
+    async selectDBA(): Promise<void> {
+        console.log('🏢 Selecting DBA subtype...');
+        await this.dbaOption.click();
+        console.log('✅ DBA selected successfully');
+    }
+
+    /**
+     * 🎯 Select No DBA subtype
+     */
+    async selectNoDBA(): Promise<void> {
+        console.log('🏢 Selecting No DBA subtype...');
+        await this.noDbaOption.click();
+        console.log('✅ No DBA selected successfully');
+    }
+
+    // ========================================================================
+    // 🚀 ACTION METHODS
+    // ========================================================================
+
+    /**
+     * 🚀 Click continue button
+     */
+    async clickContinueButton(): Promise<void> {
+        console.log('➡️ Clicking continue button...');
+        await this.continueButton.click();
+        console.log('✅ Continue button clicked successfully');
+    }
+
+    /**
+     * 🚀 Click back button
+     */
+    async clickBackButton(): Promise<void> {
+        console.log('⬅️ Clicking back button...');
+        await this.backButton.click();
+        console.log('✅ Back button clicked successfully');
+    }
+
 }

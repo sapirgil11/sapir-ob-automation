@@ -166,11 +166,21 @@ export class HomeAddressFlow {
         await this.page.locator('#CITY').fill(city);
         console.log(`✅ City set to: ${city}`);
 
-        // Select state (STATE) - Working approach
+        // Select state (STATE) - Working approach using correct selectors
         console.log(`📝 Selecting state: ${state}`);
+        
+        // Click the dropdown to open it
         await this.page.locator('#dropdown-item-').click();
-        await this.page.waitForTimeout(500);
-        await this.page.locator('div').filter({ hasText: state }).nth(3).click();
+        await this.page.waitForTimeout(1000);
+        
+        // Wait for dropdown options to appear
+        await this.page.waitForSelector('li[role="option"]', { timeout: 5000 });
+        
+        // Look for the specific state option using the correct selector
+        const stateOption = this.page.locator(`li[role="option"]:has-text("${state}")`);
+        await stateOption.waitFor({ state: 'visible', timeout: 5000 });
+        await stateOption.click();
+        
         console.log(`✅ State selected: ${state}`);
 
         // Fill ZIP code (ZIP) - Working approach
