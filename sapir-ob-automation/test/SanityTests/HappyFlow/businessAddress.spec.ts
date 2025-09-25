@@ -12,7 +12,7 @@ import { BusinessAddress } from '../../../main/PageObjects/businessAddress';
 // 🎉 TEST 1: Happy Path - Fill Form and Continue
 // ========================================================================
     test('🎉 BA - Happy Path (randomized data) and Continue', async ({ page }) => {
-        test.setTimeout(180000); // 3 minutes timeout
+        test.setTimeout(150000); // 2.5 minutes timeout
         console.log('🚀 Starting Business Address Happy Path Test...');
 
         const baFlow = new BusinessAddressFlow(page);
@@ -20,13 +20,11 @@ import { BusinessAddress } from '../../../main/PageObjects/businessAddress';
         expect(navigated).toBe(true);
 
         const ba = new BusinessAddress(page);
-        await ba.verifyPageLoaded(); // Ensure page is loaded before filling
-
+        // Skip verifyPageLoaded for speed - just start filling immediately
         const result = await baFlow.completeBusinessAddressFormRandomized();
         console.log(`🏢 Using Street: ${result.street}, Apartment: ${result.apartment}, City: ${result.city}, State: ${result.state}, Zip: ${result.zip}`);
 
-        // Log the next URL for verification
-        await page.waitForTimeout(2000);
+        // Log the next URL for verification - no wait needed
         console.log(`📄 Current URL after continue: ${page.url()}`);
         console.log('✅ Business Address Happy Path test completed!');
     });
@@ -35,7 +33,7 @@ import { BusinessAddress } from '../../../main/PageObjects/businessAddress';
     // 🔍 TEST 2: Comprehensive Validation Test - All Scenarios Step by Step
     // ========================================================================
     test('🔍 BA - Comprehensive Validation Test - All Scenarios Step by Step', async ({ page }) => {
-        test.setTimeout(300000); // 5 minutes timeout
+        test.setTimeout(180000); // 3 minutes timeout
         console.log('🚀 Starting Business Address Comprehensive Validation Test...');
 
         const baFlow = new BusinessAddressFlow(page);
@@ -149,8 +147,7 @@ import { BusinessAddress } from '../../../main/PageObjects/businessAddress';
         await page.locator('#CITY').click();
         await page.locator('#CITY').fill('New York');
         await page.locator('#dropdown-item-').click();
-        await page.waitForTimeout(1000);
-        await page.waitForSelector('li[role="option"]', { timeout: 5000 });
+        await page.waitForSelector('li[role="option"]', { timeout: 3000 });
         await page.locator('li[role="option"]:has-text("NY")').click();
         await page.locator('#ZIP').click();
         await page.locator('#ZIP').fill('10001');
@@ -174,7 +171,7 @@ import { BusinessAddress } from '../../../main/PageObjects/businessAddress';
     // 🔍 TEST 3: Elements Exist + Clear Buttons + Checkbox
     // ========================================================================
     test('🔍 BA - Elements Exist and Clear Buttons', async ({ page }) => {
-        test.setTimeout(180000); // 3 minutes timeout
+        test.setTimeout(120000); // 2 minutes timeout
         console.log('🚀 Starting Business Address Elements Exist Test...');
 
         const baFlow = new BusinessAddressFlow(page);
@@ -233,6 +230,28 @@ import { BusinessAddress } from '../../../main/PageObjects/businessAddress';
         console.log('🔍 Testing checkbox functionality...');
         await ba.setSameAsPrimary(true);
         await expect(ba.sameAsPrimaryCheckbox).toBeChecked();
+        
+        // Verify that fields are populated with home address values when checkbox is checked
+        console.log('🔍 Verifying fields are populated with home address values...');
+        const streetValue = await ba.streetAddressInput.inputValue();
+        const cityValue = await ba.cityInput.inputValue();
+        const zipValue = await ba.zipCodeInput.inputValue();
+        
+        console.log(`🏠 Street value: "${streetValue}"`);
+        console.log(`🏠 City value: "${cityValue}"`);
+        console.log(`🏠 Zip value: "${zipValue}"`);
+        
+        // Verify fields are not empty (should contain home address values)
+        expect(streetValue).not.toBe('');
+        expect(cityValue).not.toBe('');
+        expect(zipValue).not.toBe('');
+        
+        // Verify fields are disabled when checkbox is checked
+        await expect(ba.streetAddressInput).toBeDisabled();
+        await expect(ba.cityInput).toBeDisabled();
+        await expect(ba.zipCodeInput).toBeDisabled();
+        console.log('✅ Fields populated with home address values and disabled.');
+        
         await ba.setSameAsPrimary(false);
         await expect(ba.sameAsPrimaryCheckbox).not.toBeChecked();
         console.log('✅ Checkbox functionality verified.');

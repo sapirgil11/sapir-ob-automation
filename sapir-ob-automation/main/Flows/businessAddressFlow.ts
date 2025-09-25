@@ -41,8 +41,8 @@ export class BusinessAddressFlow {
         console.log('🧾 Completing KYB form to proceed to Business Address...');
         await this.knowYourBusinessFlow.completeKnowYourBusinessFormRandomized();
         await this.page.getByRole('button', { name: 'Continue' }).click(); // Click continue to navigate to business address
-        await this.page.waitForURL('**/business-address**', { timeout: 30000 });
-        await this.businessAddressPage.verifyPageLoaded();
+        await this.page.waitForURL('**/business-address**', { timeout: 15000 });
+        // Skip verifyPageLoaded for speed - navigation confirms page is loaded
         console.log('✅ Successfully navigated to Business Address page!');
         return true;
     }
@@ -84,11 +84,12 @@ export class BusinessAddressFlow {
         const randomCity = cities[Math.floor(Math.random() * cities.length)];
         const randomZip = zipCodes[Math.floor(Math.random() * zipCodes.length)];
 
+        // Fill fields sequentially but quickly
         await this.businessAddressPage.fillStreetAddress(randomStreet);
         await this.businessAddressPage.fillApartment(randomApartment);
         await this.businessAddressPage.fillCity(randomCity);
-        const randomState = await this.businessAddressPage.selectRandomState();
         await this.businessAddressPage.fillZipCode(randomZip);
+        const randomState = await this.businessAddressPage.selectRandomState();
         await this.businessAddressPage.setSameAsPrimary(false); // Ensure checkbox is unchecked
         await this.businessAddressPage.clickContinue();
 

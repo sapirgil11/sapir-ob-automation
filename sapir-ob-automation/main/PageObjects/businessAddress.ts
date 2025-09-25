@@ -115,14 +115,15 @@ export class BusinessAddress {
 
     async openStateDropdown(): Promise<void> {
         await this.stateDropdown.click();
-        await this.page.waitForSelector('[role="option"]', { state: 'visible' });
+        await this.page.waitForSelector('[role="option"]', { state: 'visible', timeout: 5000 });
     }
 
     async selectRandomState(): Promise<string> {
         await this.openStateDropdown();
         const options = await this.page.locator('[role="option"]').allTextContents();
         const randomState = options[Math.floor(Math.random() * options.length)];
-        await this.page.locator(`[role="option"]:has-text("${randomState}")`).click();
+        // Click immediately when element is available
+        await this.page.locator(`[role="option"]:has-text("${randomState}")`).click({ timeout: 3000 });
         return randomState;
     }
 
