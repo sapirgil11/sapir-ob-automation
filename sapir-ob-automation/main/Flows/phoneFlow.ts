@@ -241,11 +241,9 @@ export class PhoneFlow {
    * 📞 Generate a random phone number
    */
   private generateRandomPhoneNumber(): string {
-    // Generate phone number with pattern: 212-XXX-XXXX
-    const areaCode = Math.floor(200 + Math.random() * 800); // 200-999
-    const exchange = Math.floor(200 + Math.random() * 800); // 200-999
-    const number = Math.floor(1000 + Math.random() * 9000); // 1000-9999
-    return `${areaCode}-${exchange}-${number}`;
+    // Generate phone number with pattern: 212-458-XXXX (safe pattern first)
+    const lastFourDigits = Math.floor(1000 + Math.random() * 9000); // 1000-9999
+    return `212-458-${lastFourDigits}`;
   }
 
   // ========================================================================

@@ -125,8 +125,9 @@ export class BusinessTypeFlow {
       console.log('🏢 Step 5: Filling phone form with retry logic...');
       await this.page.waitForURL('**/phone**', { timeout: 30000 });
 
-      // Generate random phone number
-      const phoneNumber = `212-${Math.floor(100 + Math.random() * 900)}-${Math.floor(1000 + Math.random() * 9000)}`;
+      // Generate phone number with safe pattern (212-458-XXXX)
+      const lastFourDigits = Math.floor(1000 + Math.random() * 9000);
+      const phoneNumber = `212-458-${lastFourDigits}`;
       console.log(`📞 Using phone number: ${phoneNumber}`);
 
       // Use PhoneFlow for retry logic

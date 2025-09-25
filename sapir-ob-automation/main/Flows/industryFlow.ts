@@ -115,7 +115,8 @@ export class IndustryFlow {
       // Step 5: Fill phone with retry logic
       console.log('🏭 Step 5: Filling phone form with retry logic...');
       await this.page.waitForURL('**/phone**', { timeout: 30000 });
-      const phoneNumber = `212-${Math.floor(100 + Math.random() * 900)}-${Math.floor(1000 + Math.random() * 9000)}`;
+      const lastFourDigits = Math.floor(1000 + Math.random() * 9000);
+      const phoneNumber = `212-458-${lastFourDigits}`;
       console.log(`📞 Using phone number: ${phoneNumber}`);
       const phoneFlow = new PhoneFlow(this.page);
       await phoneFlow.fillPhoneNumberWithRetry(phoneNumber);
