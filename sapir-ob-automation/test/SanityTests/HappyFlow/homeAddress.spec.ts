@@ -304,7 +304,7 @@ test.describe('🏠 Home Address Page Flow Tests', () => {
         const navigatedToNextPage = currentUrl.includes('business-type') || currentUrl.includes('businessType');
         console.log(`✅ Navigation to next page: ${navigatedToNextPage ? 'SUCCESS' : 'FAILED'}`);
         console.log(`📍 Current URL: ${currentUrl}`);
-
+        
         console.log('✅ Form Elements Validation Test passed!');
     });
 
