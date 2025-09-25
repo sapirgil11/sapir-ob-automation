@@ -16,9 +16,9 @@ export const testEnvironments: Record<string, TestEnvironment> = {
         type: 'chromium',
         headless: false,
         viewport: { width: 1920, height: 1080 },
-        args: ['--disable-web-security', '--disable-features=VizDisplayCompositor']
-      }
-    ]
+        args: ['--disable-web-security', '--disable-features=VizDisplayCompositor'],
+      },
+    ],
   },
 
   // Integration testing environment
@@ -37,16 +37,16 @@ export const testEnvironments: Record<string, TestEnvironment> = {
           '--no-sandbox',
           '--disable-setuid-sandbox',
           '--disable-dev-shm-usage',
-          '--disable-accelerated-2d-canvas'
-        ]
+          '--disable-accelerated-2d-canvas',
+        ],
       },
       {
         name: 'Firefox Integration',
         type: 'firefox',
         headless: true,
-        viewport: { width: 1920, height: 1080 }
-      }
-    ]
+        viewport: { width: 1920, height: 1080 },
+      },
+    ],
   },
 
   // Staging environment
@@ -61,25 +61,21 @@ export const testEnvironments: Record<string, TestEnvironment> = {
         type: 'chromium',
         headless: true,
         viewport: { width: 1920, height: 1080 },
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage'
-        ]
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
       },
       {
         name: 'Firefox Staging',
         type: 'firefox',
         headless: true,
-        viewport: { width: 1920, height: 1080 }
+        viewport: { width: 1920, height: 1080 },
       },
       {
         name: 'Safari Staging',
         type: 'webkit',
         headless: true,
-        viewport: { width: 1920, height: 1080 }
-      }
-    ]
+        viewport: { width: 1920, height: 1080 },
+      },
+    ],
   },
 
   // Production environment
@@ -101,22 +97,22 @@ export const testEnvironments: Record<string, TestEnvironment> = {
           '--disable-accelerated-2d-canvas',
           '--no-first-run',
           '--no-zygote',
-          '--disable-gpu'
-        ]
+          '--disable-gpu',
+        ],
       },
       {
         name: 'Firefox Production',
         type: 'firefox',
         headless: true,
-        viewport: { width: 1920, height: 1080 }
+        viewport: { width: 1920, height: 1080 },
       },
       {
         name: 'Safari Production',
         type: 'webkit',
         headless: true,
-        viewport: { width: 1920, height: 1080 }
-      }
-    ]
+        viewport: { width: 1920, height: 1080 },
+      },
+    ],
   },
 
   // Mobile testing environment
@@ -131,19 +127,15 @@ export const testEnvironments: Record<string, TestEnvironment> = {
         type: 'chromium',
         headless: true,
         viewport: { width: 375, height: 667 },
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage'
-        ]
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
       },
       {
         name: 'Mobile Safari',
         type: 'webkit',
         headless: true,
-        viewport: { width: 375, height: 667 }
-      }
-    ]
+        viewport: { width: 375, height: 667 },
+      },
+    ],
   },
 
   // Accessibility testing environment
@@ -163,10 +155,10 @@ export const testEnvironments: Record<string, TestEnvironment> = {
           '--disable-setuid-sandbox',
           '--disable-dev-shm-usage',
           '--enable-logging',
-          '--v=1'
-        ]
-      }
-    ]
+          '--v=1',
+        ],
+      },
+    ],
   },
 
   // Performance testing environment
@@ -191,11 +183,11 @@ export const testEnvironments: Record<string, TestEnvironment> = {
           '--disable-javascript',
           '--disable-background-timer-throttling',
           '--disable-backgrounding-occluded-windows',
-          '--disable-renderer-backgrounding'
-        ]
-      }
-    ]
-  }
+          '--disable-renderer-backgrounding',
+        ],
+      },
+    ],
+  },
 };
 
 /**
@@ -204,7 +196,9 @@ export const testEnvironments: Record<string, TestEnvironment> = {
 export function getEnvironment(name: string): TestEnvironment {
   const env = testEnvironments[name];
   if (!env) {
-    throw new Error(`Environment '${name}' not found. Available environments: ${Object.keys(testEnvironments).join(', ')}`);
+    throw new Error(
+      `Environment '${name}' not found. Available environments: ${Object.keys(testEnvironments).join(', ')}`
+    );
   }
   return env;
 }
@@ -229,23 +223,23 @@ export function getCurrentEnvironment(): TestEnvironment {
  */
 export function validateEnvironment(env: TestEnvironment): string[] {
   const errors: string[] = [];
-  
+
   if (!env.baseUrl) {
     errors.push('Base URL is required');
   }
-  
+
   if (env.timeout < 1000) {
     errors.push('Timeout must be at least 1000ms');
   }
-  
+
   if (env.retries < 0) {
     errors.push('Retries must be non-negative');
   }
-  
+
   if (!env.browsers || env.browsers.length === 0) {
     errors.push('At least one browser configuration is required');
   }
-  
+
   env.browsers.forEach((browser, index) => {
     if (!browser.name) {
       errors.push(`Browser ${index + 1} must have a name`);
@@ -257,7 +251,7 @@ export function validateEnvironment(env: TestEnvironment): string[] {
       errors.push(`Browser ${index + 1} must have viewport configuration`);
     }
   });
-  
+
   return errors;
 }
 
@@ -267,7 +261,7 @@ export function validateEnvironment(env: TestEnvironment): string[] {
 export function getBrowserConfig(envName: string, browserName: string): BrowserConfig | undefined {
   const env = testEnvironments[envName];
   if (!env) return undefined;
-  
+
   return env.browsers.find(browser => browser.name === browserName);
 }
 
@@ -277,7 +271,7 @@ export function getBrowserConfig(envName: string, browserName: string): BrowserC
 export function getBrowserConfigs(envName: string): BrowserConfig[] {
   const env = testEnvironments[envName];
   if (!env) return [];
-  
+
   return env.browsers;
 }
 
@@ -287,7 +281,7 @@ export function getBrowserConfigs(envName: string): BrowserConfig[] {
 export function supportsBrowserType(envName: string, browserType: string): boolean {
   const env = testEnvironments[envName];
   if (!env) return false;
-  
+
   return env.browsers.some(browser => browser.type === browserType);
 }
 
@@ -297,11 +291,11 @@ export function supportsBrowserType(envName: string, browserType: string): boole
 export function getRecommendedEnvironment(): string {
   const nodeEnv = process.env.NODE_ENV;
   const isCI = process.env.CI === 'true';
-  
+
   if (isCI) {
     return 'integration';
   }
-  
+
   switch (nodeEnv) {
     case 'development':
       return 'local';

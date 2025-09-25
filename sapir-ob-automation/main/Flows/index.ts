@@ -7,7 +7,7 @@
 // Step 1: Welcome Flow
 export { WelcomeFlow } from './welcomeFlow';
 
-// Step 2: Email Verification Flow  
+// Step 2: Email Verification Flow
 export { EmailVerificationFlow } from './emailVerificationFlow';
 
 // Step 3: Personal Details Flow

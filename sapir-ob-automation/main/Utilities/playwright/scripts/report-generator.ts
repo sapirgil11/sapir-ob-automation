@@ -4,147 +4,157 @@ import * as path from 'path';
 import * as ExcelJS from 'exceljs';
 
 export class ReportGenerator {
-    private outputDir: string;
-    private timestamp: string;
+  private outputDir: string;
+  private timestamp: string;
 
-    constructor(outputDir: string = 'test-results/reports') {
-        this.outputDir = outputDir;
-        this.timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        this.ensureOutputDir();
-    }
+  constructor(outputDir: string = 'test-results/reports') {
+    this.outputDir = outputDir;
+    this.timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    this.ensureOutputDir();
+  }
 
-    /**
-     * Generate comprehensive test report
-     */
-    async generateReport(results: TestResult[], environment: string = 'local', browser: string = 'chromium'): Promise<TestReport> {
-        console.log('📊 Generating comprehensive test report...');
-        
-        const analysis = this.analyzeResults(results);
-        const report: TestReport = {
-            summary: analysis,
-            details: results,
-            timestamp: new Date(),
-            environment,
-            browser,
-            metadata: {
-                nodeVersion: process.version,
-                platform: process.platform,
-                arch: process.arch,
-                memoryUsage: process.memoryUsage(),
-                uptime: process.uptime()
-            }
-        };
+  /**
+   * Generate comprehensive test report
+   */
+  async generateReport(
+    results: TestResult[],
+    environment: string = 'local',
+    browser: string = 'chromium'
+  ): Promise<TestReport> {
+    console.log('📊 Generating comprehensive test report...');
 
-        // Generate different report formats
-        await Promise.all([
-            this.generateHtmlReport(report),
-            this.generateExcelReport(report),
-            this.generateJsonReport(report),
-            this.generateMarkdownReport(report)
-        ]);
+    const analysis = this.analyzeResults(results);
+    const report: TestReport = {
+      summary: analysis,
+      details: results,
+      timestamp: new Date(),
+      environment,
+      browser,
+      metadata: {
+        nodeVersion: process.version,
+        platform: process.platform,
+        arch: process.arch,
+        memoryUsage: process.memoryUsage(),
+        uptime: process.uptime(),
+      },
+    };
 
-        console.log('✅ All report formats generated successfully!');
-        return report;
-    }
+    // Generate different report formats
+    await Promise.all([
+      this.generateHtmlReport(report),
+      this.generateExcelReport(report),
+      this.generateJsonReport(report),
+      this.generateMarkdownReport(report),
+    ]);
 
-    /**
-     * Generate HTML report
-     */
-    private async generateHtmlReport(report: TestReport): Promise<void> {
-        const htmlContent = this.createHtmlContent(report);
-        const filePath = path.join(this.outputDir, `test-report-${this.timestamp}.html`);
-        
-        await fs.writeFile(filePath, htmlContent, 'utf8');
-        console.log(`📄 HTML report saved: ${filePath}`);
-    }
+    console.log('✅ All report formats generated successfully!');
+    return report;
+  }
 
-    /**
-     * Generate Excel report
-     */
-    private async generateExcelReport(report: TestReport): Promise<void> {
-        const workbook = new ExcelJS.Workbook();
-        
-        // Summary sheet
-        const summarySheet = workbook.addWorksheet('Summary');
-        summarySheet.columns = [
-            { header: 'Metric', key: 'metric', width: 20 },
-            { header: 'Value', key: 'value', width: 15 }
-        ];
-        
-        summarySheet.addRows([
-            { metric: 'Total Tests', value: report.summary.totalTests },
-            { metric: 'Passed Tests', value: report.summary.passedTests },
-            { metric: 'Failed Tests', value: report.summary.failedTests },
-            { metric: 'Success Rate', value: `${report.summary.successRate.toFixed(2)}%` },
-            { metric: 'Total Duration', value: `${(report.summary.totalDuration / 1000).toFixed(2)}s` },
-            { metric: 'Environment', value: report.environment },
-            { metric: 'Browser', value: report.browser },
-            { metric: 'Timestamp', value: report.timestamp.toISOString() }
-        ]);
+  /**
+   * Generate HTML report
+   */
+  private async generateHtmlReport(report: TestReport): Promise<void> {
+    const htmlContent = this.createHtmlContent(report);
+    const filePath = path.join(this.outputDir, `test-report-${this.timestamp}.html`);
 
-        // Details sheet
-        const detailsSheet = workbook.addWorksheet('Test Details');
-        detailsSheet.columns = [
-            { header: 'Test File', key: 'testFile', width: 40 },
-            { header: 'Status', key: 'status', width: 15 },
-            { header: 'Duration (ms)', key: 'duration', width: 15 },
-            { header: 'Error', key: 'error', width: 50 },
-            { header: 'Timestamp', key: 'timestamp', width: 25 }
-        ];
+    await fs.writeFile(filePath, htmlContent, 'utf8');
+    console.log(`📄 HTML report saved: ${filePath}`);
+  }
 
-        report.details.forEach(result => {
-            detailsSheet.addRow({
-                testFile: result.testFile,
-                status: result.status,
-                duration: result.duration,
-                error: result.error || 'N/A',
-                timestamp: result.timestamp.toISOString()
-            });
-        });
+  /**
+   * Generate Excel report
+   */
+  private async generateExcelReport(report: TestReport): Promise<void> {
+    const workbook = new ExcelJS.Workbook();
 
-        // Performance sheet
-        const perfSheet = workbook.addWorksheet('Performance');
-        perfSheet.columns = [
-            { header: 'Metric', key: 'metric', width: 25 },
-            { header: 'Value', key: 'value', width: 40 }
-        ];
+    // Summary sheet
+    const summarySheet = workbook.addWorksheet('Summary');
+    summarySheet.columns = [
+      { header: 'Metric', key: 'metric', width: 20 },
+      { header: 'Value', key: 'value', width: 15 },
+    ];
 
-        perfSheet.addRows([
-            { metric: 'Fastest Test', value: `${report.summary.performanceMetrics.fastestTest.testFile} (${report.summary.performanceMetrics.fastestTest.duration}ms)` },
-            { metric: 'Slowest Test', value: `${report.summary.performanceMetrics.slowestTest.testFile} (${report.summary.performanceMetrics.slowestTest.duration}ms)` },
-            { metric: 'Average Duration', value: `${(report.summary.averageDuration).toFixed(2)}ms` }
-        ]);
+    summarySheet.addRows([
+      { metric: 'Total Tests', value: report.summary.totalTests },
+      { metric: 'Passed Tests', value: report.summary.passedTests },
+      { metric: 'Failed Tests', value: report.summary.failedTests },
+      { metric: 'Success Rate', value: `${report.summary.successRate.toFixed(2)}%` },
+      { metric: 'Total Duration', value: `${(report.summary.totalDuration / 1000).toFixed(2)}s` },
+      { metric: 'Environment', value: report.environment },
+      { metric: 'Browser', value: report.browser },
+      { metric: 'Timestamp', value: report.timestamp.toISOString() },
+    ]);
 
-        const filePath = path.join(this.outputDir, `test-report-${this.timestamp}.xlsx`);
-        await workbook.xlsx.writeFile(filePath);
-        console.log(`📊 Excel report saved: ${filePath}`);
-    }
+    // Details sheet
+    const detailsSheet = workbook.addWorksheet('Test Details');
+    detailsSheet.columns = [
+      { header: 'Test File', key: 'testFile', width: 40 },
+      { header: 'Status', key: 'status', width: 15 },
+      { header: 'Duration (ms)', key: 'duration', width: 15 },
+      { header: 'Error', key: 'error', width: 50 },
+      { header: 'Timestamp', key: 'timestamp', width: 25 },
+    ];
 
-    /**
-     * Generate JSON report
-     */
-    private async generateJsonReport(report: TestReport): Promise<void> {
-        const filePath = path.join(this.outputDir, `test-report-${this.timestamp}.json`);
-        await fs.writeJson(filePath, report, { spaces: 2 });
-        console.log(`📋 JSON report saved: ${filePath}`);
-    }
+    report.details.forEach(result => {
+      detailsSheet.addRow({
+        testFile: result.testFile,
+        status: result.status,
+        duration: result.duration,
+        error: result.error || 'N/A',
+        timestamp: result.timestamp.toISOString(),
+      });
+    });
 
-    /**
-     * Generate Markdown report
-     */
-    private async generateMarkdownReport(report: TestReport): Promise<void> {
-        const markdownContent = this.createMarkdownContent(report);
-        const filePath = path.join(this.outputDir, `test-report-${this.timestamp}.md`);
-        
-        await fs.writeFile(filePath, markdownContent, 'utf8');
-        console.log(`📝 Markdown report saved: ${filePath}`);
-    }
+    // Performance sheet
+    const perfSheet = workbook.addWorksheet('Performance');
+    perfSheet.columns = [
+      { header: 'Metric', key: 'metric', width: 25 },
+      { header: 'Value', key: 'value', width: 40 },
+    ];
 
-    /**
-     * Create HTML content for report
-     */
-    private createHtmlContent(report: TestReport): string {
-        return `
+    perfSheet.addRows([
+      {
+        metric: 'Fastest Test',
+        value: `${report.summary.performanceMetrics.fastestTest.testFile} (${report.summary.performanceMetrics.fastestTest.duration}ms)`,
+      },
+      {
+        metric: 'Slowest Test',
+        value: `${report.summary.performanceMetrics.slowestTest.testFile} (${report.summary.performanceMetrics.slowestTest.duration}ms)`,
+      },
+      { metric: 'Average Duration', value: `${report.summary.averageDuration.toFixed(2)}ms` },
+    ]);
+
+    const filePath = path.join(this.outputDir, `test-report-${this.timestamp}.xlsx`);
+    await workbook.xlsx.writeFile(filePath);
+    console.log(`📊 Excel report saved: ${filePath}`);
+  }
+
+  /**
+   * Generate JSON report
+   */
+  private async generateJsonReport(report: TestReport): Promise<void> {
+    const filePath = path.join(this.outputDir, `test-report-${this.timestamp}.json`);
+    await fs.writeJson(filePath, report, { spaces: 2 });
+    console.log(`📋 JSON report saved: ${filePath}`);
+  }
+
+  /**
+   * Generate Markdown report
+   */
+  private async generateMarkdownReport(report: TestReport): Promise<void> {
+    const markdownContent = this.createMarkdownContent(report);
+    const filePath = path.join(this.outputDir, `test-report-${this.timestamp}.md`);
+
+    await fs.writeFile(filePath, markdownContent, 'utf8');
+    console.log(`📝 Markdown report saved: ${filePath}`);
+  }
+
+  /**
+   * Create HTML content for report
+   */
+  private createHtmlContent(report: TestReport): string {
+    return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -216,7 +226,9 @@ export class ReportGenerator {
                 </tr>
             </thead>
             <tbody>
-                ${report.details.map(result => `
+                ${report.details
+                  .map(
+                    result => `
                     <tr>
                         <td>${result.testFile}</td>
                         <td class="status-${result.status}">${result.status.toUpperCase()}</td>
@@ -224,19 +236,21 @@ export class ReportGenerator {
                         <td>${result.error || 'N/A'}</td>
                         <td>${result.timestamp.toLocaleString()}</td>
                     </tr>
-                `).join('')}
+                `
+                  )
+                  .join('')}
             </tbody>
         </table>
     </div>
 </body>
 </html>`;
-    }
+  }
 
-    /**
-     * Create Markdown content for report
-     */
-    private createMarkdownContent(report: TestReport): string {
-        return `# 🚀 Lili Test Automation Report
+  /**
+   * Create Markdown content for report
+   */
+  private createMarkdownContent(report: TestReport): string {
+    return `# 🚀 Lili Test Automation Report
 
 **Generated:** ${report.timestamp.toLocaleString()}  
 **Environment:** ${report.environment}  
@@ -266,48 +280,46 @@ ${report.details.map(result => `| ${result.testFile} | ${result.status.toUpperCa
 
 ---
 *Report generated automatically by Lili Test Automation System*`;
-    }
+  }
 
-    /**
-     * Analyze test results
-     */
-    private analyzeResults(results: TestResult[]): TestAnalysis {
-        const totalTests = results.length;
-        const passedTests = results.filter(r => r.status === 'passed').length;
-        const failedTests = results.filter(r => r.status === 'failed').length;
-        const skippedTests = results.filter(r => r.status === 'skipped').length;
-        const totalDuration = results.reduce((sum, r) => sum + r.duration, 0);
-        const averageDuration = totalTests > 0 ? totalDuration / totalTests : 0;
-        const successRate = totalTests > 0 ? (passedTests / totalTests) * 100 : 0;
+  /**
+   * Analyze test results
+   */
+  private analyzeResults(results: TestResult[]): TestAnalysis {
+    const totalTests = results.length;
+    const passedTests = results.filter(r => r.status === 'passed').length;
+    const failedTests = results.filter(r => r.status === 'failed').length;
+    const skippedTests = results.filter(r => r.status === 'skipped').length;
+    const totalDuration = results.reduce((sum, r) => sum + r.duration, 0);
+    const averageDuration = totalTests > 0 ? totalDuration / totalTests : 0;
+    const successRate = totalTests > 0 ? (passedTests / totalTests) * 100 : 0;
 
-        const failedTestsList = results
-            .filter(r => r.status === 'failed')
-            .map(r => r.testFile);
+    const failedTestsList = results.filter(r => r.status === 'failed').map(r => r.testFile);
 
-        const sortedByDuration = [...results].sort((a, b) => a.duration - b.duration);
-        const fastestTest = sortedByDuration[0];
-        const slowestTest = sortedByDuration[sortedByDuration.length - 1];
+    const sortedByDuration = [...results].sort((a, b) => a.duration - b.duration);
+    const fastestTest = sortedByDuration[0];
+    const slowestTest = sortedByDuration[sortedByDuration.length - 1];
 
-        return {
-            totalTests,
-            passedTests,
-            failedTests,
-            skippedTests,
-            totalDuration,
-            averageDuration,
-            successRate,
-            failedTestsList,
-            performanceMetrics: {
-                slowestTest,
-                fastestTest
-            }
-        };
-    }
+    return {
+      totalTests,
+      passedTests,
+      failedTests,
+      skippedTests,
+      totalDuration,
+      averageDuration,
+      successRate,
+      failedTestsList,
+      performanceMetrics: {
+        slowestTest,
+        fastestTest,
+      },
+    };
+  }
 
-    /**
-     * Ensure output directory exists
-     */
-    private async ensureOutputDir(): Promise<void> {
-        await fs.ensureDir(this.outputDir);
-    }
+  /**
+   * Ensure output directory exists
+   */
+  private async ensureOutputDir(): Promise<void> {
+    await fs.ensureDir(this.outputDir);
+  }
 }
