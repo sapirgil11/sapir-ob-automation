@@ -1,7 +1,7 @@
 // ============================================================================
 // 🎯 PAGE OBJECTS EXPORTS - Complete Onboarding Page Sequence
 // ============================================================================
-// Order: Welcome → Email Verification → Personal Details → Phone → Identity → Home Address → Business Type → Industry
+// Order: Welcome → Email Verification → Personal Details → Phone → Identity → Home Address → Business Type → Industry → Know Your Business → Business Address
 // ============================================================================
 
 // Step 1: Welcome Page Object
@@ -30,3 +30,6 @@ export { Industry } from './industry';
 
 // Step 9: Know Your Business Page Object
 export { KnowYourBusiness } from './knowYourBusiness';
+
+// Step 10: Business Address Page Object
+export { BusinessAddress } from './businessAddress';

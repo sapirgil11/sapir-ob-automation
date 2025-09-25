@@ -1,7 +1,7 @@
 // ============================================================================
 // 🚀 FLOW CLASSES EXPORTS - Complete Onboarding Flow Sequence
 // ============================================================================
-// Order: Welcome → Email Verification → Personal Details → Phone → Identity → Home Address → Business Type → Industry
+// Order: Welcome → Email Verification → Personal Details → Phone → Identity → Home Address → Business Type → Industry → Know Your Business → Business Address
 // ============================================================================
 
 // Step 1: Welcome Flow
@@ -30,3 +30,6 @@ export { IndustryFlow } from './industryFlow';
 
 // Step 9: Know Your Business Flow
 export { KnowYourBusinessFlow } from './knowYourBusinessFlow';
+
+// Step 10: Business Address Flow
+export { BusinessAddressFlow } from './businessAddressFlow';
