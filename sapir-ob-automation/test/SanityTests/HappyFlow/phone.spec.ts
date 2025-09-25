@@ -9,7 +9,6 @@ test.use({ viewport: { width: 1880, height: 798 } });
 // This test suite validates the Phone page functionality including:
 // - Phone number form filling with random data
 // - Phone validation error handling
-
 // - UI element visibility and functionality
 // ============================================================================
 
@@ -24,7 +23,6 @@ test.describe('📞 Phone Page Flow Tests', () => {
     const phoneFlow = new PhoneFlow(page);
     const navigated = await phoneFlow.testFillPhoneForm();
     expect(navigated).toBe(true);
-
     const result = await phoneFlow.testTypePhoneNumberWithoutDropdown();
     expect(result).toBe(true);
     console.log('✅ Type Phone Number Without Opening Dropdown Test passed!');
