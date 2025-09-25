@@ -27,3 +27,6 @@ export { BusinessType } from './businessType';
 
 // Step 8: Industry Page Object
 export { Industry } from './industry';
+
+// Step 9: Know Your Business Page Object
+export { KnowYourBusiness } from './knowYourBusiness';

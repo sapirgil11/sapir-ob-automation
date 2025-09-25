@@ -32,6 +32,7 @@ export class PersonalDetailsFlow {
 
     // ========================================================================
     // 🚀 NAVIGATION METHODS
+    // ========================================================================
 
     /**
      * Navigate to personal details page through the complete onboarding flow
@@ -674,5 +675,4 @@ export class PersonalDetailsFlow {
             return false;
         }
     }
-    // ========================================================================
 }

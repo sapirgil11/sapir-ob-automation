@@ -27,3 +27,6 @@ export { BusinessTypeFlow } from './businessTypeFlow';
 
 // Step 8: Industry Flow
 export { IndustryFlow } from './industryFlow';
+
+// Step 9: Know Your Business Flow
+export { KnowYourBusinessFlow } from './knowYourBusinessFlow';
