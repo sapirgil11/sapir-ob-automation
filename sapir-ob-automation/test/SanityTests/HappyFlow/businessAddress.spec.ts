@@ -1,4 +1,4 @@
-import { test, expect, describe } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { BusinessAddressFlow } from '../../../main/Flows/businessAddressFlow';
 import { BusinessAddress } from '../../../main/PageObjects/businessAddress';
 
@@ -8,11 +8,9 @@ import { BusinessAddress } from '../../../main/PageObjects/businessAddress';
 // Comprehensive test suite for the Business Address page during onboarding
 // ============================================================================
 
-describe('🧾 Business Address (BA) Page Tests', () => {
-
-    // ========================================================================
-    // 🎉 TEST 1: Happy Path - Fill Form and Continue
-    // ========================================================================
+// ========================================================================
+// 🎉 TEST 1: Happy Path - Fill Form and Continue
+// ========================================================================
     test('🎉 BA - Happy Path (randomized data) and Continue', async ({ page }) => {
         test.setTimeout(180000); // 3 minutes timeout
         console.log('🚀 Starting Business Address Happy Path Test...');
@@ -246,4 +244,3 @@ describe('🧾 Business Address (BA) Page Tests', () => {
 
         console.log('✅ Business Address Elements Exist test completed!');
     });
-});
