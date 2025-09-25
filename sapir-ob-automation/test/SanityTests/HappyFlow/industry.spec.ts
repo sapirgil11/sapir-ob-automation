@@ -15,7 +15,7 @@ test.describe('🏭 Industry Page Flow Tests', () => {
     // ========================================================================
     
     test('🎯 Industry Page Selection Test', async ({ page }) => {
-        test.setTimeout(300000); // 5 minutes timeout
+        test.setTimeout(180000); // 3 minutes timeout (reduced from 5)
         console.log('🚀 Starting Industry Page Selection Test...');
 
         const industryFlow = new IndustryFlow(page);
@@ -39,9 +39,9 @@ test.describe('🏭 Industry Page Flow Tests', () => {
         if (industryExists && subIndustryExists) {
             console.log('🎯 Testing industry selection...');
             
-            // Test industry dropdown interaction
+            // Test industry dropdown interaction (optimized for speed)
             await page.locator('#INDUSTRY').first().click();
-            await page.waitForTimeout(1000);
+            await page.waitForTimeout(500); // Reduced from 1000ms
             
             // Check if dropdown options are visible
             const dropdownOptions = await page.locator('[role="option"]').count();
@@ -52,16 +52,16 @@ test.describe('🏭 Industry Page Flow Tests', () => {
             const firstOptionText = await firstOption.textContent();
             console.log(`📋 First industry option: ${firstOptionText}`);
             await firstOption.click();
-            await page.waitForTimeout(2000);
+            await page.waitForTimeout(1000); // Reduced from 2000ms
             
         // Close dropdown by clicking elsewhere
         await page.click('body');
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(500); // Reduced from 1000ms
         
-        // Step 3: Select sub-industry
+        // Step 3: Select sub-industry (optimized for speed)
         console.log('🎯 Testing sub-industry selection...');
         await page.locator('#SUB_INDUSTRY').first().click();
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(500); // Reduced from 1000ms
         
         // Get sub-industry dropdown options
         const subIndustryOptions = await page.locator('[role="option"]').count();
@@ -72,11 +72,11 @@ test.describe('🏭 Industry Page Flow Tests', () => {
         const firstSubOptionText = await firstSubOption.textContent();
         console.log(`📋 First sub-industry option: ${firstSubOptionText}`);
         await firstSubOption.click();
-        await page.waitForTimeout(2000);
+        await page.waitForTimeout(1000); // Reduced from 2000ms
         
         // Close dropdown by clicking elsewhere
         await page.click('body');
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(500); // Reduced from 1000ms
         
         // Test clicking continue button
         console.log('🔍 Testing continue button...');
@@ -106,7 +106,7 @@ test.describe('🏭 Industry Page Flow Tests', () => {
     // ========================================================================
     
     test('🎯 Industry Change Resets Sub-Industry Test', async ({ page }) => {
-        test.setTimeout(300000); // 5 minutes timeout
+        test.setTimeout(180000); // 3 minutes timeout (reduced from 5)
         console.log('🚀 Starting Industry Change Resets Sub-Industry Test...');
 
         const industryFlow = new IndustryFlow(page);
@@ -115,46 +115,46 @@ test.describe('🏭 Industry Page Flow Tests', () => {
         
         console.log('✅ Successfully navigated to industry page!');
         
-        // Step 1: Select first industry
+        // Step 1: Select first industry (optimized for speed)
         console.log('🏭 Step 1: Selecting first industry...');
         await page.locator('#INDUSTRY').first().click();
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(500); // Reduced from 1000ms
         
         // Get first industry option
         const firstIndustryOption = page.locator('[role="option"]').first();
         const firstIndustryText = await firstIndustryOption.textContent();
         console.log(`📋 First industry: ${firstIndustryText}`);
         await firstIndustryOption.click();
-        await page.waitForTimeout(2000);
+        await page.waitForTimeout(1000); // Reduced from 2000ms
         
-        // Step 2: Select sub-industry for first industry
+        // Step 2: Select sub-industry for first industry (optimized for speed)
         console.log('🏭 Step 2: Selecting sub-industry for first industry...');
         await page.locator('#SUB_INDUSTRY').first().click();
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(500); // Reduced from 1000ms
         
         // Get first sub-industry option
         const firstSubIndustryOption = page.locator('[role="option"]').first();
         const firstSubIndustryText = await firstSubIndustryOption.textContent();
         console.log(`📋 First sub-industry: ${firstSubIndustryText}`);
         await firstSubIndustryOption.click();
-        await page.waitForTimeout(2000);
+        await page.waitForTimeout(1000); // Reduced from 2000ms
         
-        // Step 3: Change industry (this should reset sub-industry)
+        // Step 3: Change industry (this should reset sub-industry) (optimized for speed)
         console.log('🏭 Step 3: Changing industry to reset sub-industry...');
         await page.locator('#INDUSTRY').first().click();
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(500); // Reduced from 1000ms
         
         // Get second industry option
         const secondIndustryOption = page.locator('[role="option"]').nth(1);
         const secondIndustryText = await secondIndustryOption.textContent();
         console.log(`📋 Second industry: ${secondIndustryText}`);
         await secondIndustryOption.click();
-        await page.waitForTimeout(2000);
+        await page.waitForTimeout(1000); // Reduced from 2000ms
         
-        // Step 4: Verify sub-industry was reset and new options appear
+        // Step 4: Verify sub-industry was reset and new options appear (optimized for speed)
         console.log('🏭 Step 4: Verifying sub-industry was reset...');
         await page.locator('#SUB_INDUSTRY').first().click();
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(500); // Reduced from 1000ms
         
         // Check if new sub-industry options are available
         const newSubIndustryOptions = await page.locator('[role="option"]').count();
@@ -166,7 +166,7 @@ test.describe('🏭 Industry Page Flow Tests', () => {
         const newSubIndustryText = await newSubIndustryOption.textContent();
         console.log(`📋 New sub-industry: ${newSubIndustryText}`);
         await newSubIndustryOption.click();
-        await page.waitForTimeout(2000);
+        await page.waitForTimeout(1000); // Reduced from 2000ms
         
         // Step 5: Verify the sub-industry is different from the first one
         if (firstSubIndustryText !== newSubIndustryText) {
@@ -198,7 +198,7 @@ test.describe('🏭 Industry Page Flow Tests', () => {
     // ========================================================================
     
     test('🎯 Industry Page Tooltip Verification Test', async ({ page }) => {
-        test.setTimeout(300000); // 5 minutes timeout
+        test.setTimeout(180000); // 3 minutes timeout (reduced from 5)
         console.log('🚀 Starting Industry Page Tooltip Verification Test...');
 
         const industryFlow = new IndustryFlow(page);
@@ -219,14 +219,14 @@ test.describe('🏭 Industry Page Flow Tests', () => {
         expect(noteText).toContain('Note, Lili cannot provide banking services to businesses that are involved in or associated with any of the listed activities');
         console.log('✅ Tooltip note text verified!');
         
-        // Step 2: Find and hover over the tooltip icon
+        // Step 2: Find and hover over the tooltip icon (optimized for speed)
         console.log('🔍 Step 2: Hovering over tooltip icon...');
         const tooltipIcon = page.locator('[data-tooltip-id="tooltip-banned-activities"]');
         await expect(tooltipIcon).toBeVisible();
         
         // Hover over the tooltip icon
         await tooltipIcon.hover();
-        await page.waitForTimeout(2000);
+        await page.waitForTimeout(1000); // Reduced from 2000ms
         
         // Step 3: Verify tooltip content appears
         console.log('🔍 Step 3: Verifying tooltip content...');
