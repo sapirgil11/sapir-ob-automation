@@ -41,7 +41,7 @@ export class WelcomeFlow {
 
             // Wait for navigation to next page
             console.log('⏳ Waiting for navigation to next page...');
-            await this.page.waitForURL('**/email-verification**', { timeout: 10000 });
+            await this.page.waitForURL('**/email-verification**', { timeout: 8000 }); // Optimized: reduced from 10000ms but not too aggressive
             
             const currentUrl = this.page.url();
             console.log(`📍 Current URL: ${currentUrl}`);
@@ -78,7 +78,7 @@ export class WelcomeFlow {
             await this.welcomePage.emailInput.blur(); // Unfocus (blur)
             
             // Wait for error to appear
-            await this.page.waitForTimeout(1000);
+            await this.page.waitForTimeout(500); // Reduced from 1000ms for speed
             
             // Verify "Invalid email" text appears in error container
             const emailErrorContainer = this.page.locator('#EMAIL-error-container');
@@ -98,7 +98,7 @@ export class WelcomeFlow {
             await this.welcomePage.passwordInput.blur(); // Unfocus (blur)
             
             // Wait for validation
-            await this.page.waitForTimeout(1000);
+            await this.page.waitForTimeout(500); // Reduced from 1000ms for speed
             
             // Verify Get Started button is disabled
             const isButtonDisabled = await this.welcomePage.getStartedButton.isDisabled();
@@ -180,7 +180,7 @@ export class WelcomeFlow {
             // Hover over password hint element to trigger tooltip
             const passwordHintElement = this.page.locator('[data-tooltip-id="password-hint"]');
             await passwordHintElement.hover();
-            await this.page.waitForTimeout(1000); // Wait longer for tooltip to appear
+            await this.page.waitForTimeout(500); // Reduced from 1000ms for speed // Wait longer for tooltip to appear
             
             // Check if tooltip container is visible
             const tooltipVisible = await this.welcomePage.passwordRequirementsTooltip.isVisible();

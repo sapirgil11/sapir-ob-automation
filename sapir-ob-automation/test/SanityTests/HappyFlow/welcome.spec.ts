@@ -10,7 +10,7 @@ test.describe('📱 Welcome Page Tests', () => {
     // 🎉 TEST 1: Type Email and Password (Verify Navigation)
     // ========================================================================
     test('🎉 Welcome Page - Type Email and Password (Verify Navigation)', async ({ page }) => {
-        test.setTimeout(120000); // 2 minutes timeout
+        test.setTimeout(60000); // 1 minute timeout (optimized for speed)
 
         // Setup network debugging
         const { networkDebugger, getStats, printSummary, analyzePage } = NetworkDebugger.setupForTest(page);
@@ -33,7 +33,7 @@ test.describe('📱 Welcome Page Tests', () => {
     // ❌ TEST 2: Inline Errors (Focus, Unfocus, Verify Errors)
     // ========================================================================
     test('❌ Welcome Page - Inline Errors (Focus, Unfocus, Verify Errors)', async ({ page }) => {
-        test.setTimeout(120000); // 2 minutes timeout
+        test.setTimeout(60000); // 1 minute timeout (optimized for speed)
 
         // Setup network debugging
         const { networkDebugger, getStats, printSummary, analyzePage } = NetworkDebugger.setupForTest(page);
@@ -56,7 +56,7 @@ test.describe('📱 Welcome Page Tests', () => {
     // 🔍 TEST 3: Elements Exist (Verify Visibility of UI Elements)
     // ========================================================================
     test('🔍 Welcome Page - Elements Exist (Verify Visibility of UI Elements)', async ({ page }) => {
-        test.setTimeout(120000); // 2 minutes timeout
+        test.setTimeout(60000); // 1 minute timeout (optimized for speed)
 
         // Setup network debugging
         const { networkDebugger, getStats, printSummary, analyzePage } = NetworkDebugger.setupForTest(page);
